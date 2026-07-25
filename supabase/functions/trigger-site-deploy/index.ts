@@ -26,7 +26,7 @@ serve(async (request) => {
   const token = Deno.env.get('GITHUB_DEPLOY_TOKEN');
   if (!token) return new Response(JSON.stringify({ error: 'deploy_secret_missing' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
-  const githubResponse = await fetch('https://api.github.com/repos/Pinto-Daniel/rutas-b-web/actions/workflows/deploy.yml/dispatches', {
+  const githubResponse = await fetch('https://api.github.com/repos/rutasbdebarcelona/rutasbdebarcelona.github.io/actions/workflows/deploy.yml/dispatches', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
