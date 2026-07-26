@@ -15,5 +15,6 @@ export default defineConfig({
   site,
   base,
   output: 'static',
-  trailingSlash: 'always'
+  trailingSlash: 'always',
+  i18n: { locales: ['es', 'en'], defaultLocale: 'es', routing: { prefixDefaultLocale: false } }
 });

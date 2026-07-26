@@ -1,28 +1,17 @@
 ---
 import { siteConfig } from '../config/site';
+import { ui, type Locale } from '../i18n/ui';
+interface Props { locale?: Locale; }
+const { locale = 'es' } = Astro.props;
+const t = ui[locale];
 const base = import.meta.env.BASE_URL;
+const root = locale === 'en' ? base + 'en/' : base;
 ---
 <footer class="site-footer">
   <div class="footer-grid">
-    <div>
-      <img class="footer-logo" src={`${base}images/marca/rutas-b-logo.png`} alt={siteConfig.formalName} />
-      <p>Rutas culturales para entender Barcelona con contexto, cercanía y una mirada propia.</p>
-    </div>
-    <div>
-      <h2>Explorar</h2>
-      <a href={`${base}rutas/`}>Todas las rutas</a>
-      <a href={`${base}comparar/`}>Comparar rutas</a>
-      <a href={`${base}reservar/`}>Reservar una ruta</a>
-    </div>
-    <div>
-      <h2>Información</h2>
-      <span class="footer-contact">{siteConfig.contact.email}</span>
-      <span class="footer-contact">{siteConfig.contact.phoneDisplay}</span>
-      <a href={`${base}contacto/`}>Contacto</a>
-      <a href={`${base}privacidad/`}>Privacidad</a>
-      <a href={`${base}condiciones/`}>Condiciones</a>
-      <a href={`${base}admin/`}>Acceso privado</a>
-    </div>
+    <div><img class="footer-logo" src={base + 'images/marca/rutas-b-logo.png'} alt={siteConfig.formalName} /><p>{t.footerCopy}</p></div>
+    <div><h2>{t.explore}</h2><a href={root + 'rutas/'}>{t.allRoutes}</a><a href={root + 'comparar/'}>{t.compareRoutes}</a><a href={root + 'reservar/'}>{t.bookRoute}</a></div>
+    <div><h2>{t.information}</h2><span class="footer-contact">{siteConfig.contact.email}</span><span class="footer-contact">{siteConfig.contact.phoneDisplay}</span><a href={root + 'contacto/'}>{t.contact}</a><a href={root + 'privacidad/'}>{t.privacy}</a><a href={root + 'condiciones/'}>{t.terms}</a><a href={base + 'admin/'}>{t.admin}</a></div>
   </div>
-  <div class="footer-bottom"><span>© {new Date().getFullYear()} {siteConfig.shortName}</span><span>{siteConfig.contact.location}</span></div>
+  <div class="footer-bottom"><span>&copy; {new Date().getFullYear()} {siteConfig.shortName}</span><span>{siteConfig.contact.location}</span></div>
 </footer>

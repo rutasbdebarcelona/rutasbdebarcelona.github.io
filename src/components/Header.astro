@@ -1,23 +1,33 @@
 ---
 import { moduleEnabled } from '../config/site';
+import { ui, type Locale } from '../i18n/ui';
+interface Props { locale?: Locale; }
+const { locale = 'es' } = Astro.props;
+const t = ui[locale];
 const base = import.meta.env.BASE_URL;
+const root = locale === 'en' ? base + 'en/' : base;
+const current = Astro.url.pathname.startsWith(base) ? Astro.url.pathname.slice(base.length) : Astro.url.pathname.replace(/^\//, '');
+const bare = current.startsWith('en/') ? current.slice(3) : current;
+const esUrl = base + bare;
+const enUrl = base + 'en/' + bare;
 ---
 <header class="site-header">
   <div class="header-inner">
-    <a class="brand" href={base} aria-label="Rutas B, inicio">
-      <img class="brand-logo" src={`${base}images/marca/rutas-b-simbolo.png`} alt="" width="44" height="58" />
+    <a class="brand" href={root} aria-label={'Rutas B, ' + t.home}>
+      <img class="brand-logo" src={base + 'images/marca/rutas-b-simbolo.png'} alt="" width="44" height="58" />
       <span class="brand-copy"><strong>Rutas B</strong><small>de Barcelona</small></span>
     </a>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav" data-menu-button>
-      <span>Menú</span><span aria-hidden="true">☰</span>
+      <span>{t.menu}</span><span aria-hidden="true">&#9776;</span>
     </button>
-    <nav id="main-nav" class="main-nav" aria-label="Navegación principal" data-menu>
-      {moduleEnabled('routes') && <a href={`${base}rutas/`}>Rutas</a>}
-      {moduleEnabled('compare') && <a href={`${base}comparar/`}>Comparar</a>}
-      {moduleEnabled('guide') && <a href={`${base}sobre/`}>Quién guía</a>}
-      {moduleEnabled('faq') && <a href={`${base}preguntas/`}>Preguntas</a>}
-      {moduleEnabled('contact') && <a href={`${base}contacto/`}>Contacto</a>}
-      {moduleEnabled('booking') && <a class="nav-cta" href={`${base}reservar/`}>Reservar ruta</a>}
+    <nav id="main-nav" class="main-nav" aria-label={t.navigation} data-menu>
+      {moduleEnabled('routes') && <a href={root + 'rutas/'}>{t.routes}</a>}
+      {moduleEnabled('compare') && <a href={root + 'comparar/'}>{t.compare}</a>}
+      {moduleEnabled('guide') && <a href={root + 'sobre/'}>{t.guide}</a>}
+      {moduleEnabled('faq') && <a href={root + 'preguntas/'}>{t.faq}</a>}
+      {moduleEnabled('contact') && <a href={root + 'contacto/'}>{t.contact}</a>}
+      <span class="language-switch" aria-label="Language"><a class:list={{active: locale === 'es'}} href={esUrl} lang="es">ES</a><span>/</span><a class:list={{active: locale === 'en'}} href={enUrl} lang="en">EN</a></span>
+      {moduleEnabled('booking') && <a class="nav-cta" href={root + 'reservar/'}>{t.book}</a>}
     </nav>
   </div>
 </header>

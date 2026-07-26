@@ -56,3 +56,14 @@ Antes de utilizarlos se deben preparar versiones transparentes, horizontal, comp
 ### Regla de continuidad
 
 Este checkpoint es la base estable del proyecto. Las próximas personalizaciones deben ser modulares, reversibles y no deben alterar reservas, Supabase ni la versión pública sin verificación previa.
+
+## Checkpoint 02: versión inglesa editable
+
+**Fecha:** 26 de julio de 2026
+**Estado:** versión pública ES/EN con selector persistente y una sola lógica de reservas.
+
+- Español permanece en la raíz.
+- Inglés se publica bajo `/en/`.
+- Traducciones editables en `src/i18n/` y `src/pages/en/`.
+- Slugs, referencias, reservas y Supabase se comparten entre idiomas.
+- Catalán queda como siguiente idioma una vez revisada la versión inglesa.
