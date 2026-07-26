@@ -5,6 +5,10 @@ export const siteConfig = {
   defaultLocale: 'es',
   offeredLanguages: ['Español', 'English'],
   understoodLanguages: ['Català', 'Português'],
+  contact: {
+    email: 'rutasbdebarcelona@gmail.com',
+    location: 'Barcelona, Catalunya'
+  },
   modules: {
     routes: true,
     compare: true,
