@@ -20,6 +20,7 @@ const showCopy=design.logo==='symbol-text';
       <img class:list={['brand-logo',{'brand-logo-full':fullLogo}]} src={base + (fullLogo?'images/marca/rutas-b-logo.png':'images/marca/rutas-b-simbolo.png')} alt="" width={fullLogo?110:44} height={58} />
       {showCopy&&<span class="brand-copy"><strong>Rutas B</strong><small>de Barcelona</small></span>}
     </a>
+    <span class="language-switch mobile-language-switch" aria-label="Language"><a class:list={{active: locale === 'es'}} href={esUrl} lang="es">ES</a><span>/</span><a class:list={{active: locale === 'en'}} href={enUrl} lang="en">EN</a></span>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav" data-menu-button><span>{t.menu}</span><span aria-hidden="true">&#9776;</span></button>
     <nav id="main-nav" class="main-nav" aria-label={t.navigation} data-menu>
       {moduleEnabled('routes') && <a href={root + 'rutas/'}>{t.routes}</a>}
