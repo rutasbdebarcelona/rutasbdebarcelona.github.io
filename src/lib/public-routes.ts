@@ -14,7 +14,7 @@ export async function getPublicRoutes(): Promise<TourRoute[]> {
     .order('sort_order');
   if (error || !data?.length) return fallbackRoutes;
 
-  const publicUrl = (path: string) => !path || path.startsWith('/') || /^https?:/i.test(path) ? path : client.storage.from('route-media').getPublicUrl(path).data.publicUrl;
+  const publicUrl = (path: string, download: boolean | string = false) => !path || path.startsWith('/') || /^https?:/i.test(path) ? path : client.storage.from('route-media').getPublicUrl(path, download ? { download } : undefined).data.publicUrl;
   return data.map((route: any) => ({
     slug: route.slug,
     title: route.title,
@@ -39,7 +39,7 @@ export async function getPublicRoutes(): Promise<TourRoute[]> {
     image: publicUrl(route.primary_image_path || ''),
     imageAlt: route.primary_image_alt || route.title,
     gallery: (route.route_media || []).filter((item: any) => item.kind === 'image' && item.role === 'gallery').sort((a: any,b: any) => a.sort_order-b.sort_order).map((item: any) => ({id:item.id,kind:item.kind,role:item.role,url:publicUrl(item.storage_path),title:item.title||'',altText:item.alt_text||route.title,mimeType:item.mime_type})),
-    documents: (route.route_media || []).filter((item: any) => item.role === 'attachment').sort((a: any,b: any) => a.sort_order-b.sort_order).map((item: any) => ({id:item.id,kind:item.kind,role:item.role,url:publicUrl(item.storage_path),title:item.title||'Documento de la ruta',altText:item.alt_text||'',mimeType:item.mime_type})),
+    documents: (route.route_media || []).filter((item: any) => item.role === 'attachment').sort((a: any,b: any) => a.sort_order-b.sort_order).map((item: any) => ({id:item.id,kind:item.kind,role:item.role,url:publicUrl(item.storage_path,item.title||true),title:item.title||'Documento de la ruta',altText:item.alt_text||'',mimeType:item.mime_type})),
     featured: route.featured,
     published: true,
   }));
