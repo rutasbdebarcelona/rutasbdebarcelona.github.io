@@ -25,3 +25,9 @@ export async function notifyBooking(reference: string) {
   console.warn('Booking notification could not be requested.');
   return false;
 }
+export async function getAvailability(route:string,from:string,to:string){
+  if(!supabaseConfigured||!supabase)return [];
+  const {data,error}=await supabase.rpc('get_public_availability',{p_route_slug:route,p_from:from,p_to:to});
+  if(error)throw error;
+  return data??[];
+}

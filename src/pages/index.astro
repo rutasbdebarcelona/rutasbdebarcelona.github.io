@@ -3,72 +3,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import RouteCard from '../components/RouteCard.astro';
 import ModuleShell from '../components/ModuleShell.astro';
 import { getPublicRoutes } from '../lib/public-routes';
-const publishedRoutes = await getPublicRoutes();
 import { moduleEnabled } from '../config/site';
 import { getPublicSiteDesign } from '../lib/site-settings';
-const base = import.meta.env.BASE_URL;
-const design=await getPublicSiteDesign();
-const content=design.content.es;
+const publishedRoutes=await getPublicRoutes(),featured=publishedRoutes.find(r=>r.slug==='sagrada-familia')??publishedRoutes[0],base=import.meta.env.BASE_URL,design=await getPublicSiteDesign(),content=design.content.es;
+const heroImage=/^https?:/i.test(featured?.image||'')?featured.image:base+(featured?.image||'images/sagrada-familia.jpg').replace(/^\//,'');
 ---
 <BaseLayout description="Rutas culturales en Barcelona para viajeros, grupos y partners que buscan comprender la ciudad con una mirada propia.">
-  <section class="hero">
-    <div class="hero-backdrop"></div>
-    <div class="hero-inner">
-      <div class="hero-copy">
-        <p class="kicker">{content.homeKicker}</p>
-        <h1>{content.homeTitle}<br /><em>{content.homeAccent}</em></h1>
-        <p class="hero-lead">{content.homeLead}</p>
-        <div class="hero-actions">
-          <a class="button primary" href={`${base}rutas/`}>Explorar las rutas</a>
-          <a class="button ghost" href={`${base}sobre/`}>Conoce al guía</a>
-        </div>
-        <ul class="trust-row" aria-label="Características principales">
-          <li>Grupos pequeños</li><li>Español e inglés</li><li>Solicitud sin pago</li>
-        </ul>
-      </div>
-      <aside class="hero-note">
-        <p>{content.homeNote}</p>
-      </aside>
-    </div>
-  </section>
-
-  <ModuleShell enabled={moduleEnabled('routes')}>
-    <section class="section routes-preview">
-      <div class="section-heading split-heading">
-        <div><p class="kicker dark">Elige tu manera de entrar</p><h2>Tres rutas, tres Barcelonas</h2></div>
-        <p>Cada experiencia tiene un ritmo y una pregunta distinta. Compáralas y encuentra la que conversa mejor contigo.</p>
-      </div>
-      <div class="route-grid">{publishedRoutes.map((route) => <RouteCard route={route} />)}</div>
-      <div class="center-action"><a class="button outline" href={`${base}comparar/`}>Comparar las tres rutas</a></div>
-    </section>
-  </ModuleShell>
-
-  <section class="manifesto">
-    <div class="manifesto-inner">
-      <p class="kicker">La diferencia Rutas B</p>
-      <blockquote>“No se trata de explicarlo todo. Se trata de darte una brújula para que la ciudad empiece a hablar.”</blockquote>
-      <div class="principles">
-        <div><span>01</span><h3>Mirar primero</h3><p>Partimos de lo que tienes delante. La historia ayuda a ver; no tapa el lugar.</p></div>
-        <div><span>02</span><h3>Contexto sin pesadez</h3><p>Ideas claras, preguntas y comparaciones que ordenan una ciudad compleja.</p></div>
-        <div><span>03</span><h3>Una experiencia humana</h3><p>Ritmo atento, espacio para conversar y adaptación al grupo real.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section partner-section">
-    <div class="partner-card">
-      <div><p class="kicker dark">Hoteles, agencias y grupos</p><h2>Una ruta también puede adaptarse a tu público.</h2><p>Diseñamos versiones por duración, idioma, perfil del grupo y contexto de la visita, sin perder la columna vertebral de cada experiencia.</p></div>
-      <a class="button primary" href={`${base}contacto/?tipo=partner`}>Hablar de una colaboración</a>
-    </div>
-  </section>
-
-  <script is:inline define:vars={{ base }}>
-    const selected = new Set();
-    document.querySelectorAll('[data-compare-check]').forEach((check) => {
-      check.addEventListener('change', () => {
-        check.checked ? selected.add(check.value) : selected.delete(check.value);
-        if (selected.size >= 2) window.location.href = `${base}comparar/?rutas=${[...selected].join(',')}`;
-      });
-    });
-  </script>
+<section class="author-hero"><div class="author-hero-inner"><div class="author-copy"><p class="kicker">{content.homeKicker}</p><h1>{content.homeTitle}<em>{content.homeAccent}</em></h1><p class="hero-lead">{content.homeLead}</p><div class="hero-actions"><a class="button primary" href={`${base}rutas/`}>Explorar las rutas</a><a class="button ghost" href={`${base}sobre/`}>Conoce al guía</a></div><ul class="trust-row"><li>Grupos pequeños</li><li>Español e inglés</li><li>Reserva sin pago</li></ul></div><figure class="city-plate"><img src={heroImage} alt={featured?.imageAlt||'Barcelona'} /><figcaption><span>CUADERNO DE RUTA / BCN</span><strong>Sagrada Família · exterior</strong><small>41.4036° N / 2.1744° E</small></figcaption><div class="plate-mark">B</div><svg viewBox="0 0 320 150" aria-hidden="true"><path d="M5 122 C70 100 75 35 145 55 S235 135 315 22"/><circle cx="5" cy="122" r="4"/><circle cx="315" cy="22" r="4"/></svg></figure><aside class="author-note"><span>CAPA 01</span><p>{content.homeNote}</p></aside></div></section>
+<ModuleShell enabled={moduleEnabled('routes')}><section class="section routes-preview"><div class="section-heading split-heading"><div><p class="kicker dark">Elige tu manera de entrar</p><h2>Tres rutas, tres Barcelonas</h2></div><p>Cada experiencia tiene un ritmo y una pregunta distinta. Encuentra la que conversa mejor contigo.</p></div><div class="route-grid">{publishedRoutes.map(route=><RouteCard route={route}/>)}</div></section></ModuleShell>
+<section class="manifesto authored-manifesto"><div class="manifesto-inner"><p class="kicker">Un método propio</p><blockquote>La ciudad no es un catálogo de monumentos. Es una conversación entre capas.</blockquote><div class="principles"><div><span>01 / OBSERVAR</span><h3>Lo que está delante</h3><p>La forma, la piedra, la calle y sus usos abren la conversación.</p></div><div><span>02 / CONECTAR</span><h3>Las capas del lugar</h3><p>Historia y contexto aparecen cuando ayudan a entender lo visible.</p></div><div><span>03 / CONVERSAR</span><h3>Una ruta viva</h3><p>Preguntas, ritmo atento y espacio para construir una mirada propia.</p></div></div></div></section>
+<section class="section partner-section"><div class="partner-card"><div><p class="kicker dark">Hoteles, agencias y grupos</p><h2>Una ruta también puede adaptarse a tu público.</h2><p>Diseñamos versiones por duración, idioma, perfil del grupo y contexto de la visita.</p></div><a class="button primary" href={`${base}contacto/?tipo=partner`}>Hablar de una colaboración</a></div></section>
 </BaseLayout>

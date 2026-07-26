@@ -2,47 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig } from '../config/site';
 import { getPublicSiteDesign } from '../lib/site-settings';
-const design=await getPublicSiteDesign();
-const content=design.content.es;
+const design=await getPublicSiteDesign(); const content=design.content.es; const base=import.meta.env.BASE_URL;
 ---
-<BaseLayout title="Contacto">
-  <header class="page-hero compact"><div><p class="kicker">Conversemos</p><h1>Contacto</h1><p>Para consultas generales, grupos, hoteles, agencias y colaboraciones.</p></div></header>
-  <section class="section contact-section">
-    <div class="contact-layout">
-      <aside class="contact-info-card">
-        <img src={`${import.meta.env.BASE_URL}images/marca/rutas-b-logo.png`} alt={siteConfig.formalName} />
-        <p class="kicker dark">Contacto directo</p>
-        <h2>{content.contactTitle}</h2>
-        <p>{content.contactIntro}</p>
-        <div class="contact-detail"><span>Correo electr&oacute;nico</span><strong>{siteConfig.contact.email}</strong></div>
-        <div class="contact-detail"><span>Tel&eacute;fono</span><strong>{siteConfig.contact.phoneDisplay}</strong></div>
-        <p class="contact-location">{siteConfig.contact.location}</p>
-      </aside>
-      <form class="booking-form compact-form contact-form" data-contact-form data-email={siteConfig.contact.email}>
-        <div class="form-grid">
-          <label class="field"><span>Nombre</span><input name="name" autocomplete="name" required /></label>
-          <label class="field"><span>Correo electr&oacute;nico</span><input name="email" type="email" autocomplete="email" required /></label>
-          <label class="field full"><span>Tipo de consulta</span><select name="type"><option>Consulta general</option><option>Hotel, agencia o partner</option><option>Grupo privado</option><option>Prensa o colaboraci&oacute;n</option></select></label>
-          <label class="field full"><span>Mensaje</span><textarea name="message" rows="7" required></textarea></label>
-        </div>
-        <div class="form-summary"><strong>Tu consulta</strong><p>Completa el formulario para ordenar los datos. Luego podr&aacute;s copiar la consulta y enviarla al correo indicado, sin abrir ninguna aplicaci&oacute;n.</p></div>
-        <button class="button primary" type="submit">Copiar consulta</button>
-        <p class="copy-status" aria-live="polite" data-contact-status></p>
-      </form>
-    </div>
-  </section>
-  <script is:inline>
-    document.querySelector('[data-contact-form]')?.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const form = event.currentTarget;
-      const text = ['Consulta para Rutas B', '', `Nombre: ${form.name.value.trim()}`, `Correo: ${form.email.value.trim()}`, `Tipo: ${form.type.value}`, '', form.message.value.trim()].join('\n');
-      const status = document.querySelector('[data-contact-status]');
-      try {
-        await navigator.clipboard.writeText(text);
-        if (status) status.textContent = `Consulta copiada. Pégala en un correo dirigido a ${form.dataset.email}.`;
-      } catch {
-        if (status) status.textContent = `No fue posible copiar automáticamente. Escribe a ${form.dataset.email}.`;
-      }
-    });
-  </script>
-</BaseLayout>
+<BaseLayout title="Contacto"><header class="page-hero compact"><div><p class="kicker">Conversemos</p><h1>Contacto</h1><p>Para consultas generales, grupos, hoteles, agencias y colaboraciones.</p></div></header><section class="section contact-section"><div class="contact-layout"><aside class="contact-info-card"><img src={base+'images/marca/rutas-b-logo.png'} alt={siteConfig.formalName} /><p class="kicker dark">Contacto directo</p><h2>{content.contactTitle}</h2><p>{content.contactIntro}</p><div class="contact-detail"><span>Correo electrónico</span><strong>{siteConfig.contact.email}</strong></div><div class="contact-detail"><span>Teléfono</span><strong>{siteConfig.contact.phoneDisplay}</strong></div><p class="contact-location">{siteConfig.contact.location}</p></aside><form class="booking-form compact-form contact-form" data-contact-form data-locale="es"><div class="form-grid"><label class="field"><span>Nombre</span><input name="name" autocomplete="name" maxlength="120" required /></label><label class="field"><span>Correo electrónico</span><input name="email" type="email" autocomplete="email" required /></label><label class="field full"><span>Tipo de consulta</span><select name="type"><option value="general">Consulta general</option><option value="partner">Hotel, agencia o partner</option><option value="private">Grupo privado</option><option value="press">Prensa o colaboración</option></select></label><label class="field full"><span>Mensaje</span><textarea name="message" rows="7" minlength="2" maxlength="3000" required></textarea></label></div><label class="honeypot" aria-hidden="true">Sitio web<input name="website" tabindex="-1" autocomplete="off" /></label><label class="consent"><input name="privacy" type="checkbox" required /><span>He leído la <a href={base+'privacidad/'} target="_blank">política de privacidad</a> y autorizo el uso de estos datos para responder mi consulta.</span></label><div class="form-summary"><strong>Tu consulta</strong><p>El formulario enviará el mensaje directamente a Rutas B. No abrirá Outlook ni ninguna aplicación de correo.</p></div><button class="button primary" type="submit">Enviar consulta</button><p class="form-message" aria-live="polite" data-contact-status hidden></p></form></div></section><script src="../scripts/contact-form.ts"></script></BaseLayout>

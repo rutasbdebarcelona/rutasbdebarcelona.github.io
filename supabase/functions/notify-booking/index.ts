@@ -95,12 +95,15 @@ serve(async (request) => {
             to: booking.customer_email,
             name: booking.customer_name,
             reference: booking.reference,
-            route: booking.route_title,
+            language: booking.language,
+            route: booking.language === 'en'
+              ? ({ 'sagrada-familia': 'From Gaudí to the Sagrada Família', barcino: 'Barcino: entering the city through its layers', cafeborn: 'CafèBorn' }[booking.route_slug] || booking.route_title)
+              : booking.route_title,
             date: booking.preferred_date,
             time: labels[booking.preferred_time] || booking.preferred_time,
-            meetingPoint: 'Frente al restaurante KFC — Gaudí',
+            meetingPoint: booking.language === 'en' ? 'In front of KFC — Gaudí' : 'Frente al restaurante KFC — Gaudí',
             address: 'Avinguda de Gaudí, 2, 08025 Barcelona',
-            transport: 'Metro Sagrada Família (L2 y L5)',
+            transport: booking.language === 'en' ? 'Sagrada Família metro station (L2 and L5)' : 'Metro Sagrada Família (L2 y L5)',
           }),
         });
         const responseText = await response.text();
