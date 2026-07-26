@@ -37,6 +37,7 @@ export interface TourRoute {
   documents?: RouteMediaAsset[];
   featured: boolean;
   published: boolean;
+  translationEn?: Partial<TourRoute>;
 }
 
 export const routes: TourRoute[] = [

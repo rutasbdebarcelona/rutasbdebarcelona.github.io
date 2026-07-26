@@ -5,18 +5,21 @@ import Footer from '../components/Footer.astro';
 import { siteConfig } from '../config/site';
 import { ui, type Locale } from '../i18n/ui';
 import { getPublicSiteDesign, fontVariables } from '../lib/site-settings';
+import { getPublicRoutes } from '../lib/public-routes';
 interface Props { title?: string; description?: string; noindex?: boolean; locale?: Locale; }
 const { title = siteConfig.formalName, description = siteConfig.tagline, noindex = false, locale = 'es' } = Astro.props;
 const design=await getPublicSiteDesign();
 const fonts=fontVariables(design.fontPair);
-const pageTitle = title === siteConfig.formalName ? title : title + ' · ' + siteConfig.shortName;
 const base = import.meta.env.BASE_URL;
+const featuredRoute=(await getPublicRoutes()).find((route)=>route.slug==='sagrada-familia');
+const sharedHero=featuredRoute?.image||base+'images/sagrada-familia.jpg';
+const pageTitle = title === siteConfig.formalName ? title : title + ' · ' + siteConfig.shortName;
 const current = Astro.url.pathname.startsWith(base) ? Astro.url.pathname.slice(base.length) : Astro.url.pathname.replace(/^\//, '');
 const bare = current.startsWith('en/') ? current.slice(3) : current;
 const absolute = (path: string) => new URL(path, Astro.site ?? Astro.url.origin).toString();
 const alternateEs = absolute(base + bare);
 const alternateEn = absolute(base + 'en/' + bare);
-const themeStyle=`--forest:${design.colors.forest};--forest-2:${design.colors.forest2};--cream:${design.colors.cream};--paper:${design.colors.paper};--ink:${design.colors.ink};--clay:${design.colors.clay};--gold:${design.colors.gold};--sans:${fonts.sans};--serif:${fonts.serif}`;
+const themeStyle=`--page-hero-image:url('${sharedHero}');--forest:${design.colors.forest};--forest-2:${design.colors.forest2};--cream:${design.colors.cream};--paper:${design.colors.paper};--ink:${design.colors.ink};--clay:${design.colors.clay};--gold:${design.colors.gold};--sans:${fonts.sans};--serif:${fonts.serif}`;
 ---
 <!doctype html>
 <html lang={locale} data-layout={design.layout} data-font-pair={design.fontPair} style={themeStyle}>

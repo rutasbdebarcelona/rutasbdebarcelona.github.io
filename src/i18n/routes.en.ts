@@ -1,5 +1,5 @@
 import type { TourRoute } from '../data/routes';
-const translations: Record<string, Partial<TourRoute>> = {
+export const routeTranslationsEn: Record<string, Partial<TourRoute>> = {
   "sagrada-familia": {
     "title": "From Gaudí to the Sagrada Família",
     "eyebrow": "Architecture · city · living work",
@@ -46,7 +46,7 @@ const translations: Record<string, Partial<TourRoute>> = {
   },
   "barcino": {
     "title": "Barcino: entering the city through its layers",
-    "eyebrow": "Rome · medieval city · urban memory",
+    "eyebrow": "Roman Barcelona · medieval city · urban memory",
     "promise": "Cross the Gothic Quarter as a time machine, reading the layers Barcelona preserves and reconstructs.",
     "description": "The Roman gate, aqueducts, walls and medieval city open a route where every period occupies, transforms and retells the same space.",
     "statusLabel": "In preparation",
@@ -128,5 +128,5 @@ const translations: Record<string, Partial<TourRoute>> = {
     "imageAlt": "Colourful roof of Santa Caterina Market"
   }
 };
-export function toEnglishRoute(route: TourRoute): TourRoute { return { ...route, ...(translations[route.slug] || {}), statusLabel: route.status === 'available' ? 'Available' : 'In preparation' }; }
+export function toEnglishRoute(route: TourRoute): TourRoute { const stored=route.translationEn||{}; return { ...route, ...(routeTranslationsEn[route.slug] || {}), ...stored, statusLabel: stored.statusLabel || (route.status === 'available' ? 'Available' : 'In preparation') }; }
 export function toEnglishRoutes(routes: TourRoute[]): TourRoute[] { return routes.map(toEnglishRoute); }

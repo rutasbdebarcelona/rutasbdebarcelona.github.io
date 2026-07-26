@@ -32,10 +32,9 @@ if (root) {
       .then(([route]) => {
         if (!route) return;
 
-        const assetUrl = (path: string, downloadName = '') => {
+        const assetUrl = (path: string) => {
           const encodedPath = path.split('/').map(encodeURIComponent).join('/');
           const asset = new URL(`${url}/storage/v1/object/public/route-media/${encodedPath}`);
-          if (downloadName) asset.searchParams.set('download', downloadName);
           return asset.toString();
         };
 
@@ -85,12 +84,10 @@ if (root) {
           documents.forEach((item) => {
             const link = document.createElement('a');
             const title = item.title || 'Documento de la ruta';
-            const extension = item.storage_path.match(/\.([a-z0-9]{2,8})$/i)?.[1];
-            const downloadName = /\.[a-z0-9]{2,8}$/i.test(title) || !extension ? title : title + '.' + extension;
-            link.href = assetUrl(item.storage_path, downloadName);
+            link.href = assetUrl(item.storage_path);
             link.target = '_blank';
             link.rel = 'noopener';
-            link.textContent = `${item.kind === 'audio' ? 'Escuchar' : 'Descargar'}: ${title}`;
+            link.textContent = `${item.kind === 'audio' ? 'Escuchar' : 'Abrir'}: ${title}`;
             documentList.append(link);
           });
           documentSection.hidden = documents.length === 0;

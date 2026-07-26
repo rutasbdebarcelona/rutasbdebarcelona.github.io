@@ -9,18 +9,12 @@ export async function getPublicRoutes(): Promise<TourRoute[]> {
   const client = createClient(url, key);
   const { data, error } = await client
     .from('routes')
-    .select('slug,title,short_description,full_description,offered_languages,meeting_point_public,accessibility,includes,excludes,featured,eyebrow,promise,status_label,display_duration,display_format,display_area,display_starting_point,display_ending_point,audience,display_price_individual,display_price_group,primary_image_path,primary_image_alt,route_stops(title,sort_order),route_media(id,kind,role,storage_path,title,alt_text,mime_type,sort_order,status)')
+    .select('slug,title,short_description,full_description,offered_languages,meeting_point_public,accessibility,includes,excludes,featured,eyebrow,promise,status_label,display_duration,display_format,display_area,display_starting_point,display_ending_point,audience,display_price_individual,display_price_group,primary_image_path,primary_image_alt,route_stops(title,sort_order),route_translations(*),route_media(id,kind,role,storage_path,title,alt_text,mime_type,sort_order,status)')
     .eq('status', 'published')
     .order('sort_order');
   if (error || !data?.length) return fallbackRoutes;
 
   const publicUrl = (path: string, download: boolean | string = false) => !path || path.startsWith('/') || /^https?:/i.test(path) ? path : client.storage.from('route-media').getPublicUrl(path, download ? { download } : undefined).data.publicUrl;
-  const downloadFileName = (item: any) => {
-    const title = item.title || 'Documento de la ruta';
-    if (/\.[a-z0-9]{2,8}$/i.test(title)) return title;
-    const extension = item.storage_path?.match(/\.([a-z0-9]{2,8})$/i)?.[1];
-    return extension ? title + '.' + extension : title;
-  };
   return data.map((route: any) => ({
     slug: route.slug,
     title: route.title,
@@ -45,7 +39,8 @@ export async function getPublicRoutes(): Promise<TourRoute[]> {
     image: publicUrl(route.primary_image_path || ''),
     imageAlt: route.primary_image_alt || route.title,
     gallery: (route.route_media || []).filter((item: any) => item.kind === 'image' && item.role === 'gallery').sort((a: any,b: any) => a.sort_order-b.sort_order).map((item: any) => ({id:item.id,kind:item.kind,role:item.role,url:publicUrl(item.storage_path),title:item.title||'',altText:item.alt_text||route.title,mimeType:item.mime_type})),
-    documents: (route.route_media || []).filter((item: any) => item.role === 'attachment').sort((a: any,b: any) => a.sort_order-b.sort_order).map((item: any) => ({id:item.id,kind:item.kind,role:item.role,url:publicUrl(item.storage_path,downloadFileName(item)),title:item.title||'Documento de la ruta',altText:item.alt_text||'',mimeType:item.mime_type})),
+    documents: (route.route_media || []).filter((item: any) => item.role === 'attachment').sort((a: any,b: any) => a.sort_order-b.sort_order).map((item: any) => ({id:item.id,kind:item.kind,role:item.role,url:publicUrl(item.storage_path),title:item.title||'Documento de la ruta',altText:item.alt_text||'',mimeType:item.mime_type})),
+    translationEn: (()=>{const t=(route.route_translations||[]).find((item:any)=>item.locale==='en');return t?{title:t.title,eyebrow:t.eyebrow||'',promise:t.promise||'',description:t.full_description||'',statusLabel:t.status_label||'',duration:t.display_duration||'',format:t.display_format||'',area:t.display_area||'',languages:t.offered_languages||[],audience:t.audience||[],startingPoint:t.display_starting_point||'',endingPoint:t.display_ending_point||'',stops:t.stops||[],includes:t.includes||[],notIncluded:t.excludes||[],accessibility:t.accessibility||'',priceIndividual:t.display_price_individual||'',priceGroup:t.display_price_group||''}:undefined;})(),
     featured: route.featured,
     published: true,
   }));
