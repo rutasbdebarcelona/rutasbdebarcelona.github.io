@@ -41,7 +41,11 @@ if (root) {
 
         const hero = root.querySelector<HTMLImageElement>('[data-route-hero-image]');
         if (hero && route.primary_image_path) {
-          hero.src = assetUrl(route.primary_image_path);
+          hero.src = /^https?:/i.test(route.primary_image_path)
+            ? route.primary_image_path
+            : route.primary_image_path.startsWith('/')
+              ? new URL(route.primary_image_path, window.location.origin).toString()
+              : assetUrl(route.primary_image_path);
           hero.alt = route.primary_image_alt || hero.alt;
         }
 
