@@ -5,39 +5,40 @@ import { siteConfig } from '../config/site';
 <BaseLayout title="Contacto">
   <header class="page-hero compact"><div><p class="kicker">Conversemos</p><h1>Contacto</h1><p>Para consultas generales, grupos, hoteles, agencias y colaboraciones.</p></div></header>
   <section class="section contact-section">
-    <div class="contact-card">
-      <img src={`${import.meta.env.BASE_URL}images/marca/rutas-b-logo.png`} alt={siteConfig.formalName} />
-      <div>
+    <div class="contact-layout">
+      <aside class="contact-info-card">
+        <img src={`${import.meta.env.BASE_URL}images/marca/rutas-b-logo.png`} alt={siteConfig.formalName} />
         <p class="kicker dark">Contacto directo</p>
-        <h2>Cuéntanos qué necesitas</h2>
-        <p>Escríbenos para resolver dudas sobre las rutas, organizar un grupo privado o conversar sobre colaboraciones con hoteles, agencias y partners.</p>
-        <div class="contact-email" data-contact-email>{siteConfig.contact.email}</div>
+        <h2>Hablemos de tu visita</h2>
+        <p>Para cualquier otra pregunta, puedes escribirnos al correo o contactarnos por tel&eacute;fono.</p>
+        <div class="contact-detail"><span>Correo electr&oacute;nico</span><strong>{siteConfig.contact.email}</strong></div>
+        <div class="contact-detail"><span>Tel&eacute;fono</span><strong>{siteConfig.contact.phoneDisplay}</strong></div>
         <p class="contact-location">{siteConfig.contact.location}</p>
-        <div class="contact-actions">
-          <button class="button outline" type="button" data-copy-email data-email={siteConfig.contact.email}>Copiar correo</button>
-          <a class="button primary" target="_blank" rel="noreferrer" href={`https://mail.google.com/mail/?view=cm&fs=1&to=${siteConfig.contact.email}&su=Consulta%20desde%20la%20web%20de%20Rutas%20B`}>Escribir en Gmail</a>
+      </aside>
+      <form class="booking-form compact-form contact-form" data-contact-form data-email={siteConfig.contact.email}>
+        <div class="form-grid">
+          <label class="field"><span>Nombre</span><input name="name" autocomplete="name" required /></label>
+          <label class="field"><span>Correo electr&oacute;nico</span><input name="email" type="email" autocomplete="email" required /></label>
+          <label class="field full"><span>Tipo de consulta</span><select name="type"><option>Consulta general</option><option>Hotel, agencia o partner</option><option>Grupo privado</option><option>Prensa o colaboraci&oacute;n</option></select></label>
+          <label class="field full"><span>Mensaje</span><textarea name="message" rows="7" required></textarea></label>
         </div>
-        <p class="copy-status" aria-live="polite" data-copy-status></p>
-      </div>
+        <div class="form-summary"><strong>Tu consulta</strong><p>Completa el formulario para ordenar los datos. Luego podr&aacute;s copiar la consulta y enviarla al correo indicado, sin abrir ninguna aplicaci&oacute;n.</p></div>
+        <button class="button primary" type="submit">Copiar consulta</button>
+        <p class="copy-status" aria-live="polite" data-contact-status></p>
+      </form>
     </div>
   </section>
   <script is:inline>
-    document.querySelector('[data-copy-email]')?.addEventListener('click', async (event) => {
-      const button = event.currentTarget;
-      const status = document.querySelector('[data-copy-status]');
+    document.querySelector('[data-contact-form]')?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const text = ['Consulta para Rutas B', '', `Nombre: ${form.name.value.trim()}`, `Correo: ${form.email.value.trim()}`, `Tipo: ${form.type.value}`, '', form.message.value.trim()].join('\n');
+      const status = document.querySelector('[data-contact-status]');
       try {
-        await navigator.clipboard.writeText(button.dataset.email);
-        if (status) status.textContent = 'Correo copiado.';
+        await navigator.clipboard.writeText(text);
+        if (status) status.textContent = `Consulta copiada. Pégala en un correo dirigido a ${form.dataset.email}.`;
       } catch {
-        const range = document.createRange();
-        const email = document.querySelector('[data-contact-email]');
-        if (email) {
-          range.selectNodeContents(email);
-          const selection = window.getSelection();
-          selection?.removeAllRanges();
-          selection?.addRange(range);
-        }
-        if (status) status.textContent = 'Correo seleccionado: presiona Ctrl+C para copiar.';
+        if (status) status.textContent = `No fue posible copiar automáticamente. Escribe a ${form.dataset.email}.`;
       }
     });
   </script>

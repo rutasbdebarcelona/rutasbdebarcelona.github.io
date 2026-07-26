@@ -50,6 +50,7 @@ Antes de utilizarlos se deben preparar versiones transparentes, horizontal, comp
 - Convertir el panel en centro de contenidos editable.
 - Incorporar mapas, folletos, galerías y materiales descargables.
 - Completar rutas, precios, disponibilidad, textos legales e idiomas reales.
+- Incorporar selector de idioma ES / EN / CA cuando las traducciones completas de navegación, rutas, reservas, contacto y textos legales estén listas; no publicar botones decorativos sin contenido real.
 - Revisar cada cambio localmente en escritorio y móvil antes de publicarlo.
 
 ### Regla de continuidad

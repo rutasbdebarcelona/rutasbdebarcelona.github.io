@@ -7,6 +7,8 @@ export const siteConfig = {
   understoodLanguages: ['Català', 'Português'],
   contact: {
     email: 'rutasbdebarcelona@gmail.com',
+    phone: '+34637705174',
+    phoneDisplay: '+34 637 705 174',
     location: 'Barcelona, Catalunya'
   },
   modules: {
