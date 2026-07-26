@@ -6,8 +6,8 @@ import { siteConfig } from '../config/site';
 import { ui, type Locale } from '../i18n/ui';
 import { getPublicSiteDesign, fontVariables } from '../lib/site-settings';
 import { getPublicRoutes } from '../lib/public-routes';
-interface Props { title?: string; description?: string; noindex?: boolean; locale?: Locale; }
-const { title = siteConfig.formalName, description = siteConfig.tagline, noindex = false, locale = 'es' } = Astro.props;
+interface Props { title?: string; description?: string; noindex?: boolean; locale?: Locale; bare?: boolean; }
+const { title = siteConfig.formalName, description = siteConfig.tagline, noindex = false, locale = 'es', bare = false } = Astro.props;
 const design=await getPublicSiteDesign();
 const fonts=fontVariables(design.fontPair);
 const base = import.meta.env.BASE_URL;
@@ -15,10 +15,10 @@ const featuredRoute=(await getPublicRoutes()).find((route)=>route.slug==='sagrad
 const sharedHero=featuredRoute?.image||base+'images/sagrada-familia.jpg';
 const pageTitle = title === siteConfig.formalName ? title : title + ' · ' + siteConfig.shortName;
 const current = Astro.url.pathname.startsWith(base) ? Astro.url.pathname.slice(base.length) : Astro.url.pathname.replace(/^\//, '');
-const bare = current.startsWith('en/') ? current.slice(3) : current;
+const barePath = current.startsWith('en/') ? current.slice(3) : current;
 const absolute = (path: string) => new URL(path, Astro.site ?? Astro.url.origin).toString();
-const alternateEs = absolute(base + bare);
-const alternateEn = absolute(base + 'en/' + bare);
+const alternateEs = absolute(base + barePath);
+const alternateEn = absolute(base + 'en/' + barePath);
 const themeStyle=`--page-hero-image:url('${sharedHero}');--forest:${design.colors.forest};--forest-2:${design.colors.forest2};--cream:${design.colors.cream};--paper:${design.colors.paper};--ink:${design.colors.ink};--clay:${design.colors.clay};--gold:${design.colors.gold};--sans:${fonts.sans};--serif:${fonts.serif}`;
 ---
 <!doctype html>
@@ -31,7 +31,7 @@ const themeStyle=`--page-hero-image:url('${sharedHero}');--forest:${design.color
     <link rel="icon" href={base + 'images/marca/rutas-b-simbolo.png'} type="image/png" /><link rel="apple-touch-icon" href={base + 'images/marca/rutas-b-simbolo.png'} />
   </head>
   <body>
-    <a class="skip-link" href="#contenido">{ui[locale].skip}</a><Header locale={locale} design={design} /><main id="contenido"><slot /></main><Footer locale={locale} design={design} />
-    <script is:inline>document.querySelector('[data-menu-button]')?.addEventListener('click',(event)=>{const button=event.currentTarget;const nav=document.querySelector('[data-menu]');const open=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!open));nav?.toggleAttribute('data-open',!open);});</script>
+    {!bare && <a class="skip-link" href="#contenido">{ui[locale].skip}</a>}{!bare && <Header locale={locale} design={design} />}<main id="contenido"><slot /></main>{!bare && <Footer locale={locale} design={design} />}
+    <script is:inline>document.querySelector('[data-menu-button]')?.addEventListener('click',(event)=>{const button=event.currentTarget;const nav=document.querySelector('[data-menu]');const open=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!open));nav?.toggleAttribute('data-open',!open);});const languageScrollKey='rutasb-language-scroll';try{const saved=JSON.parse(sessionStorage.getItem(languageScrollKey)||'null');if(saved?.path===location.pathname){sessionStorage.removeItem(languageScrollKey);requestAnimationFrame(()=>requestAnimationFrame(()=>{const max=Math.max(document.documentElement.scrollHeight-innerHeight,0);scrollTo(0,max*saved.ratio);}));}}catch{sessionStorage.removeItem(languageScrollKey)}document.querySelectorAll('[data-language-link]').forEach(link=>link.addEventListener('click',()=>{const target=new URL(link.href);if(target.pathname===location.pathname)return;const max=Math.max(document.documentElement.scrollHeight-innerHeight,1);sessionStorage.setItem(languageScrollKey,JSON.stringify({path:target.pathname,ratio:scrollY/max}));}));</script>
   </body>
 </html>
