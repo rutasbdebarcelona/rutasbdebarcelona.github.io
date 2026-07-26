@@ -10,11 +10,13 @@ const image = /^https?:/i.test(route.image) ? route.image : `${base}${route.imag
 const pending = route.status !== 'available';
 const gallery = route.gallery ?? [];
 const documents = route.documents ?? [];
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL ?? '';
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? '';
 ---
 <BaseLayout title={route.title} description={route.promise}>
-  <article class="route-detail">
+  <article class="route-detail" data-route-live data-route-slug={route.slug} data-supabase-url={supabaseUrl} data-supabase-key={supabaseKey}>
     <header class="route-hero">
-      <img src={image} alt={route.imageAlt} />
+      <img src={image} alt={route.imageAlt} data-route-hero-image />
       <div class="route-hero-overlay"></div>
       <div class="route-hero-copy">
         <p class="kicker">{route.eyebrow}</p><h1>{route.title}</h1><p>{route.promise}</p>
@@ -27,7 +29,9 @@ const documents = route.documents ?? [];
     </div>
     <div class="detail-layout section">
       <div class="detail-main">
-        <section><p class="kicker dark">La experiencia</p><h2>Una ruta con una pregunta propia</h2><p class="large-copy">{route.description}</p></section>{gallery.length > 0 && <section class="route-gallery"><h2>Galería</h2><div>{gallery.map((item) => <figure><img src={item.url} alt={item.altText} loading="lazy" />{item.title && <figcaption>{item.title}</figcaption>}</figure>)}</div></section>}{documents.length > 0 && <section class="route-documents"><h2>Materiales de la ruta</h2><div>{documents.map((item) => <a href={item.url} target="_blank" rel="noopener">{item.kind === 'audio' ? 'Escuchar: ' : 'Descargar: '}{item.title}</a>)}</div></section>}
+        <section><p class="kicker dark">La experiencia</p><h2>Una ruta con una pregunta propia</h2><p class="large-copy">{route.description}</p></section>
+        <section class="route-gallery" data-route-gallery hidden={gallery.length === 0}><h2>Galería</h2><div data-route-gallery-list>{gallery.map((item) => <figure><img src={item.url} alt={item.altText} loading="lazy" />{item.title && <figcaption>{item.title}</figcaption>}</figure>)}</div></section>
+        <section class="route-documents" data-route-documents hidden={documents.length === 0}><h2>Materiales de la ruta</h2><div data-route-document-list>{documents.map((item) => <a href={item.url} target="_blank" rel="noopener">{item.kind === 'audio' ? 'Escuchar: ' : 'Descargar: '}{item.title}</a>)}</div></section>
         <section><h2>El recorrido</h2><ol class="stop-list">{route.stops.map((stop, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><strong>{stop}</strong></li>)}</ol></section>
         <section class="two-columns"><div><h2>Qué incluye</h2><ul class="check-list">{route.includes.map((item) => <li>{item}</li>)}</ul></div><div><h2>Qué no incluye</h2><ul class="plain-list">{route.notIncluded.map((item) => <li>{item}</li>)}</ul></div></section>
         <section><h2>Accesibilidad</h2><p>{route.accessibility}</p></section>
@@ -38,4 +42,7 @@ const documents = route.documents ?? [];
       </aside>
     </div>
   </article>
+  <script>
+    import '../../scripts/route-live-media';
+  </script>
 </BaseLayout>
