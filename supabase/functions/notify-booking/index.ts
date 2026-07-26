@@ -1,4 +1,4 @@
-import { createClient } from 'npm:@supabase/supabase-js@2';
+﻿import { createClient } from 'npm:@supabase/supabase-js@2';
 import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
 
 const corsHeaders = {
@@ -100,10 +100,11 @@ serve(async (request) => {
               ? ({ 'sagrada-familia': 'From Gaudí to the Sagrada Família', barcino: 'Barcino: entering the city through its layers', cafeborn: 'CafèBorn' }[booking.route_slug] || booking.route_title)
               : booking.route_title,
             date: booking.preferred_date,
-            time: labels[booking.preferred_time] || booking.preferred_time,
+            time: booking.preferred_time,
             meetingPoint: booking.language === 'en' ? 'In front of KFC — Gaudí' : 'Frente al restaurante KFC — Gaudí',
             address: 'Avinguda de Gaudí, 2, 08025 Barcelona',
             transport: booking.language === 'en' ? 'Sagrada Família metro station (L2 and L5)' : 'Metro Sagrada Família (L2 y L5)',
+            logoUrl: 'https://rutasbdebarcelona.github.io/images/marca/rutas-b-logo.png',
           }),
         });
         const responseText = await response.text();
@@ -135,3 +136,4 @@ serve(async (request) => {
   }, 502);
   return json({ ok: true, admin_sent: adminSent, customer_sent: customerSent });
 });
+
