@@ -1,8 +1,9 @@
 ---
 import { moduleEnabled } from '../config/site';
 import { ui, type Locale } from '../i18n/ui';
-interface Props { locale?: Locale; }
-const { locale = 'es' } = Astro.props;
+import type { SiteDesign } from '../lib/site-settings';
+interface Props { locale?: Locale; design: SiteDesign; }
+const { locale = 'es', design } = Astro.props;
 const t = ui[locale];
 const base = import.meta.env.BASE_URL;
 const root = locale === 'en' ? base + 'en/' : base;
@@ -10,16 +11,16 @@ const current = Astro.url.pathname.startsWith(base) ? Astro.url.pathname.slice(b
 const bare = current.startsWith('en/') ? current.slice(3) : current;
 const esUrl = base + bare;
 const enUrl = base + 'en/' + bare;
+const fullLogo=design.logo==='full';
+const showCopy=design.logo==='symbol-text';
 ---
 <header class="site-header">
   <div class="header-inner">
     <a class="brand" href={root} aria-label={'Rutas B, ' + t.home}>
-      <img class="brand-logo" src={base + 'images/marca/rutas-b-simbolo.png'} alt="" width="44" height="58" />
-      <span class="brand-copy"><strong>Rutas B</strong><small>de Barcelona</small></span>
+      <img class:list={['brand-logo',{'brand-logo-full':fullLogo}]} src={base + (fullLogo?'images/marca/rutas-b-logo.png':'images/marca/rutas-b-simbolo.png')} alt="" width={fullLogo?110:44} height={58} />
+      {showCopy&&<span class="brand-copy"><strong>Rutas B</strong><small>de Barcelona</small></span>}
     </a>
-    <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav" data-menu-button>
-      <span>{t.menu}</span><span aria-hidden="true">&#9776;</span>
-    </button>
+    <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav" data-menu-button><span>{t.menu}</span><span aria-hidden="true">&#9776;</span></button>
     <nav id="main-nav" class="main-nav" aria-label={t.navigation} data-menu>
       {moduleEnabled('routes') && <a href={root + 'rutas/'}>{t.routes}</a>}
       {moduleEnabled('compare') && <a href={root + 'comparar/'}>{t.compare}</a>}

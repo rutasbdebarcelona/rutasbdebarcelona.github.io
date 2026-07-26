@@ -4,8 +4,11 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { siteConfig } from '../config/site';
 import { ui, type Locale } from '../i18n/ui';
+import { getPublicSiteDesign, fontVariables } from '../lib/site-settings';
 interface Props { title?: string; description?: string; noindex?: boolean; locale?: Locale; }
 const { title = siteConfig.formalName, description = siteConfig.tagline, noindex = false, locale = 'es' } = Astro.props;
+const design=await getPublicSiteDesign();
+const fonts=fontVariables(design.fontPair);
 const pageTitle = title === siteConfig.formalName ? title : title + ' · ' + siteConfig.shortName;
 const base = import.meta.env.BASE_URL;
 const current = Astro.url.pathname.startsWith(base) ? Astro.url.pathname.slice(base.length) : Astro.url.pathname.replace(/^\//, '');
@@ -13,18 +16,19 @@ const bare = current.startsWith('en/') ? current.slice(3) : current;
 const absolute = (path: string) => new URL(path, Astro.site ?? Astro.url.origin).toString();
 const alternateEs = absolute(base + bare);
 const alternateEn = absolute(base + 'en/' + bare);
+const themeStyle=`--forest:${design.colors.forest};--forest-2:${design.colors.forest2};--cream:${design.colors.cream};--paper:${design.colors.paper};--ink:${design.colors.ink};--clay:${design.colors.clay};--gold:${design.colors.gold};--sans:${fonts.sans};--serif:${fonts.serif}`;
 ---
 <!doctype html>
-<html lang={locale}>
+<html lang={locale} data-layout={design.layout} data-font-pair={design.fontPair} style={themeStyle}>
   <head>
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width" /><meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex,nofollow" />}
-    <meta name="theme-color" content="#16382f" /><title>{pageTitle}</title>
+    <meta name="theme-color" content={design.colors.forest} /><title>{pageTitle}</title>
     <link rel="alternate" hreflang="es" href={alternateEs} /><link rel="alternate" hreflang="en" href={alternateEn} /><link rel="alternate" hreflang="x-default" href={alternateEs} />
-    <link rel="icon" href={import.meta.env.BASE_URL + 'images/marca/rutas-b-simbolo.png'} type="image/png" /><link rel="apple-touch-icon" href={import.meta.env.BASE_URL + 'images/marca/rutas-b-simbolo.png'} />
+    <link rel="icon" href={base + 'images/marca/rutas-b-simbolo.png'} type="image/png" /><link rel="apple-touch-icon" href={base + 'images/marca/rutas-b-simbolo.png'} />
   </head>
   <body>
-    <a class="skip-link" href="#contenido">{ui[locale].skip}</a><Header locale={locale} /><main id="contenido"><slot /></main><Footer locale={locale} />
+    <a class="skip-link" href="#contenido">{ui[locale].skip}</a><Header locale={locale} design={design} /><main id="contenido"><slot /></main><Footer locale={locale} design={design} />
     <script is:inline>document.querySelector('[data-menu-button]')?.addEventListener('click',(event)=>{const button=event.currentTarget;const nav=document.querySelector('[data-menu]');const open=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!open));nav?.toggleAttribute('data-open',!open);});</script>
   </body>
 </html>

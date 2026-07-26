@@ -1,6 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig } from '../config/site';
+import { getPublicSiteDesign } from '../lib/site-settings';
+const design=await getPublicSiteDesign();
+const content=design.content.es;
 ---
 <BaseLayout title="Contacto">
   <header class="page-hero compact"><div><p class="kicker">Conversemos</p><h1>Contacto</h1><p>Para consultas generales, grupos, hoteles, agencias y colaboraciones.</p></div></header>
@@ -9,8 +12,8 @@ import { siteConfig } from '../config/site';
       <aside class="contact-info-card">
         <img src={`${import.meta.env.BASE_URL}images/marca/rutas-b-logo.png`} alt={siteConfig.formalName} />
         <p class="kicker dark">Contacto directo</p>
-        <h2>Hablemos de tu visita</h2>
-        <p>Para cualquier otra pregunta, puedes escribirnos al correo o contactarnos por tel&eacute;fono.</p>
+        <h2>{content.contactTitle}</h2>
+        <p>{content.contactIntro}</p>
         <div class="contact-detail"><span>Correo electr&oacute;nico</span><strong>{siteConfig.contact.email}</strong></div>
         <div class="contact-detail"><span>Tel&eacute;fono</span><strong>{siteConfig.contact.phoneDisplay}</strong></div>
         <p class="contact-location">{siteConfig.contact.location}</p>
