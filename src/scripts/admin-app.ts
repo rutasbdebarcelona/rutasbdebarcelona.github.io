@@ -2,6 +2,7 @@
 import { supabase } from '../lib/supabase';
 import { signInAdmin, getAdminDashboard, getBookingRoutes, getBookings, getBookingHistory, manageBooking, getAdminRoutes, saveRouteDraft, publishRouteDraft, duplicateAdminRoute, getRouteHistory, revertRouteRevision, getRouteMedia, uploadRouteMedia, stageRouteMediaRemoval, cancelRouteMediaRemoval, getAdminMessages, markMessageRead, getAdminAvailability, getAdminAvailabilityStart, setAvailability, generateAvailabilityMonth } from '../lib/admin';
 import { setupHomeEditor } from './home-editor';
+import { setupMediaAssistant } from '../lib/media-corrector';
 import { setupAdminReviews } from './admin-reviews';
 import { routeTranslationsEn } from '../i18n/routes.en';
 const app=document.querySelector('[data-admin-app]');
@@ -9,6 +10,7 @@ const labels={received:'Recibida',reviewing:'En revisión',confirmed:'Confirmada
 const value=v=>String(v??'—'); const date=v=>v?new Intl.DateTimeFormat('es-ES',{dateStyle:'medium'}).format(new Date(`${v}T12:00:00`)):'—'; const dateTime=v=>v?new Intl.DateTimeFormat('es-ES',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Madrid'}).format(new Date(v)):'—'; const csv=v=>`"${String(v??'').replaceAll('"','""')}"`;
 if(app){
  const $=s=>app.querySelector(s), login=$('[data-login-view]'),dashboard=$('[data-dashboard]'),sidebar=$('[data-admin-sidebar]'),filters=$('[data-bookings-filters]'),list=$('[data-bookings-list]'),detail=$('[data-booking-detail]'); let state={page:1,pageSize:20,total:0,bookings:[]};
+ const routeMediaAssistant=setupMediaAssistant($('[data-route-media-form] input[name="file"]'),{defaultRatio:'3/2'});
  const error=(s='')=>{$('[data-admin-error]').textContent=s}, bookingError=(s='')=>{$('[data-bookings-error]').textContent=s};
  const add=(parent,tag,content)=>{const n=document.createElement(tag);n.textContent=value(content);parent.append(n);return n};
  async function summary(){const d=await getAdminDashboard();$('[data-admin-name]').textContent=d.profile.display_name||'Administrador';const c={received:0,reviewing:0,confirmed:0,total:d.bookings.length};d.bookings.forEach(b=>{if(c[b.status]!==undefined)c[b.status]++});Object.entries(c).forEach(([k,v])=>$(`[data-metric="${k}"]`).textContent=v);const body=$('[data-bookings-body]');body.innerHTML='';d.bookings.forEach(b=>{const tr=document.createElement('tr'),customer=Array.isArray(b.customers)?b.customers[0]:b.customers,route=Array.isArray(b.routes)?b.routes[0]:b.routes;[b.public_reference,customer?.full_name,route?.title,date(b.preferred_date),dateTime(b.created_at),b.participant_count,labels[b.status]||b.status].forEach((v,i)=>{const td=document.createElement('td');if(i===0)add(td,'strong',v);else td.textContent=value(v);tr.append(td)});body.append(tr)});$('[data-admin-empty]').hidden=d.bookings.length>0}
@@ -23,13 +25,14 @@ if(app){
 $('[data-route-publish]')?.addEventListener('click',async()=>{const form=$('[data-route-form]'),button=$('[data-route-publish]');if(!form.elements.id.value)return;if(!window.confirm('¿Publicar esta versión en la web? La actualización suele tardar unos minutos.'))return;button.disabled=true;try{await publishRouteDraft(form.elements.id.value);$('[data-route-error]').textContent='Publicado. La web pública se está actualizando.';await loadRoutesEditor();const current=(await getAdminRoutes()).find(r=>r.id===form.elements.id.value);if(current)openRoute(current);}catch(x){$('[data-route-error]').textContent=x.message||'No fue posible publicar la ruta.';}finally{button.disabled=false;}});
  $('[data-route-media-form]')?.addEventListener('submit',async e=>{
   e.preventDefault();
-  const mediaForm=e.currentTarget,routeForm=$('[data-route-form]'),editor=$('[data-route-editor]'),button=e.submitter,file=mediaForm.elements.file.files?.[0],routeId=routeForm.elements.id.value;
-  if(!file||!routeId)return;
+  const mediaForm=e.currentTarget,routeForm=$('[data-route-form]'),editor=$('[data-route-editor]'),button=e.submitter,rawFile=mediaForm.elements.file.files?.[0],routeId=routeForm.elements.id.value;
+  if(!rawFile||!routeId)return;
+  const prepared=await routeMediaAssistant.getResult(),file=prepared?.file||rawFile;
   const publishNow=button?.value==='publish',buttons=[...mediaForm.querySelectorAll('button[type="submit"]')],message=$('[data-route-media-error]'),publicLink=$('[data-route-public-link]');
   buttons.forEach(item=>item.disabled=true);publicLink.hidden=true;message.textContent='Subiendo archivo…';
   try{
    const visibleTitle=mediaForm.elements.mediaTitle.value.trim()||file.name.replace(/\.[^.]+$/,'');
-   await uploadRouteMedia(routeId,file,mediaForm.elements.role.value,visibleTitle,mediaForm.elements.altText.value.trim());
+   await uploadRouteMedia(routeId,file,mediaForm.elements.role.value,visibleTitle,mediaForm.elements.altText.value.trim(),prepared?.corrected?prepared.original:undefined);
    if(publishNow){
     message.textContent='Archivo subido. Publicando la ruta…';
     await publishRouteDraft(routeId);
@@ -37,7 +40,7 @@ $('[data-route-publish]')?.addEventListener('click',async()=>{const form=$('[dat
     publicLink.href=routeUrl;publicLink.hidden=false;
     message.textContent='Archivo publicado. La web se está actualizando; compruébala con el botón “Ver la ruta publicada”.';
    }else message.textContent='Archivo guardado como borrador. Pulsa “Publicar en web” cuando quieras mostrarlo.';
-   mediaForm.reset();await loadRouteMedia(routeId);await loadRoutesEditor();
+   mediaForm.reset();routeMediaAssistant.reset();await loadRouteMedia(routeId);await loadRoutesEditor();
   }catch(x){message.textContent=x.message||'No fue posible subir o publicar el archivo.';}
   finally{buttons.forEach(item=>item.disabled=false);}
  }); $('[data-route-duplicate]')?.addEventListener('click',async()=>{const form=$('[data-route-form]'),source=form.elements.title.value.trim(),title=window.prompt('Título de la copia:',`${source} — copia`);if(!title)return;try{const copy=await duplicateAdminRoute(form.elements.id.value,title);await loadRoutesEditor();openRoute(copy);$('[data-route-error]').textContent='Copia creada como borrador.';}catch(x){$('[data-route-error]').textContent=x.message||'No fue posible duplicar la ruta.';}});

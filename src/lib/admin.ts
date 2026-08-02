@@ -26,7 +26,26 @@ export async function getRouteHistory(id:string){if(!supabase)throw new Error('S
 export async function revertRouteRevision(auditId:number){if(!supabase)throw new Error('Supabase no está configurado.');const {data,error}=await supabase.rpc('revert_route_revision',{p_audit_id:auditId});if(error)throw error;const {error:deployError}=await supabase.functions.invoke('trigger-site-deploy');return data&&typeof data==='object'?{...data,deployStarted:!deployError}:data;}
 export async function duplicateAdminRoute(id:string,title:string){if(!supabase)throw new Error('Supabase no está configurado.');const {data,error}=await supabase.rpc('duplicate_route',{p_route_id:id,p_new_title:title});if(error)throw error;return data;}
 export async function getRouteMedia(routeId:string){if(!supabase)throw new Error('Supabase no está configurado.');const client=supabase;const {data,error}=await client.from('route_media').select('id,route_id,kind,role,storage_path,title,alt_text,mime_type,file_size_bytes,status,sort_order,created_at').eq('route_id',routeId).neq('status','archived').order('role').order('sort_order').order('created_at');if(error)throw error;return (data??[]).map(item=>({...item,publicUrl:client.storage.from('route-media').getPublicUrl(item.storage_path).data.publicUrl}));}
-export async function uploadRouteMedia(routeId:string,file:File,role:'hero'|'gallery'|'attachment',title:string,altText:string){if(!supabase)throw new Error('Supabase no está configurado.');if(file.size<=0||file.size>26214400)throw new Error('El archivo debe pesar menos de 25 MB.');const image=file.type.startsWith('image/'),kind=image?'image':file.type.startsWith('audio/')?'audio':'document';if((role==='hero'||role==='gallery')&&!image)throw new Error('La imagen principal y la galería solo aceptan imágenes.');if(image&&!altText.trim())throw new Error('Escribe un texto alternativo para la imagen.');const extension=(file.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,8)||'bin',storagePath=`${routeId}/${crypto.randomUUID()}.${extension}`;const {error:uploadError}=await supabase.storage.from('route-media').upload(storagePath,file,{contentType:file.type,upsert:false});if(uploadError)throw uploadError;const {data,error}=await supabase.rpc('register_route_media',{p_route_id:routeId,p_kind:kind,p_role:role,p_storage_path:storagePath,p_title:title,p_alt_text:altText,p_mime_type:file.type,p_file_size_bytes:file.size});if(error){await supabase.storage.from('route-media').remove([storagePath]);throw error;}return data;}
+export async function uploadRouteMedia(routeId:string,file:File,role:'hero'|'gallery'|'attachment',title:string,altText:string,originalFile?:File){
+  if(!supabase)throw new Error('Supabase no está configurado.');
+  if(file.size<=0||file.size>26214400)throw new Error('El archivo debe pesar menos de 25 MB.');
+  const image=file.type.startsWith('image/'),kind=image?'image':file.type.startsWith('audio/')?'audio':'document';
+  if((role==='hero'||role==='gallery')&&!image)throw new Error('La imagen principal y la galería solo aceptan imágenes.');
+  if(image&&!altText.trim())throw new Error('Escribe un texto alternativo para la imagen.');
+  const id=crypto.randomUUID(),extension=(file.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,8)||'bin',storagePath=`${routeId}/${id}.${extension}`;
+  let originalPath='';
+  if(originalFile&&originalFile!==file){
+    const originalExtension=(originalFile.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,8)||'bin';
+    originalPath=`routes/${routeId}/${id}.${originalExtension}`;
+    const {error}=await supabase.storage.from('media-originals').upload(originalPath,originalFile,{contentType:originalFile.type,upsert:false});
+    if(error)throw error;
+  }
+  const {error:uploadError}=await supabase.storage.from('route-media').upload(storagePath,file,{contentType:file.type,upsert:false});
+  if(uploadError){if(originalPath)await supabase.storage.from('media-originals').remove([originalPath]);throw uploadError;}
+  const {data,error}=await supabase.rpc('register_route_media',{p_route_id:routeId,p_kind:kind,p_role:role,p_storage_path:storagePath,p_title:title,p_alt_text:altText,p_mime_type:file.type,p_file_size_bytes:file.size});
+  if(error){await supabase.storage.from('route-media').remove([storagePath]);if(originalPath)await supabase.storage.from('media-originals').remove([originalPath]);throw error;}
+  return data;
+}
 export async function stageRouteMediaRemoval(mediaId:string){if(!supabase)throw new Error('Supabase no está configurado.');const {data,error}=await supabase.rpc('stage_route_media_removal',{p_media_id:mediaId});if(error)throw error;return data;}
 export async function cancelRouteMediaRemoval(mediaId:string){if(!supabase)throw new Error('Supabase no está configurado.');const {data,error}=await supabase.rpc('cancel_route_media_removal',{p_media_id:mediaId});if(error)throw error;return data;}
 
