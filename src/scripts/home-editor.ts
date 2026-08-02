@@ -74,6 +74,12 @@ export function setupHomeEditor(app){
   function readSafe(){try{return read()}catch{return current}}
   function preview(){
     const settings=readSafe(),font=settings.fontPair==='brand'?"'Archivo',sans-serif":settings.fontPair==='lato'?"'Lato',sans-serif":settings.fontPair==='modern'?"'DM Sans',sans-serif":settings.fontPair==='classic'?"Georgia,serif":"'Newsreader',Georgia,serif";
+    for(const slot of ['hero','method']){
+      const currentImage=$('[data-current-image="'+slot+'"]'),currentSrc=src(slot);
+      if(!currentImage)continue;
+      currentImage.hidden=!currentSrc;
+      if(currentSrc)currentImage.src=currentSrc;else currentImage.removeAttribute('src');
+    }
     document.querySelectorAll('[data-output]').forEach(output=>{const input=field(output.dataset.output);output.textContent=input?`${input.value}${input.name.includes('Zoom')?'%':''}`:''});
     for(const mode of ['desktop','mobile']){
       const hero=settings.home.heroImage,method=settings.home.methodImage,heroImg=$(`[data-preview-hero-image="${mode}"]`),methodImg=$(`[data-preview-method-image="${mode}"]`),methodFrame=$(`[data-preview-method="${mode}"]`);
