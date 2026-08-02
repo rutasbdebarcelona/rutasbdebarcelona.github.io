@@ -38,7 +38,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? '';
       </div>
       <aside class="detail-sidebar">
         <div class="info-card"><h2>Información práctica</h2><dl><div><dt>Zona</dt><dd>{route.area}</dd></div><div><dt>Formato</dt><dd>{route.format}</dd></div><div><dt>Inicio</dt><dd>{route.startingPoint}</dd></div><div><dt>Cierre</dt><dd>{route.endingPoint}</dd></div></dl></div>
-        <div class="info-card"><h2>Precios</h2><dl><div><dt>Individual</dt><dd>{route.priceIndividual}</dd></div><div><dt>Grupo privado</dt><dd>{route.priceGroup}</dd></div></dl><p class="pending-note">No se cobrará ningún importe al registrar la reserva.</p></div>
+        {(route.priceIndividual || route.priceGroup) && <div class="info-card"><h2>Precios</h2><dl>{route.priceIndividual && <div><dt>Individual</dt><dd>{route.priceIndividual}</dd></div>}{route.priceGroup && <div><dt>Grupo privado</dt><dd>{route.priceGroup}</dd></div>}</dl><p class="pending-note">No se cobrará ningún importe al registrar la reserva.</p></div>}
       </aside>
     </div>
   </article>

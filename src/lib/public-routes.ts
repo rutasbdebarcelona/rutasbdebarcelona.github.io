@@ -35,7 +35,7 @@ export async function getPublicRoutes(): Promise<TourRoute[]> {
     notIncluded: route.excludes || [],
     accessibility: route.accessibility || '',
     priceIndividual: route.display_price_individual || 'Pendiente de definición',
-    priceGroup: route.display_price_group || 'Pendiente de definición',
+    priceGroup: route.display_price_group || '',
     image: publicUrl(route.primary_image_path || ''),
     imageAlt: route.primary_image_alt || route.title,
     gallery: (route.route_media || []).filter((item: any) => item.kind === 'image' && item.role === 'gallery').sort((a: any,b: any) => a.sort_order-b.sort_order).map((item: any) => ({id:item.id,kind:item.kind,role:item.role,url:publicUrl(item.storage_path),title:item.title||'',altText:item.alt_text||route.title,mimeType:item.mime_type})),
