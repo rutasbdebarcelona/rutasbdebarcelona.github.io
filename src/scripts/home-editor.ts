@@ -76,7 +76,7 @@ export function setupHomeEditor(app){
   }
   function readSafe(){try{return read()}catch{return current}}
   function preview(){
-    const settings=readSafe(),font=settings.fontPair==='brand'?"'Archivo',sans-serif":settings.fontPair==='lato'?"'Lato',sans-serif":settings.fontPair==='modern'?"'DM Sans',sans-serif":settings.fontPair==='classic'?"Georgia,serif":"'Newsreader',Georgia,serif";
+    const settings=readSafe(),fontPair=settings.fontPair,displayFont=fontPair==='brand'?"'Archivo',sans-serif":fontPair==='lato'?"'Lato',sans-serif":fontPair==='modern'?"'DM Sans',sans-serif":fontPair==='classic'?"Georgia,serif":"'Newsreader',Georgia,serif",bodyFont=fontPair==='brand'?"'Archivo',sans-serif":fontPair==='lato'?"'Lato',sans-serif":fontPair==='classic'?"Georgia,serif":"'DM Sans',sans-serif";
     for(const slot of ['hero','method']){
       const currentImage=$('[data-current-image="'+slot+'"]'),currentSrc=src(slot);
       if(!currentImage)continue;
@@ -88,7 +88,7 @@ export function setupHomeEditor(app){
       const hero=settings.home.heroImage,method=settings.home.methodImage,heroImg=$(`[data-preview-hero-image="${mode}"]`),methodImg=$(`[data-preview-method-image="${mode}"]`),methodFrame=$(`[data-preview-method="${mode}"]`);
       heroImg.src=src('hero');heroImg.style.objectFit=hero[`${mode}Fit`];heroImg.style.objectPosition=`${hero[`${mode}X`]}% ${hero[`${mode}Y`]}%`;heroImg.style.transform=`scale(${hero[`${mode}Zoom`]/100})`;
       methodImg.src=src('method');methodImg.style.objectFit=method[`${mode}Fit`];methodImg.style.objectPosition=`${method[`${mode}X`]}% ${method[`${mode}Y`]}%`;methodImg.style.transform=`scale(${method[`${mode}Zoom`]/100})`;methodImg.style.opacity=String(method[`${mode}Opacity`]/100);methodFrame.style.aspectRatio=method[`${mode}Ratio`];methodFrame.classList.toggle('is-background',method.presentation==='background');methodFrame.parentElement.classList.toggle('image-background-preview',method.presentation==='background');
-      const card=$(`[data-preview-hero="${mode}"]`);card.style.setProperty('--preview-font',font);card.style.backgroundColor=settings.colors.forest;
+      const card=$(`[data-preview-hero="${mode}"]`),previewCard=card.closest('.home-preview');previewCard?.style.setProperty('--preview-serif',displayFont);previewCard?.style.setProperty('--preview-sans',bodyFont);card.style.backgroundColor=settings.colors.forest;
     }
     const c=settings.content.es;for(const [selector,value] of [['[data-preview-kicker]',c.homeKicker],['[data-preview-title]',c.homeTitle],['[data-preview-accent]',c.homeAccent],['[data-preview-lead]',c.homeLead],['[data-preview-kicker-mobile]',c.homeKicker],['[data-preview-title-mobile]',c.homeTitle],['[data-preview-accent-mobile]',c.homeAccent],['[data-preview-method-kicker]',c.methodKicker],['[data-preview-method-quote]',c.methodQuote],['[data-preview-method-kicker-mobile]',c.methodKicker],['[data-preview-method-quote-mobile]',c.methodQuote]]){const node=$(selector);if(node)node.textContent=value;}
   }

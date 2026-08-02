@@ -92,3 +92,30 @@ body:has(.admin-shell){background:#eef0ec}.admin-shell{width:100%;overflow-x:cli
 .route-product-workbench{margin:2rem 0;border:1px solid var(--line,#d8d2c8);background:#fbfaf7;padding:clamp(1rem,2vw,1.75rem)}
 .route-product-workbench>summary{cursor:pointer;font-family:var(--font-display,Georgia,serif);font-size:clamp(1.25rem,2vw,1.65rem);font-weight:700}.route-product-workbench>fieldset{margin-top:1.5rem}.admin-help{max-width:78ch;color:#52615b}.structured-editor-list{display:grid;gap:1rem;margin:1rem 0}.structured-editor-card{border:1px solid var(--line,#d8d2c8);background:#fff;padding:clamp(.9rem,2vw,1.4rem);min-width:0}.structured-editor-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem}.structured-editor-actions,.route-template-actions{display:flex;gap:.5rem;flex-wrap:wrap}.structured-editor-actions .button{min-width:2.75rem;padding:.55rem .75rem}.route-media-readiness{margin-top:1.5rem;padding:1rem 1.2rem;border-left:5px solid var(--accent,#bd6245);background:#f3efe7}.message-types-admin{margin-top:1.5rem}.message-type-card input[readonly]{background:#eee;color:#59635f}.route-product-workbench input,.route-product-workbench textarea,.route-product-workbench select,.structured-editor-card input,.structured-editor-card textarea,.structured-editor-card select{max-width:100%;box-sizing:border-box}
 @media(max-width:760px){.route-product-workbench{padding:.85rem}.structured-editor-head{align-items:flex-start;flex-direction:column}.structured-editor-actions{width:100%}.structured-editor-actions .button{flex:1}.route-template-actions{display:grid;grid-template-columns:1fr}.route-template-actions .button{width:100%}}
+/* Route editorial center: progressive disclosure without removing fields. */
+.route-editor-intro{margin:0 0 20px;color:var(--muted);font-size:.88rem}
+.route-editor-section{border:1px solid var(--line);background:#fff;margin:0 0 12px;padding:0}
+.route-editor-section>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:17px 18px;font-family:var(--sans);font-size:1rem;font-weight:700;color:var(--ink)}
+.route-editor-section>summary::-webkit-details-marker{display:none}
+.route-editor-section>summary:after{content:'+';margin-left:auto;font-size:1.25rem;font-weight:400;color:var(--muted)}
+.route-editor-section[open]>summary{border-bottom:1px solid var(--line);background:var(--paper)}
+.route-editor-section[open]>summary:after{content:'−'}
+.route-editor-section>summary>span{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:var(--forest);color:#fff;font-family:var(--sans);font-size:.72rem}
+.route-editor-section>fieldset,.route-editor-section>form,.route-editor-section>p,.route-editor-section>h3,.route-editor-section>[data-route-media-list],.route-editor-section>[data-route-history],.route-editor-section>.route-media-readiness{margin:18px}
+.route-editor-section>fieldset{border:0;padding:0}
+.route-editor-section>fieldset>legend{font-size:.8rem;font-family:var(--sans);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--clay);margin-bottom:16px}
+.route-product-workbench{padding:0;background:#fff;margin:0 0 12px}
+.route-product-workbench>.admin-help{margin:18px}
+.route-subsection{margin:12px 18px;border:1px solid var(--line);background:#fbfaf7}
+.route-subsection>summary{list-style:none;cursor:pointer;padding:14px 16px;font-weight:700;font-size:.88rem}
+.route-subsection>summary::-webkit-details-marker{display:none}
+.route-subsection>summary:after{content:'+';float:right;color:var(--muted)}
+.route-subsection[open]>summary{border-bottom:1px solid var(--line);background:var(--paper)}
+.route-subsection[open]>summary:after{content:'−'}
+.route-subsection>.form-grid,.route-subsection>p,.route-subsection>[data-route-stop-list],.route-subsection>[data-route-variant-list],.route-subsection>.route-template-actions,.route-subsection>button{margin:16px}
+.route-editor .route-editor-actions{position:sticky;bottom:0;z-index:15;margin:22px -28px -28px;padding:12px 28px;background:rgba(251,248,242,.97);border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(13,41,34,.08)}
+/* The preview mirrors the global public display/body font pairing. */
+.home-preview{font-family:var(--preview-sans,var(--sans))}
+.preview-hero h3,.preview-method strong{font-family:var(--preview-serif,var(--serif))}
+.preview-hero p,.preview-hero small,.preview-method small{font-family:var(--preview-sans,var(--sans))}
+@media(max-width:620px){.route-editor-section>summary{padding:14px 12px}.route-subsection{margin:10px 12px}.route-editor .route-editor-actions{margin:18px -12px -12px;padding:10px 12px;display:grid}.route-editor .route-editor-actions .button{width:100%}}
