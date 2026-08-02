@@ -1,3 +1,3 @@
 import { supabase, supabaseConfigured } from './supabase';
 export type ContactMessage={name:string;email:string;type:'general'|'partner'|'private'|'press';message:string;locale:'es'|'en';privacy:boolean;website?:string};
-export async function submitContactMessage(payload:ContactMessage){if(!supabaseConfigured||!supabase)throw new Error('service_unavailable');const {data,error}=await supabase.rpc('submit_contact_message',{payload});if(error)throw error;return data;}
+export async function submitContactMessage(payload:ContactMessage){if(!supabaseConfigured||!supabase)throw new Error('service_unavailable');const {data,error}=await supabase.rpc('submit_contact_message',{payload});if(error)throw error;if(data?.message_id){const {error:notificationError}=await supabase.functions.invoke('notify-message',{body:{messageId:data.message_id}});if(notificationError)console.warn('Message notification could not be requested.');}return data;}

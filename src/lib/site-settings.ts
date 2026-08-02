@@ -21,7 +21,7 @@ export type HomeLocaleContent = {
 };
 export type SiteDesign = {
   colors:{forest:string;forest2:string;cream:string;paper:string;ink:string;clay:string;gold:string};
-  fontPair:'editorial'|'classic'|'modern'; layout:'editorial'|'compact'|'airy'; logo:'symbol-text'|'full'|'symbol';
+  fontPair:'editorial'|'classic'|'modern'|'brand'|'lato'; layout:'editorial'|'compact'|'airy'; logo:'symbol-text'|'full'|'symbol';
   home:{heroImage:HomeImageSettings;methodImage:HomeImageSettings;sectionVisibility:Record<HomeSectionKey,boolean>;sectionOrder:HomeSectionKey[]};
   content:Record<'es'|'en',HomeLocaleContent>;
 };
@@ -47,4 +47,4 @@ export function normalizeSiteDesign(input:any):SiteDesign{
 }
 let cached:Promise<SiteDesign>|null=null;
 export function getPublicSiteDesign(){if(!cached)cached=(async()=>{if(!supabase)return clone(defaultSiteDesign);const {data,error}=await supabase.rpc('get_public_site_design');return normalizeSiteDesign(error||!data?defaultSiteDesign:data)})();return cached;}
-export const fontVariables=(pair:SiteDesign['fontPair'])=>pair==='modern'?{sans:"'DM Sans',system-ui,sans-serif",serif:"'DM Sans',system-ui,sans-serif"}:pair==='classic'?{sans:"Georgia,'Times New Roman',serif",serif:"Georgia,'Times New Roman',serif"}:{sans:"'DM Sans',system-ui,sans-serif",serif:"'Newsreader',Georgia,serif"};
+export const fontVariables=(pair:SiteDesign['fontPair'])=>pair==='brand'?{sans:"'Archivo',Arial,sans-serif",serif:"'Archivo',Arial,sans-serif"}:pair==='lato'?{sans:"'Lato',Arial,sans-serif",serif:"'Lato',Arial,sans-serif"}:pair==='modern'?{sans:"'DM Sans',system-ui,sans-serif",serif:"'DM Sans',system-ui,sans-serif"}:pair==='classic'?{sans:"Georgia,'Times New Roman',serif",serif:"Georgia,'Times New Roman',serif"}:{sans:"'DM Sans',system-ui,sans-serif",serif:"'Newsreader',Georgia,serif"};
