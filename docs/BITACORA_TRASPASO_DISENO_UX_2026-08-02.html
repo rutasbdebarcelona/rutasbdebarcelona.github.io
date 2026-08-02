@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bitácora funcional — Rutas B de Barcelona</title>
+  <style>
+    :root{--forest:#0d2922;--green:#16382f;--cream:#fbf8f2;--paper:#f4efe6;--ink:#18231f;--muted:#64716c;--clay:#b75f43;--gold:#c59b52;--line:#d9d5ca;--white:#fff;--shadow:0 18px 55px rgba(13,41,34,.1)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.65}a{color:inherit}header{background:var(--forest);color:white;padding:70px max(22px,calc((100% - 1120px)/2));position:relative;overflow:hidden}header:after{content:"";position:absolute;width:420px;height:420px;right:-150px;top:-170px;border:1px solid rgba(255,255,255,.18);transform:rotate(25deg)}.eyebrow{color:#dbc9a8;text-transform:uppercase;letter-spacing:.18em;font-size:.72rem;font-weight:700}h1,h2,h3{font-family:Georgia,'Times New Roman',serif;line-height:1.12}h1{font-size:clamp(3rem,8vw,6rem);max-width:900px;margin:.18em 0}header p{max-width:760px;color:#d5dfdb;font-size:1.08rem}.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}.pill{border:1px solid rgba(255,255,255,.3);padding:7px 11px;font-size:.76rem}.shell{width:min(1120px,calc(100% - 32px));margin:34px auto 80px;display:grid;grid-template-columns:250px minmax(0,1fr);gap:34px}.toc{align-self:start;position:sticky;top:18px;background:white;border:1px solid var(--line);padding:22px}.toc strong{display:block;margin-bottom:10px}.toc a{display:block;text-decoration:none;padding:6px 0;color:var(--muted);font-size:.82rem}.toc a:hover{color:var(--clay)}main{min-width:0}.card,section{background:white;border:1px solid var(--line);padding:clamp(24px,5vw,48px);margin-bottom:20px;box-shadow:var(--shadow)}section h2{font-size:clamp(2rem,4vw,3.2rem);margin:0 0 24px}.lead{font-family:Georgia,'Times New Roman',serif;font-size:1.35rem;color:var(--green)}.status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.status-grid article{padding:20px;background:var(--paper);border-top:4px solid var(--green)}.status-grid article.pending{border-color:var(--gold)}.status-grid article.debt{border-color:var(--clay)}.status-grid h3{margin:0 0 8px}.status-grid p{margin:0;color:var(--muted);font-size:.88rem}ul,ol{padding-left:1.25rem}li{margin:.45rem 0}.check li::marker{color:var(--green)}table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem}th,td{text-align:left;vertical-align:top;border:1px solid var(--line);padding:12px}th{background:var(--green);color:white}.phase{display:grid;grid-template-columns:55px 1fr;gap:18px;padding:20px 0;border-top:1px solid var(--line)}.phase span{width:44px;height:44px;background:var(--clay);color:white;display:grid;place-items:center;font-weight:700}.phase h3{margin:0 0 6px}.phase p{margin:0;color:var(--muted)}code{background:var(--paper);padding:.12em .35em;overflow-wrap:anywhere}.warning{border-left:5px solid var(--gold);background:#fff6e7;padding:18px;margin:20px 0}.finish{background:var(--forest);color:white}.finish h2{color:white}.finish p,.finish li{color:#d7e0dc}.links{display:flex;flex-wrap:wrap;gap:10px}.button{display:inline-block;background:var(--clay);color:white;padding:11px 16px;text-decoration:none;font-weight:700}.button.secondary{background:var(--green)}footer{width:min(1120px,calc(100% - 32px));margin:0 auto 50px;color:var(--muted);font-size:.78rem}
+    @media(max-width:850px){.shell{grid-template-columns:1fr}.toc{position:static}.status-grid{grid-template-columns:1fr}table{display:block;overflow-x:auto}header{padding-top:50px}}
+    @media print{body{background:white}.toc{display:none}.shell{display:block;width:100%;margin:0}header{padding:36px;color:white}section{box-shadow:none;break-inside:avoid;margin:0 0 14px}.button{border:1px solid #333;color:#111;background:white}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">Documento de traspaso · 2 de agosto de 2026</div>
+    <h1>Rutas B de Barcelona</h1>
+    <p>Bitácora funcional para que diseño, UX y desarrollo trabajen sobre el mismo producto, con un punto de cierre claro y sin poner en riesgo reservas, datos ni publicación.</p>
+    <div class="meta"><span class="pill">Astro + TypeScript</span><span class="pill">Supabase</span><span class="pill">GitHub Pages</span><span class="pill">Castellano + inglés</span><span class="pill">Móvil + PC</span></div>
+  </header>
+  <div class="shell">
+    <nav class="toc" aria-label="Contenido">
+      <strong>Contenido</strong>
+      <a href="#proyecto">1. Proyecto y objetivo</a>
+      <a href="#estado">2. Estado funcional</a>
+      <a href="#arquitectura">3. Arquitectura</a>
+      <a href="#autonomia">4. Qué puede editarse</a>
+      <a href="#deudas">5. Deudas y riesgos</a>
+      <a href="#cierre">6. Punto de cierre</a>
+      <a href="#ruta">7. Ruta de trabajo</a>
+      <a href="#reunion">8. Reunión de hoy</a>
+      <a href="#archivos">9. Archivos clave</a>
+    </nav>
+    <main>
+      <section id="proyecto">
+        <div class="eyebrow">01 · Sentido</div>
+        <h2>Qué es y qué queremos</h2>
+        <p class="lead">Una web comercial de rutas culturales con contexto, conversación y mirada de autor; no un catálogo genérico de monumentos ni una interfaz con apariencia de plantilla.</p>
+        <p>La primera ruta operativa es <strong>De Gaudí a la Sagrada Familia</strong>. Barcino y CafèBorn forman parte del catálogo, todavía en preparación. El sistema debe crecer con nuevas rutas, materiales e idiomas sin rehacerse.</p>
+        <ul class="check">
+          <li>Identidad reconocible y confianza suficiente para reservar.</li>
+          <li>Claridad, calidez y ritmo editorial.</li>
+          <li>Experiencia prioritaria en Android vertical y PC.</li>
+          <li>Equivalencia visual y editorial entre castellano e inglés.</li>
+          <li>Autonomía para editar contenidos habituales sin tocar código.</li>
+        </ul>
+      </section>
+
+      <section id="estado">
+        <div class="eyebrow">02 · Producto actual</div>
+        <h2>Qué funciona hoy</h2>
+        <div class="status-grid">
+          <article><h3>Público</h3><p>Portada, catálogo, rutas, guía, preguntas, contacto, comparación, reserva, confirmación y legales provisionales.</p></article>
+          <article><h3>Operación</h3><p>Reservas, aforo de 15, horarios, ocupación, bloqueos, mensajes y confirmaciones.</p></article>
+          <article><h3>Administración</h3><p>Rutas bilingües, multimedia, diseño, disponibilidad, reservas, mensajes, historial y CSV.</p></article>
+          <article><h3>Idiomas</h3><p>Castellano en la raíz e inglés bajo <code>/en/</code>, compartiendo slugs, reservas y base.</p></article>
+          <article class="pending"><h3>Correo</h3><p>Resend para administración y Gmail/Apps Script para cliente. Falta verificar la versión bilingüe implementada.</p></article>
+          <article class="debt"><h3>Reseñas</h3><p>Módulo separado y desactivado hasta contar con flujo real, moderación y consentimiento.</p></article>
+        </div>
+        <h3>Reglas operativas actuales</h3>
+        <ul>
+          <li>Máximo: <strong>15 personas por franja</strong>.</li>
+          <li>10:00 y 12:00 solo fines de semana; 18:00 y 22:00 todos los días.</li>
+          <li>Una reserva descuenta plazas; una privada o partner bloquea la franja.</li>
+          <li>La confirmación incluye referencia, ruta, fecha, hora y punto de encuentro.</li>
+          <li>La web pública oculta el aforo total y solo comunica disponibilidad útil.</li>
+        </ul>
+      </section>
+
+      <section id="arquitectura">
+        <div class="eyebrow">03 · Sistema</div>
+        <h2>Arquitectura resumida</h2>
+        <table>
+          <thead><tr><th>Capa</th><th>Tecnología</th><th>Función</th></tr></thead>
+          <tbody>
+            <tr><td>Interfaz</td><td>Astro 5 + TypeScript</td><td>Páginas estáticas, componentes y formularios.</td></tr>
+            <tr><td>Datos</td><td>Supabase</td><td>Rutas, reservas, disponibilidad, mensajes, autenticación, RLS y Storage.</td></tr>
+            <tr><td>Publicación</td><td>GitHub Actions + Pages</td><td>Construcción y despliegue automático.</td></tr>
+            <tr><td>Notificación interna</td><td>Resend</td><td>Correo de nueva reserva.</td></tr>
+            <tr><td>Confirmación cliente</td><td>Gmail + Apps Script</td><td>Correo bilingüe desde Rutas B.</td></tr>
+          </tbody>
+        </table>
+        <div class="warning"><strong>Flujo editorial:</strong> guardar como borrador → publicar → Supabase se actualiza → GitHub Pages se reconstruye. La web pública puede tardar algunos minutos.</div>
+      </section>
+
+      <section id="autonomia">
+        <div class="eyebrow">04 · Autonomía</div>
+        <h2>Qué puede editarse sin código</h2>
+        <h3>Administración → Diseño</h3>
+        <p>Colores, tres pares tipográficos, tres densidades, variante de logo y textos principales ES/EN.</p>
+        <h3>Administración → Rutas</h3>
+        <p>Contenido completo ES/EN, duración, zona, formato, precios, paradas, accesibilidad, orden, ruta destacada, foto principal, galería, mapas, documentos, folletos y audio.</p>
+        <h3>Requiere implementación</h3>
+        <p>Composiciones nuevas, componentes nuevos, libertad total de layout, otro idioma completo, reglas de reserva, mapas interactivos, analítica, SEO avanzado o dominio propio.</p>
+        <p><strong>Acuerdo de trabajo:</strong> el diseñador define en Figma o con especificaciones medibles; Codex implementa como componentes reutilizables; se valida en móvil y PC.</p>
+      </section>
+
+      <section id="deudas">
+        <div class="eyebrow">05 · Fricciones</div>
+        <h2>Deudas y riesgos conocidos</h2>
+        <ol>
+          <li>Traducir errores técnicos del panel. <code>route_draft_required</code> significa que no hay un borrador pendiente.</li>
+          <li>Desactivar acciones imposibles para evitar dobles publicaciones confusas.</li>
+          <li>Verificar siempre ES y EN después de publicar.</li>
+          <li>Probar el correo bilingüe y su logo después de cada implementación de Apps Script.</li>
+          <li>Cerrar textos legales y política comercial.</li>
+          <li>Decidir si “Comparar” tiene valor; si no, retirarlo de navegación.</li>
+          <li>Auditar accesibilidad, contraste, foco, tamaños táctiles y peso de imágenes.</li>
+          <li>Crear reglas formales de uso y variantes del logo.</li>
+        </ol>
+        <div class="warning"><strong>No tocar:</strong> slugs de rutas, claves, <code>.env</code>, service role, respaldos o reservas existentes. Los cambios de base deben pasar por migraciones o funciones administrativas.</div>
+      </section>
+
+      <section id="cierre" class="finish">
+        <div class="eyebrow">06 · Definición de terminado</div>
+        <h2>El punto de cierre</h2>
+        <p>La etapa se cierra cuando la web tiene identidad de autor, Daniel puede operarla y una persona puede completar la experiencia sin ayuda técnica.</p>
+        <ol>
+          <li>Sistema visual documentado: logo, paleta, tipografía, escala, espaciado, botones, formularios, iconos y fotografía.</li>
+          <li>Cinco plantillas coherentes: portada, catálogo, ruta, reserva/confirmación e informativa.</li>
+          <li>Móvil resuelto: cabecera compacta, idioma visible, reserva accesible, menú no invasivo y títulos íntegros.</li>
+          <li>ES/EN equivalentes en jerarquía, tono y tipografía.</li>
+          <li>Panel claro: estados visibles, errores humanos y vista previa fiable.</li>
+          <li>Prueba completa: descubrir → disponibilidad → reservar → correos → reserva y ocupación en panel.</li>
+        </ol>
+      </section>
+
+      <section id="ruta">
+        <div class="eyebrow">07 · De ahora en adelante</div>
+        <h2>Ruta de trabajo</h2>
+        <div class="phase"><span>A</span><div><h3>Dirección visual única</h3><p>Auditar la web real, elegir personalidad, referencias, logo, tipografía y criterio fotográfico.</p></div></div>
+        <div class="phase"><span>B</span><div><h3>Mini design system</h3><p>Tokens y componentes con estados normal, hover, foco, error, vacío, carga y publicado.</p></div></div>
+        <div class="phase"><span>C</span><div><h3>Cinco pantallas clave</h3><p>Portada, catálogo, Sagrada Família, reserva/confirmación y panel operativo.</p></div></div>
+        <div class="phase"><span>D</span><div><h3>Implementación por lotes</h3><p>1) sistema general; 2) portada/catálogo; 3) ruta/multimedia; 4) reserva/correos; 5) panel/errores.</p></div></div>
+        <div class="phase"><span>E</span><div><h3>Cierre comercial</h3><p>Legal, prueba real, accesibilidad, rendimiento, metadatos, previews sociales y analítica mínima.</p></div></div>
+      </section>
+
+      <section id="reunion">
+        <div class="eyebrow">08 · Hoy</div>
+        <h2>Agenda para trabajar con el diseñador</h2>
+        <ol>
+          <li>10 min: propuesta y usuario objetivo.</li>
+          <li>15 min: portada y reserva en celular.</li>
+          <li>15 min: ficha de ruta y sistema editorial.</li>
+          <li>15 min: acordar una dirección visual, no cinco alternativas.</li>
+          <li>15 min: definir entregable —Figma, guía visual o ambos—.</li>
+          <li>10 min: elegir el primer lote implementable.</li>
+        </ol>
+      </section>
+
+      <section id="archivos">
+        <div class="eyebrow">09 · Referencias</div>
+        <h2>Archivos y enlaces clave</h2>
+        <ul>
+          <li><code>src/config/site.ts</code> — módulos y contacto.</li>
+          <li><code>src/styles/global.css</code> — sistema visual.</li>
+          <li><code>src/lib/site-settings.ts</code> — diseño editable.</li>
+          <li><code>src/components/Header.astro</code> — cabecera y navegación.</li>
+          <li><code>src/components/AdminApp.astro</code> y <code>src/scripts/admin-app.ts</code> — panel.</li>
+          <li><code>src/pages/</code> y <code>src/pages/en/</code> — páginas ES/EN.</li>
+          <li><code>integrations/google-apps-script/confirmaciones-bilingues.gs</code> — correo al cliente.</li>
+          <li><code>supabase/migrations/</code> — evolución reproducible de la base.</li>
+          <li><code>public/images/marca/</code> — identidad visual.</li>
+        </ul>
+        <div class="links"><a class="button" href="https://rutasbdebarcelona.github.io/">Abrir web</a><a class="button secondary" href="https://github.com/rutasbdebarcelona/rutasbdebarcelona.github.io">Abrir repositorio</a></div>
+      </section>
+    </main>
+  </div>
+  <footer>Rutas B de Barcelona · Bitácora de traspaso funcional · Documento autónomo imprimible y compartible.</footer>
+</body>
+</html>
