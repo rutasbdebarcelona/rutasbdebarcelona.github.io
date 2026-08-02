@@ -1,0 +1,25 @@
+---
+import type { SiteDesign } from '../lib/site-settings';
+import type { Locale } from '../i18n/ui';
+interface Props{locale:Locale;design:SiteDesign;base:string}
+const {locale,design,base}=Astro.props;
+const content=design.content[locale],image=design.home.heroImage;
+const root=locale==='en'?base+'en/':base;
+const src=/^https?:/i.test(image.url)?image.url:base+image.url.replace(/^\//,'');
+const style=`--image-desktop-x:${image.desktopX}%;--image-desktop-y:${image.desktopY}%;--image-mobile-x:${image.mobileX}%;--image-mobile-y:${image.mobileY}%;--image-desktop-zoom:${image.desktopZoom/100};--image-mobile-zoom:${image.mobileZoom/100};--image-desktop-fit:${image.desktopFit};--image-mobile-fit:${image.mobileFit}`;
+---
+<section class="route-hero home-route-hero editable-home-image" style={style}>
+  <img src={src} alt={locale==='en'?image.altEn:image.altEs} />
+  <div class="route-hero-overlay"></div>
+  <div class="route-hero-copy home-route-hero-copy">
+    <p class="kicker">{content.homeKicker}</p>
+    <h1>{content.homeTitle}<em>{content.homeAccent}</em></h1>
+    <p>{content.homeLead}</p>
+    <div class="hero-actions">
+      <a class="button primary" href={root+'rutas/'}>{content.heroRoutesLabel}</a>
+      <a class="button ghost" href={root+'sobre/'}>{content.heroGuideLabel}</a>
+      <a class="button ghost booking-hero-cta" href={root+'reservar/'}>{content.heroBookLabel}</a>
+    </div>
+    <ul class="trust-row">{content.trustItems.filter(Boolean).map(item=><li>{item}</li>)}</ul>
+  </div>
+</section>

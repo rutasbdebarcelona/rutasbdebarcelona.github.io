@@ -1,0 +1,54 @@
+// @ts-nocheck
+import { getAdminSiteDesign,saveSiteDesignDraft,publishSiteDesign,discardSiteDesignDraft } from '../lib/admin';
+import { uploadSiteImage } from '../lib/site-media';
+import { defaultSiteDesign,normalizeSiteDesign } from '../lib/site-settings';
+
+const clone=value=>JSON.parse(JSON.stringify(value));
+const textFields={homeKicker:'HomeKicker',homeTitle:'HomeTitle',homeAccent:'HomeAccent',homeLead:'HomeLead',heroRoutesLabel:'HeroRoutesLabel',heroGuideLabel:'HeroGuideLabel',heroBookLabel:'HeroBookLabel',routesKicker:'RoutesKicker',routesTitle:'RoutesTitle',routesIntro:'RoutesIntro',methodKicker:'MethodKicker',methodQuote:'MethodQuote',method1Label:'Method1Label',method1Title:'Method1Title',method1Body:'Method1Body',method2Label:'Method2Label',method2Title:'Method2Title',method2Body:'Method2Body',method3Label:'Method3Label',method3Title:'Method3Title',method3Body:'Method3Body',partnerKicker:'PartnerKicker',partnerTitle:'PartnerTitle',partnerBody:'PartnerBody',partnerButton:'PartnerButton',contactTitle:'ContactTitle',contactIntro:'ContactIntro'};
+const imageFields={hero:{url:'heroImageUrl',altEs:'heroImageAltEs',altEn:'heroImageAltEn',desktopFit:'heroDesktopFit',mobileFit:'heroMobileFit',desktopX:'heroDesktopX',desktopY:'heroDesktopY',mobileX:'heroMobileX',mobileY:'heroMobileY',desktopZoom:'heroDesktopZoom',mobileZoom:'heroMobileZoom'},method:{url:'methodImageUrl',altEs:'methodImageAltEs',altEn:'methodImageAltEn',desktopFit:'methodDesktopFit',mobileFit:'methodMobileFit',desktopX:'methodDesktopX',desktopY:'methodDesktopY',mobileX:'methodMobileX',mobileY:'methodMobileY',desktopZoom:'methodDesktopZoom',mobileZoom:'methodMobileZoom',desktopRatio:'methodDesktopRatio',mobileRatio:'methodMobileRatio'}};
+
+export function setupHomeEditor(app){
+  const $=selector=>app.querySelector(selector),form=$('[data-design-form]');
+  let current=normalizeSiteDesign(defaultSiteDesign),pending={hero:null,method:null},objectUrls={hero:'',method:''};
+  const field=name=>form.elements[name],get=name=>String(field(name)?.value??'').trim(),set=(name,value)=>{if(field(name))field(name).value=value??''};
+  const src=slot=>objectUrls[slot]||get(`${slot}ImageUrl`);
+  function fill(settings,state='Versión pública vigente'){
+    current=normalizeSiteDesign(settings);pending={hero:null,method:null};
+    field('fontPair').value=current.fontPair;field('layout').value=current.layout;field('logo').value=current.logo;
+    Object.entries(current.colors).forEach(([key,value])=>set(key,value));
+    for(const locale of ['es','en']){const prefix=locale;for(const [property,suffix] of Object.entries(textFields))set(prefix+suffix,current.content[locale][property]);set(prefix+'TrustItems',current.content[locale].trustItems.join('\n'));}
+    for(const slot of ['hero','method'])for(const [property,name] of Object.entries(imageFields[slot]))set(name,current.home[`${slot}Image`][property]);
+    for(const key of ['routes','method','partner']){field(`${key}Visible`).checked=current.home.sectionVisibility[key];set(`${key}Order`,current.home.sectionOrder.indexOf(key)+1);}
+    $('[data-design-state]').textContent=state;preview();
+  }
+  function read(){
+    const settings=clone(current);settings.fontPair=get('fontPair');settings.layout=get('layout');settings.logo=get('logo');
+    for(const key of Object.keys(settings.colors))settings.colors[key]=get(key);
+    for(const locale of ['es','en']){for(const [property,suffix] of Object.entries(textFields))settings.content[locale][property]=get(locale+suffix);settings.content[locale].trustItems=get(locale+'TrustItems').split(/\r?\n/).map(x=>x.trim()).filter(Boolean).slice(0,5);}
+    for(const slot of ['hero','method'])for(const [property,name] of Object.entries(imageFields[slot]))settings.home[`${slot}Image`][property]=['desktopX','desktopY','mobileX','mobileY','desktopZoom','mobileZoom'].includes(property)?Number(get(name)):get(name);
+    settings.home.sectionVisibility={routes:field('routesVisible').checked,method:field('methodVisible').checked,partner:field('partnerVisible').checked};
+    const positions=['routes','method','partner'].map(key=>({key,position:Number(get(`${key}Order`))}));if(new Set(positions.map(item=>item.position)).size!==3)throw new Error('Cada sección debe tener una posición diferente.');settings.home.sectionOrder=positions.sort((a,b)=>a.position-b.position).map(item=>item.key);
+    return normalizeSiteDesign(settings);
+  }
+  function readSafe(){try{return read()}catch{return current}}
+  function preview(){
+    const settings=readSafe(),font=settings.fontPair==='modern'?"'DM Sans',sans-serif":settings.fontPair==='classic'?"Georgia,serif":"'Newsreader',Georgia,serif";
+    document.querySelectorAll('[data-output]').forEach(output=>{const input=field(output.dataset.output);output.textContent=input?`${input.value}${input.name.includes('Zoom')?'%':''}`:''});
+    for(const mode of ['desktop','mobile']){
+      const hero=settings.home.heroImage,method=settings.home.methodImage,heroImg=$(`[data-preview-hero-image="${mode}"]`),methodImg=$(`[data-preview-method-image="${mode}"]`),methodFrame=$(`[data-preview-method="${mode}"]`);
+      heroImg.src=src('hero');heroImg.style.objectFit=hero[`${mode}Fit`];heroImg.style.objectPosition=`${hero[`${mode}X`]}% ${hero[`${mode}Y`]}%`;heroImg.style.transform=`scale(${hero[`${mode}Zoom`]/100})`;
+      methodImg.src=src('method');methodImg.style.objectFit=method[`${mode}Fit`];methodImg.style.objectPosition=`${method[`${mode}X`]}% ${method[`${mode}Y`]}%`;methodImg.style.transform=`scale(${method[`${mode}Zoom`]/100})`;methodFrame.style.aspectRatio=method[`${mode}Ratio`];
+      const card=$(`[data-preview-hero="${mode}"]`);card.style.setProperty('--preview-font',font);card.style.backgroundColor=settings.colors.forest;
+    }
+    const c=settings.content.es;for(const [selector,value] of [['[data-preview-kicker]',c.homeKicker],['[data-preview-title]',c.homeTitle],['[data-preview-accent]',c.homeAccent],['[data-preview-lead]',c.homeLead],['[data-preview-kicker-mobile]',c.homeKicker],['[data-preview-title-mobile]',c.homeTitle],['[data-preview-accent-mobile]',c.homeAccent],['[data-preview-method-kicker]',c.methodKicker],['[data-preview-method-quote]',c.methodQuote],['[data-preview-method-kicker-mobile]',c.methodKicker],['[data-preview-method-quote-mobile]',c.methodQuote]]){const node=$(selector);if(node)node.textContent=value;}
+  }
+  function selectImage(slot,file){if(!file)return;if(!file.type.startsWith('image/')||file.size>15728640){$('[data-design-message]').textContent='Selecciona una imagen válida de menos de 15 MB.';field(`${slot}ImageFile`).value='';return}if(objectUrls[slot])URL.revokeObjectURL(objectUrls[slot]);pending[slot]=file;objectUrls[slot]=URL.createObjectURL(file);preview();}
+  async function withUploads(){const settings=read();for(const slot of ['hero','method'])if(pending[slot]){settings.home[`${slot}Image`].url=await uploadSiteImage(pending[slot]);set(`${slot}ImageUrl`,settings.home[`${slot}Image`].url);pending[slot]=null;if(objectUrls[slot]){URL.revokeObjectURL(objectUrls[slot]);objectUrls[slot]='';}}return settings;}
+  async function load(){const data=await getAdminSiteDesign();fill(data.draft||data.published,data.draft?'Borrador pendiente de publicación':'Versión pública vigente');}
+  field('heroImageFile')?.addEventListener('change',event=>selectImage('hero',event.target.files?.[0]));field('methodImageFile')?.addEventListener('change',event=>selectImage('method',event.target.files?.[0]));form?.addEventListener('input',preview);
+  form?.addEventListener('submit',async event=>{event.preventDefault();const button=event.submitter,message=$('[data-design-message]');button.disabled=true;message.textContent='';try{const settings=await withUploads();await saveSiteDesignDraft(settings);current=settings;$('[data-design-state]').textContent='Borrador pendiente de publicación';message.textContent='Borrador guardado. La web pública no ha cambiado.';}catch(error){message.textContent=error.message||'No fue posible guardar la portada.';}finally{button.disabled=false;}});
+  $('[data-design-publish]')?.addEventListener('click',async()=>{if(!window.confirm('¿Publicar esta portada en castellano e inglés?'))return;const button=$('[data-design-publish]'),message=$('[data-design-message]');button.disabled=true;message.textContent='';try{const settings=await withUploads();await saveSiteDesignDraft(settings);const result=await publishSiteDesign();current=settings;$('[data-design-state]').textContent='Versión pública vigente';message.textContent=result.deployStarted?'Publicado. GitHub Pages se está actualizando.':'Publicado, pero no fue posible iniciar la actualización de GitHub Pages.';}catch(error){message.textContent=error.message||'No fue posible publicar la portada.';}finally{button.disabled=false;}});
+  $('[data-design-discard]')?.addEventListener('click',async()=>{if(!window.confirm('¿Descartar el borrador y recuperar la portada pública?'))return;const published=await discardSiteDesignDraft();fill(published,'Versión pública vigente');$('[data-design-message]').textContent='Borrador descartado.';});
+  $('[data-design-defaults]')?.addEventListener('click',()=>{if(window.confirm('¿Cargar los valores iniciales? Aún tendrás que guardarlos o publicarlos.'))fill(defaultSiteDesign,'Valores iniciales cargados, aún sin guardar');});
+  return {load};
+}
