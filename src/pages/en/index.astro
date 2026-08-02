@@ -13,4 +13,5 @@ const publishedRoutes=toEnglishRoutes(await getPublicRoutes()),base=import.meta.
   <HomeHero locale="en" {design} {base}/>
   <HomeSections locale="en" {design} routes={publishedRoutes} {base} routesEnabled={moduleEnabled('routes')}/>
   <WhatsAppButton locale="en" />
+  <script>import '../../scripts/site-preview';</script>
 </BaseLayout>
