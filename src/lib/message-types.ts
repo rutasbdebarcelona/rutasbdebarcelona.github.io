@@ -1,0 +1,3 @@
+import { supabase } from './supabase';
+export const defaultMessageTypes=[{key:'general',label_es:'Consulta general',label_en:'General enquiry'},{key:'partner',label_es:'Hotel, agencia o partner',label_en:'Hotel, agency or partner'},{key:'private',label_es:'Grupo privado',label_en:'Private group'},{key:'press',label_es:'Prensa o colaboración',label_en:'Press or collaboration'}];
+export async function getPublicMessageTypes(){if(!supabase)return defaultMessageTypes;try{const {data,error}=await supabase.from('message_types').select('key,label_es,label_en,description_es,description_en').eq('active',true).order('sort_order').order('key');if(error||!data?.length)return defaultMessageTypes;return data}catch{return defaultMessageTypes}}
