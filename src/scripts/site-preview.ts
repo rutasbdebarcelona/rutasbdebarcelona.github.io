@@ -65,5 +65,5 @@ function applyImage(container:Element,image:any,slot:'hero'|'method'){
   const style=(container as HTMLElement).style;
   style.setProperty('--image-desktop-x',image.desktopX+'%');style.setProperty('--image-desktop-y',image.desktopY+'%');style.setProperty('--image-mobile-x',image.mobileX+'%');style.setProperty('--image-mobile-y',image.mobileY+'%');
   style.setProperty('--image-desktop-zoom',String(image.desktopZoom/100));style.setProperty('--image-mobile-zoom',String(image.mobileZoom/100));style.setProperty('--image-desktop-fit',image.desktopFit);style.setProperty('--image-mobile-fit',image.mobileFit);
-  if(slot==='method'){style.setProperty('--method-desktop-ratio',image.desktopRatio);style.setProperty('--method-mobile-ratio',image.mobileRatio);}
+  if(slot==='method'){style.setProperty('--method-desktop-ratio',image.desktopRatio);style.setProperty('--method-mobile-ratio',image.mobileRatio);style.setProperty('--method-desktop-opacity',String(image.desktopOpacity/100));style.setProperty('--method-mobile-opacity',String(image.mobileOpacity/100));container.closest('.authored-manifesto')?.classList.toggle('method-image-background',image.presentation==='background');}
 }
