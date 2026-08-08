@@ -1,0 +1,3 @@
+import { supabase } from './supabase';
+export type EditorialPost={id:string;slug:string;status:'draft'|'published'|'archived';title_es:string;title_en:string;excerpt_es:string;excerpt_en:string;body_es:string;body_en:string;seo_title_es:string;seo_title_en:string;seo_description_es:string;seo_description_en:string;cover_url:string;cover_alt_es:string;cover_alt_en:string;tags:string[];published_at:string|null;updated_at:string};
+export async function getPublicPosts(){if(!supabase)return [] as EditorialPost[];const {data,error}=await supabase.from('editorial_posts').select('*').eq('status','published').order('published_at',{ascending:false});return error?[]:(data??[]) as EditorialPost[];}

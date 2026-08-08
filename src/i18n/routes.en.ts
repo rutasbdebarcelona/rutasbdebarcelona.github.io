@@ -1,132 +1,30 @@
 import type { TourRoute } from '../data/routes';
-export const routeTranslationsEn: Record<string, Partial<TourRoute>> = {
-  "sagrada-familia": {
-    "title": "From Gaudí to the Sagrada Família",
-    "eyebrow": "Architecture · city · living work",
-    "promise": "An outdoor tour to understand Barcelona's most famous work without reducing it to a postcard.",
-    "description": "We walk around the basilica to discover how Gaudí, the Eixample, faith, craftsmanship and more than a century of history continue to converse within a work that is still alive.",
-    "statusLabel": "Available",
-    "duration": "Approx. 75 minutes",
-    "format": "Outdoor · short walk · 4 stops",
-    "area": "Sagrada Família",
-    "languages": [
-      "Spanish",
-      "English"
-    ],
-    "audience": [
-      "Independent travellers",
-      "Couples",
-      "Small groups",
-      "Hotels and agencies",
-      "Educational programmes"
-    ],
-    "startingPoint": "Plaça de Gaudí, at a point with an open view of the basilica. Exact location confirmed with the booking.",
-    "endingPoint": "Plaça de la Sagrada Família or the area around the Glory Façade, depending on local conditions.",
-    "stops": [
-      "Gaudí, the Eixample and the city",
-      "Nativity Façade",
-      "Passion Façade",
-      "Glory, the future and the Barcelona to come"
-    ],
-    "includes": [
-      "In-person guide",
-      "Outdoor interpretive tour",
-      "Four visual stops",
-      "Recommendations to continue your visit"
-    ],
-    "notIncluded": [
-      "Admission to the basilica",
-      "Transport",
-      "Personal expenses"
-    ],
-    "accessibility": "Outdoor urban route. Detailed accessibility and any required adjustments are confirmed before the tour.",
-    "priceIndividual": "To be confirmed",
-    "priceGroup": "To be confirmed",
-    "imageAlt": "View of the Sagrada Família from one of its surrounding squares"
-  },
-  "barcino": {
-    "title": "Barcino: entering the city through its layers",
-    "eyebrow": "Roman Barcelona · medieval city · urban memory",
-    "promise": "Cross the Gothic Quarter as a time machine, reading the layers Barcelona preserves and reconstructs.",
-    "description": "The Roman gate, aqueducts, walls and medieval city open a route where every period occupies, transforms and retells the same space.",
-    "statusLabel": "In preparation",
-    "duration": "Duration to be confirmed",
-    "format": "Outdoor · urban walk",
-    "area": "Gothic Quarter",
-    "languages": [
-      "Spanish",
-      "English"
-    ],
-    "audience": [
-      "Cultural visitors",
-      "Small groups",
-      "Educational programmes"
-    ],
-    "startingPoint": "Around the Architects' Association of Catalonia / Plaça Nova.",
-    "endingPoint": "To be confirmed when the complete route is finalised.",
-    "stops": [
-      "Entrance to Barcino",
-      "Casa de l'Ardiaca",
-      "Cathedral and Sant Iu",
-      "Palau del Lloctinent and Saló del Tinell",
-      "Temple of Augustus",
-      "Pont del Bisbe and Sant Jaume"
-    ],
-    "includes": [
-      "In-person guide",
-      "Urban and historical interpretation"
-    ],
-    "notIncluded": [
-      "Admission to monuments",
-      "Transport",
-      "Personal expenses"
-    ],
-    "accessibility": "Full accessibility review pending.",
-    "priceIndividual": "To be confirmed",
-    "priceGroup": "To be confirmed",
-    "imageAlt": "Portal del Bisbe and remains of Barcelona's Roman wall"
-  },
-  "cafeborn": {
-    "title": "CafèBorn",
-    "eyebrow": "Markets · culture · passages · local life",
-    "promise": "A Barcelona revealed through its breakfasts, cultural spaces and everyday working streets.",
-    "description": "An adaptable experience connecting Santa Caterina Market, Teatre Antic, the Palau de la Música and the passages of the Born and Sant Pere.",
-    "statusLabel": "In preparation",
-    "duration": "Mid-morning · final duration pending",
-    "format": "Cultural walk · adaptable for visitors and partners",
-    "area": "Sant Pere, Santa Caterina and La Ribera",
-    "languages": [
-      "Spanish",
-      "English"
-    ],
-    "audience": [
-      "Independent travellers",
-      "Couples",
-      "Hotels",
-      "Incoming agencies",
-      "Private groups"
-    ],
-    "startingPoint": "Commercial confirmation pending.",
-    "endingPoint": "Commercial confirmation pending.",
-    "stops": [
-      "Santa Caterina Market",
-      "Teatre Antic",
-      "Palau de la Música",
-      "Passages and the memory of work"
-    ],
-    "includes": [
-      "In-person guide",
-      "Cultural narrative of the neighbourhood"
-    ],
-    "notIncluded": [
-      "Food, drinks and suppliers until agreements are finalised",
-      "Transport"
-    ],
-    "accessibility": "Full accessibility review of the route and its suppliers pending.",
-    "priceIndividual": "To be confirmed",
-    "priceGroup": "To be confirmed",
-    "imageAlt": "Colourful roof of Santa Caterina Market"
-  }
+
+export const routeTranslationsEn:Record<string,Partial<TourRoute>>={
+ 'sagrada-familia':{
+  title:'From Gaudí to the Sagrada Família · Day tour',eyebrow:'Architecture · city · living work',
+  promise:'Discover the Sagrada Família in daylight on an outdoor guided tour. Read its façades, Gaudí’s vision and the work that still transforms Barcelona.',
+  description:'See the Sagrada Família in clear daylight with an expert guide. Walk around the basilica to understand how the project began before Gaudí, how he transformed its scale and language, and why successive generations continue the work.',
+  statusLabel:'Available',duration:'Approximately 75 minutes',format:'Guided walking tour · outdoors',area:'Sagrada Família',languages:['Spanish','English'],
+  audience:['Independent travellers','Couples','Small groups','Hotels and agencies'],startingPoint:'Avinguda de Gaudí, 2, beside KFC.',endingPoint:'Area around the Glory Façade.',
+  stops:['Plaça de Gaudí: origins and transformation','Nativity Façade','Apse: heritage and transformation','Passion Façade','Glory Façade: city and future'],
+  includes:['In-person guide','Outdoor interpretive tour','Five visual stops'],notIncluded:['Admission to the basilica','Transport','Personal expenses'],
+  accessibility:'Outdoor urban route. Any required adjustments are coordinated before the visit.',priceIndividual:'€20 per person',priceGroup:'',
+  imageAlt:'Sagrada Família viewed from Plaça de Gaudí.'
+ },
+ 'sagrada-familia-nocturna':{
+  title:'From Gaudí to the Sagrada Família · Night tour',eyebrow:'Architecture · light · night-time cityscape',
+  promise:'Discover the Sagrada Família at night, when light and shadow transform its façades and reveal another way to read Gaudí’s work.',
+  description:'See how the Sagrada Família changes after dark. Walk around the basilica to understand the origin and evolution of the project while adding a distinct perceptual reading shaped by night lighting and shadow.',
+  statusLabel:'Available',duration:'Approximately 75 minutes',format:'Guided walking tour · outdoors at night',area:'Sagrada Família',languages:['Spanish','English'],
+  audience:['Independent travellers','Couples','Small groups','Hotels and agencies'],startingPoint:'Avinguda de Gaudí, 2, beside KFC.',endingPoint:'Area around the Glory Façade.',
+  stops:['Plaça de Gaudí: the night-time silhouette','Nativity Façade','Apse: transition and light','Passion Façade','Glory Façade and closing view'],
+  includes:['In-person guide','Outdoor night-time interpretive tour','Five visual stops'],notIncluded:['Admission to the basilica','Transport','Personal expenses'],
+  accessibility:'Outdoor urban night route. Any required adjustments are coordinated before the visit.',priceIndividual:'€20 per person',priceGroup:'',
+  imageAlt:'Nativity Façade illuminated at night.'
+ },
+ barcino:{title:'Medieval Barcino',eyebrow:'Roman Barcelona · medieval city · urban memory',promise:'Cross the Gothic Quarter by reading the layers Barcelona preserves and reconstructs.',description:'The Roman gate, aqueducts, walls and medieval city reveal how each period occupies, transforms and retells the same space.',statusLabel:'In preparation',duration:'To be confirmed',format:'Outdoor urban walk',area:'Gothic Quarter',languages:['Spanish','English'],audience:['Cultural visitors','Small groups','Educational programmes'],startingPoint:'Around COAC / Plaça Nova.',endingPoint:'To be confirmed.',stops:['Entrance to Barcino','Casa de l’Ardiaca','Cathedral and Sant Iu','Palau del Lloctinent','Temple of Augustus','Pont del Bisbe and Sant Jaume'],includes:['In-person guide','Urban and historical interpretation'],notIncluded:['Admission to monuments','Transport'],accessibility:'Full accessibility review pending.',priceIndividual:'',priceGroup:''},
+ cafeborn:{title:'CafèBorn',statusLabel:'Hidden'}
 };
-export function toEnglishRoute(route: TourRoute): TourRoute { const stored=route.translationEn||{}; return { ...route, ...(routeTranslationsEn[route.slug] || {}), ...stored, statusLabel: stored.statusLabel || (route.status === 'available' ? 'Available' : 'In preparation') }; }
-export function toEnglishRoutes(routes: TourRoute[]): TourRoute[] { return routes.map(toEnglishRoute); }
+export function toEnglishRoute(route:TourRoute):TourRoute{const stored=route.translationEn||{};return{...route,...(routeTranslationsEn[route.slug]||{}),...stored,statusLabel:stored.statusLabel||(route.status==='available'?'Available':'In preparation')}}
+export function toEnglishRoutes(routes:TourRoute[]):TourRoute[]{return routes.map(toEnglishRoute)}

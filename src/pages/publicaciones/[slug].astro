@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublicSiteDesign } from '../../lib/site-settings';
+import { getPublicPosts, type EditorialPost } from '../../lib/publications';
+export async function getStaticPaths(){return (await getPublicPosts()).map(post=>({params:{slug:post.slug},props:{post}}));}
+const {post}=Astro.props as {post:EditorialPost};
+const design=await getPublicSiteDesign();
+const copy=design.editorial.es;
+const base=import.meta.env.BASE_URL;
+const paragraphs=(post.body_es||'').split(/\n\s*\n/).filter(Boolean);
+---
+<BaseLayout locale="es" title={post.seo_title_es||post.title_es} description={post.seo_description_es||post.excerpt_es}>
+  <article class="section editorial-article"><a class="text-link" href={`${base}publicaciones/`}>← {copy.publicationsBack}</a><header><p class="kicker dark">{post.tags?.join(' · ')}</p><h1>{post.title_es}</h1><p class="lead">{post.excerpt_es}</p></header>{post.cover_url&&<img class="editorial-cover" src={post.cover_url} alt={post.cover_alt_es||post.title_es} />}<div class="editorial-body">{paragraphs.map(paragraph=><p>{paragraph}</p>)}</div></article>
+</BaseLayout>
+<style>.editorial-article{max-width:980px}.editorial-article header{margin:36px 0}.editorial-article h1{font-size:clamp(3rem,8vw,6rem);line-height:.94;margin:.18em 0}.editorial-article .lead{font-size:clamp(1.15rem,2.4vw,1.55rem);max-width:760px}.editorial-cover{width:100%;aspect-ratio:16/9;object-fit:cover}.editorial-body{max-width:760px;margin:42px auto;font-size:1.12rem;line-height:1.8;white-space:pre-line}</style>

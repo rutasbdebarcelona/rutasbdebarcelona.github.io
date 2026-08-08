@@ -1,0 +1,43 @@
+---
+import type {TourRoute,RouteStop} from '../data/routes';
+import {toEnglishRoute} from '../i18n/routes.en';
+interface Props{route:TourRoute;locale?:'es'|'en'}
+const {route:source,locale='es'}=Astro.props;
+const route=locale==='en'?toEnglishRoute(source):source;
+const base=import.meta.env.BASE_URL,root=locale==='en'?base+'en/':base;
+const path=(value:string)=>/^https?:/i.test(value)?value:`${base}${value.replace(/^\//,'')}`;
+const image=path(route.image),pending=route.status!=='available',gallery=route.gallery??[],documents=route.documents??[];
+const settings=route.pageSettings??{galleryMode:'carousel',stopsMediaMode:'carousel',stopsDisplayMode:'cards',showHighlights:true,showMeetingPoint:true,showAccessibility:true};
+const stops:RouteStop[]=route.stopDetails?.length?route.stopDetails:route.stops.map(title=>({title}));
+const t=locale==='en'?{
+ duration:'Duration',languages:'Languages offered',price:'Price',ask:'Ask about this tour',book:'Book this tour',experience:'The experience',experienceTitle:'A tour with its own guiding question',
+ highlights:'Highlights',gallery:'Gallery',materials:'Tour materials',listen:'Listen: ',open:'Open: ',route:'The route',minutes:'min',
+ included:'What is included',excluded:'What is not included',accessibility:'Accessibility',practical:'Practical information',area:'Area',format:'Format',start:'Start',finish:'Finish',
+ meeting:'Meeting point',address:'Address',reference:'Landmark',transport:'Public transport',schedule:'Schedule',prices:'Prices',individual:'Individual',group:'Private group',payment:'No payment is charged when registering your booking.'
+}:{
+ duration:'Duración',languages:'Idiomas ofrecidos',price:'Precio',ask:'Consultar esta ruta',book:'Reservar esta ruta',experience:'La experiencia',experienceTitle:'Una ruta con una pregunta propia',
+ highlights:'Aspectos destacados',gallery:'Galería',materials:'Materiales de la ruta',listen:'Escuchar: ',open:'Abrir: ',route:'El recorrido',minutes:'min',
+ included:'Qué incluye',excluded:'Qué no incluye',accessibility:'Accesibilidad',practical:'Información práctica',area:'Zona',format:'Formato',start:'Inicio',finish:'Cierre',
+ meeting:'Punto de encuentro',address:'Dirección',reference:'Referencia',transport:'Transporte público',schedule:'Horarios',prices:'Precios',individual:'Individual',group:'Grupo privado',payment:'No se cobrará ningún importe al registrar la reserva.'
+};
+const supabaseUrl=import.meta.env.PUBLIC_SUPABASE_URL??'',supabaseKey=import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY??'';
+
+---
+<article class="route-detail" data-route-live data-route-slug={route.slug} data-supabase-url={supabaseUrl} data-supabase-key={supabaseKey}>
+ <header class="route-hero"><img src={image} alt={route.imageAlt} data-route-hero-image /><div class="route-hero-overlay"></div><div class="route-hero-copy"><p class="kicker">{route.eyebrow}</p><h1>{route.title}</h1><p>{route.promise}</p>{pending&&<span class:list={['status-pill',route.status]}>{route.statusLabel}</span>}</div></header>
+ <div class="route-booking-bar"><div><span>{t.duration}</span><strong>{route.duration}</strong></div><div><span>{t.languages}</span><strong>{route.languages.join(' · ')}</strong></div>{route.priceIndividual&&<div><span>{t.price}</span><strong>{route.priceIndividual}</strong></div>}<a class="button primary" href={`${root}reservar/?ruta=${route.slug}`}>{pending?t.ask:t.book}</a></div>
+ <div class="detail-layout section"><div class="detail-main">
+  <section><p class="kicker dark">{t.experience}</p><h2>{t.experienceTitle}</h2><p class="large-copy">{route.description}</p></section>
+  {settings.showHighlights&&Boolean(route.highlights?.length)&&<section class="route-highlights"><h2>{t.highlights}</h2><ul class="check-list">{route.highlights?.map(item=><li>{item}</li>)}</ul></section>}
+  {settings.galleryMode!=='hidden'&&gallery.length>0&&<section class:list={['route-gallery',`route-gallery--${settings.galleryMode}`]} data-route-gallery data-route-carousel={settings.galleryMode==='carousel'}><div class="route-section-heading"><h2>{t.gallery}</h2>{settings.galleryMode==='carousel'&&gallery.length>1&&<div class="route-carousel-controls"><button type="button" data-carousel-prev aria-label="Anterior">←</button><button type="button" data-carousel-next aria-label="Siguiente">→</button></div>}</div><div data-route-gallery-list data-carousel-track>{gallery.slice(0,settings.galleryMode==='single'?1:undefined).map(item=><figure>{item.kind==='video'?<video controls playsinline preload="metadata" aria-label={item.altText}><source src={path(item.url)} type={item.mimeType||'video/mp4'} /></video>:<img src={path(item.url)} alt={item.altText} loading="lazy" />}{item.title&&<figcaption>{item.title}</figcaption>}</figure>)}</div></section>}
+  {documents.length>0&&<section class="route-documents" data-route-documents><h2>{t.materials}</h2><div data-route-document-list>{documents.map(item=><a href={path(item.url)} target="_blank" rel="noopener">{item.kind==='audio'?t.listen:t.open}{item.title}</a>)}</div></section>}
+  {settings.stopsDisplayMode!=='hidden'&&stops.length>0&&<section class:list={['route-stops-detailed',`route-stops-detailed--${settings.stopsDisplayMode}`]}><h2>{t.route}</h2><ol>{stops.map((stop,index)=><li><span class="route-stop-number">{String(index+1).padStart(2,'0')}</span><div><h3>{stop.title}</h3>{settings.stopsDisplayMode==='cards'&&stop.shortDescription&&<p>{stop.shortDescription}</p>}{settings.stopsDisplayMode==='cards'&&stop.durationMinutes&&<small>{stop.durationMinutes} {t.minutes}</small>}{settings.stopsDisplayMode==='cards'&&settings.stopsMediaMode!=='hidden'&&Boolean(stop.media?.length)&&<div class:list={['route-stop-media',`route-stop-media--${settings.stopsMediaMode}`]}>{stop.media?.slice(0,settings.stopsMediaMode==='single'?1:undefined).map((url,index)=>url.endsWith('.mp4')?<video controls playsinline preload="metadata" aria-label={stop.imageAlt||stop.title}><source src={path(url)} type="video/mp4" /></video>:<img src={path(url)} alt={stop.imageAlt||`${stop.title} ${index+1}`} loading="lazy" />)}</div>}</div></li>)}</ol></section>}
+  <section class="two-columns"><div><h2>{t.included}</h2><ul class="check-list">{route.includes.map(item=><li>{item}</li>)}</ul></div><div><h2>{t.excluded}</h2><ul class="plain-list">{route.notIncluded.map(item=><li>{item}</li>)}</ul></div></section>
+  {settings.showAccessibility&&route.accessibility&&<section><h2>{t.accessibility}</h2><p>{route.accessibility}</p></section>}
+ </div><aside class="detail-sidebar">
+  <div class="info-card"><h2>{t.practical}</h2><dl>{route.area&&<div><dt>{t.area}</dt><dd>{route.area}</dd></div>}{route.format&&<div><dt>{t.format}</dt><dd>{route.format}</dd></div>}{route.startingPoint&&<div><dt>{t.start}</dt><dd>{route.startingPoint}</dd></div>}{route.endingPoint&&<div><dt>{t.finish}</dt><dd>{route.endingPoint}</dd></div>}{route.scheduleNotes&&<div><dt>{t.schedule}</dt><dd>{route.scheduleNotes}</dd></div>}</dl></div>
+  {settings.showMeetingPoint&&(route.meetingAddress||route.meetingReference||route.meetingInstructions||route.meetingTransport)&&<div class="info-card"><h2>{t.meeting}</h2><dl>{route.meetingAddress&&<div><dt>{t.address}</dt><dd>{route.meetingAddress}</dd></div>}{route.meetingReference&&<div><dt>{t.reference}</dt><dd>{route.meetingReference}</dd></div>}{route.meetingInstructions&&<div><dt>{t.meeting}</dt><dd>{route.meetingInstructions}</dd></div>}{route.meetingTransport&&<div><dt>{t.transport}</dt><dd>{route.meetingTransport}</dd></div>}</dl></div>}
+  {(route.priceIndividual||route.priceGroup)&&<div class="info-card"><h2>{t.prices}</h2><dl>{route.priceIndividual&&<div><dt>{t.individual}</dt><dd>{route.priceIndividual}</dd></div>}{route.priceGroup&&<div><dt>{t.group}</dt><dd>{route.priceGroup}</dd></div>}</dl><p class="pending-note">{t.payment}</p></div>}
+ </aside></div>
+</article>
+<script>import '../scripts/route-carousel';import '../scripts/route-live-media';</script>

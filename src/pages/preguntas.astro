@@ -1,15 +1,4 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-const faqs = [
-  ['¿Al enviar el formulario queda hecha la reserva?', 'Sí. Solo puedes elegir fechas y horas disponibles. Al enviarlo, la reserva queda registrada y recibes por correo la referencia, el horario y el punto de encuentro.'],
-  ['¿Debo pagar al enviar el formulario?', 'No. La primera versión no procesa pagos ni solicita datos bancarios.'],
-  ['¿En qué idiomas se ofrecen las rutas?', 'Las rutas se ofrecen inicialmente en español e inglés. El guía comprende catalán y portugués, pero todavía no se anuncian como idiomas completos de guiado.'],
-  ['¿Puedo reservar para un hotel, agencia o partner?', 'Sí. Marca la casilla correspondiente en el formulario. La reserva queda registrada con esa modalidad y la franja se bloquea automáticamente.'],
-  ['¿La ruta de Sagrada Familia incluye entrada?', 'No. Es una ruta exterior alrededor de la basílica. Las entradas no están incluidas.'],
-  ['¿Las rutas son accesibles?', 'Cada ficha indica el estado de la auditoría de accesibilidad. Antes de confirmar, revisaremos contigo cualquier necesidad concreta.']
-];
+import BaseLayout from '../layouts/BaseLayout.astro';import { getPublicSiteDesign } from '../lib/site-settings';const design=await getPublicSiteDesign(),c=design.editorial.es;
 ---
-<BaseLayout title="Preguntas frecuentes">
-  <header class="page-hero compact"><div><p class="kicker">Antes de reservar</p><h1>Preguntas frecuentes</h1><p>Respuestas claras sobre el funcionamiento inicial de Rutas B.</p></div></header>
-  <section class="section faq-list">{faqs.map(([q,a]) => <details><summary>{q}<span aria-hidden="true">+</span></summary><p>{a}</p></details>)}</section>
-</BaseLayout>
+<BaseLayout title={c.faqTitle} description={c.faqIntro}><header class="page-hero compact"><div><p class="kicker">{c.faqKicker}</p><h1>{c.faqTitle}</h1><p>{c.faqIntro}</p></div></header><section class="section faq-list">{c.faqs.map(item=><details><summary>{item.question}<span aria-hidden="true">+</span></summary><p>{item.answer}</p></details>)}</section></BaseLayout>

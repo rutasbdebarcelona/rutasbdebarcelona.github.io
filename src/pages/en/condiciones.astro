@@ -1,4 +1,4 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';import { getPublicSiteDesign } from '../../lib/site-settings';const design=await getPublicSiteDesign(),c=design.editorial.en;
 ---
-<BaseLayout locale="en" title="Terms" noindex><article class="legal section"><p class="kicker dark">Provisional document</p><h1>Basic terms</h1><p class="legal-warning">To be completed before the commercial launch. This does not yet constitute a contractual offer.</p><h2>Bookings</h2><p>Submitting the form registers the booking and generates a reference. No payment is charged at this stage.</p><h2>Prices</h2><p>Prices marked as pending must not be interpreted as free. The price and included services will be communicated before any paid transaction.</p><h2>Changes and cancellations</h2><p>The final policy remains to be decided.</p><h2>Tour conditions</h2><p>Exact meeting points and the order of the route may be adjusted due to capacity, construction work, events, weather or group safety.</p></article></BaseLayout>
+<BaseLayout locale="en" title={c.termsTitle} noindex><article class="legal section"><p class="kicker dark">{c.termsKicker}</p><h1>{c.termsTitle}</h1><p class="legal-warning">{c.termsWarning}</p>{[1,2,3,4].map(i=><><h2>{c[`terms${i}Title`]}</h2><p>{c[`terms${i}Body`]}</p></>)}</article></BaseLayout>

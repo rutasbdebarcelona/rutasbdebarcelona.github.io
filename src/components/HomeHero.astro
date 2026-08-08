@@ -6,6 +6,8 @@ const {locale,design,base}=Astro.props;
 const content=design.content[locale],image=design.home.heroImage;
 const root=locale==='en'?base+'en/':base;
 const src=/^https?:/i.test(image.url)?image.url:base+image.url.replace(/^\//,'');
+const actionLabels={book:content.heroBookLabel,routes:content.heroRoutesLabel,guide:content.heroGuideLabel};
+const actionHref=(action:'book'|'routes'|'guide')=>{const value=design.home.heroActionLinks[action]||'';return /^https?:/i.test(value)?value:root+(value.startsWith('/')?value.slice(1):value);};
 const style=`--image-desktop-x:${image.desktopX}%;--image-desktop-y:${image.desktopY}%;--image-mobile-x:${image.mobileX}%;--image-mobile-y:${image.mobileY}%;--image-desktop-zoom:${image.desktopZoom/100};--image-mobile-zoom:${image.mobileZoom/100};--image-desktop-fit:${image.desktopFit};--image-mobile-fit:${image.mobileFit}`;
 ---
 <section class="route-hero home-route-hero editable-home-image" style={style}>
@@ -16,9 +18,7 @@ const style=`--image-desktop-x:${image.desktopX}%;--image-desktop-y:${image.desk
     <h1>{content.homeTitle}<em>{content.homeAccent}</em></h1>
     <p>{content.homeLead}</p>
     <div class="hero-actions">
-      <a class="button primary" href={root+'rutas/'}>{content.heroRoutesLabel}</a>
-      <a class="button ghost" href={root+'sobre/'}>{content.heroGuideLabel}</a>
-      <a class="button ghost booking-hero-cta" href={root+'reservar/'}>{content.heroBookLabel}</a>
+      {design.home.heroActionOrder.map((action,index)=><a class:list={['button',index===0?'primary':'ghost',{'booking-hero-cta':action==='book'}]} href={actionHref(action)}>{actionLabels[action]}</a>)}
     </div>
     <ul class="trust-row">{content.trustItems.filter(Boolean).map(item=><li>{item}</li>)}</ul>
   </div>

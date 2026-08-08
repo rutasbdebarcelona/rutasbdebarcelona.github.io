@@ -21,7 +21,7 @@ export const siteConfig = {
     booking: true,
     admin: true
   },
-  routeOrder: ['sagrada-familia', 'barcino', 'cafeborn']
+  routeOrder: ['sagrada-familia', 'sagrada-familia-nocturna', 'barcino']
 } as const;
 
 export type SiteModule = keyof typeof siteConfig.modules;

@@ -1,38 +1,48 @@
 ---
 ---
 <details class="route-product-workbench route-editor-section">
-  <summary><span>4</span> Producto comercial y variantes</summary>
-  <p class="admin-help">Preparación editorial para marketplaces, venta directa y futuras integraciones. Todo queda como borrador hasta que pulses <strong>Publicar en web</strong>.</p>
-  <details class="route-subsection" open><summary>Descripción y propuesta</summary><div class="form-grid">
+  <summary><span>4</span> Ficha comercial, paradas y presentación</summary>
+  <p class="admin-help">Una sola ficha por ruta. Si necesitas una versión diurna, nocturna o privada, usa <strong>Duplicar como borrador</strong>: será una ruta independiente y fácil de editar.</p>
+  <details class="route-subsection" open><summary>Ficha comercial</summary><div class="form-grid">
     <label class="field full"><span>Descripción breve (hasta 200 caracteres recomendados)</span><textarea name="productShortDescription" rows="3" maxlength="300"></textarea></label>
-    <label class="field full"><span>Descripción extensa (mínimo 700 caracteres recomendado)</span><textarea name="productLongDescription" rows="10" maxlength="8000"></textarea></label>
-    <label class="field full"><span>Aspectos destacados (uno por línea)</span><textarea name="productHighlights" rows="6"></textarea></label>
+    <label class="field full"><span>Descripción extensa</span><textarea name="productLongDescription" rows="9" maxlength="8000"></textarea></label>
+    <label class="field full"><span>Aspectos destacados (uno por línea)</span><textarea name="productHighlights" rows="5"></textarea></label>
     <label class="field"><span>Categorías (separadas por coma)</span><input name="productCategories" /></label>
+    <label class="field"><span>Máximo de personas</span><input name="productMaxGroup" type="number" min="1" max="15" placeholder="12" /></label>
+    <label class="field"><span>Límite de reserva (horas antes)</span><input name="productCutoff" type="number" min="0" max="8760" placeholder="0" /></label>
+    <label class="field full"><span>Horarios y programación</span><textarea name="productSchedule" rows="3"></textarea></label>
     <label class="field full"><span>Resumen del itinerario</span><textarea name="productItinerary" rows="5"></textarea></label>
-  </div></details>
-  <details class="route-subsection"><summary>Operación y condiciones</summary><div class="form-grid">
-    <label class="field"><span>Tamaño máximo del grupo</span><input name="productMaxGroup" type="number" min="1" max="15" placeholder="15" /></label>
-    <label class="field"><span>Límite de reserva (horas antes)</span><input name="productCutoff" type="number" min="0" max="8760" placeholder="12" /></label>
-    <label class="field full"><span>Fechas de cierre (AAAA-MM-DD, una por línea)</span><textarea name="productClosureDates" rows="4"></textarea></label>
     <label class="field full"><span>Qué llevar (un elemento por línea)</span><textarea name="productWhatToBring" rows="4"></textarea></label>
-    <label class="field full"><span>Política de cambios o cancelación</span><textarea name="productCancellation" rows="5"></textarea></label>
-    <label class="field full"><span>Notas privadas de producción (nunca públicas)</span><textarea name="productPrivateNotes" rows="5"></textarea></label>
+    <label class="field full"><span>Política de cambios o cancelación</span><textarea name="productCancellation" rows="4"></textarea></label>
+    <label class="field full"><span>Fechas de cierre AAAA-MM-DD (una por línea)</span><textarea name="productClosureDates" rows="3"></textarea></label>
+    <label class="field full"><span>Notas internas (nunca públicas)</span><textarea name="productPrivateNotes" rows="4"></textarea></label>
   </div></details>
   <details class="route-subsection"><summary>Punto de encuentro</summary><div class="form-grid">
     <label class="field full"><span>Dirección exacta</span><input name="meetingAddress" /></label>
-    <label class="field full"><span>Punto de referencia visible</span><input name="meetingReference" /></label>
+    <label class="field full"><span>Referencia visible</span><input name="meetingReference" /></label>
     <label class="field full"><span>Instrucciones para encontrarse</span><textarea name="meetingInstructions" rows="4"></textarea></label>
     <label class="field full"><span>Transporte público recomendado</span><textarea name="meetingTransport" rows="3"></textarea></label>
   </div></details>
-  <details class="route-translation-editor route-subsection"><summary>English product sheet</summary><div class="form-grid">
+  <details class="route-subsection"><summary>Paradas del recorrido</summary>
+    <p class="admin-help">Cada parada tiene título y resumen, y puede incorporar descripción extensa, tiempo, información práctica, inglés y una o varias imágenes. Puedes reordenarlas sin tocar código.</p>
+    <div class="structured-editor-list" data-route-stop-list></div>
+    <button class="button outline" type="button" data-route-stop-add>+ Agregar parada</button>
+  </details>
+  <details class="route-subsection"><summary>Presentación de fotos y secciones</summary><div class="form-grid">
+    <label class="field"><span>Galería pública</span><select name="galleryMode"><option value="carousel">Carrusel</option><option value="single">Una foto</option><option value="grid">Cuadrícula</option><option value="hidden">Oculta</option></select></label>
+    <label class="field"><span>Fotos en paradas</span><select name="stopsMediaMode"><option value="carousel">Carrusel por parada</option><option value="single">Una foto por parada</option><option value="hidden">Sin fotos</option></select></label>
+    <label class="field"><span>Recorrido público</span><select name="stopsDisplayMode"><option value="cards">Fichas con resumen</option><option value="compact">Lista compacta</option><option value="hidden">Oculto</option></select></label>
+    <label class="consent"><input name="showHighlights" type="checkbox" /><span>Mostrar aspectos destacados</span></label>
+    <label class="consent"><input name="showMeetingPoint" type="checkbox" /><span>Mostrar punto de encuentro</span></label>
+    <label class="consent"><input name="showAccessibility" type="checkbox" /><span>Mostrar accesibilidad</span></label>
+  </div><p class="admin-help">La imagen principal se cambia en la biblioteca inferior. La regla responsive se mantiene automáticamente en escritorio y móvil.</p></details>
+  <details class="route-translation-editor route-subsection"><summary>Contenido comercial en inglés</summary><div class="form-grid">
     <label class="field full"><span>Short description</span><textarea name="productShortDescriptionEn" rows="3"></textarea></label>
-    <label class="field full"><span>Long description</span><textarea name="productLongDescriptionEn" rows="9"></textarea></label>
+    <label class="field full"><span>Long description</span><textarea name="productLongDescriptionEn" rows="8"></textarea></label>
     <label class="field full"><span>Highlights (one per line)</span><textarea name="productHighlightsEn" rows="5"></textarea></label>
-    <label class="field full"><span>Itinerary summary</span><textarea name="productItineraryEn" rows="5"></textarea></label>
-    <label class="field full"><span>Meeting instructions</span><textarea name="meetingInstructionsEn" rows="4"></textarea></label>
+    <label class="field full"><span>Itinerary summary</span><textarea name="productItineraryEn" rows="4"></textarea></label>
+    <label class="field full"><span>Schedule</span><textarea name="productScheduleEn" rows="3"></textarea></label>
+    <label class="field full"><span>Meeting instructions</span><textarea name="meetingInstructionsEn" rows="3"></textarea></label>
     <label class="field full"><span>Public transport</span><textarea name="meetingTransportEn" rows="3"></textarea></label>
   </div></details>
-  <details class="route-subsection"><summary>Paradas detalladas</summary><p class="admin-help">Cada parada puede tener descripción propia, tiempo, información práctica, coordenadas e inglés.</p><div class="structured-editor-list" data-route-stop-list></div><button class="button outline" type="button" data-route-stop-add>+ Agregar parada</button></details>
-  <details class="route-subsection"><summary>Variantes de la ruta</summary><p class="admin-help">Crea versiones diurnas, nocturnas, estacionales o privadas. Solo serán visibles tras publicar y si marcas “Activa”.</p><div class="structured-editor-list" data-route-variant-list></div><div class="route-template-actions"><button class="button outline" type="button" data-route-variant-add>+ Agregar variante</button><button class="button outline" type="button" data-route-night-templates>Preparar variante nocturna</button></div></details>
-  <aside class="route-media-readiness"><strong>Fotografías del producto</strong><p>Usa la biblioteca multimedia inferior. Objetivo: 1 imagen principal + 4 a 7 fotografías horizontales, mínimo 1280 × 960 px. El corrector protege proporción y responsive.</p></aside>
 </details>
