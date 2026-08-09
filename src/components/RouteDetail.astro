@@ -9,16 +9,23 @@ const path=(value:string)=>/^https?:/i.test(value)?value:`${base}${value.replace
 const image=path(route.image),pending=route.status!=='available',gallery=route.gallery??[],documents=route.documents??[];
 const settings=route.pageSettings??{galleryMode:'grid',stopsMediaMode:'carousel',stopsDisplayMode:'cards',showHighlights:true,showMeetingPoint:true,showAccessibility:true,showLongDescription:true};
 const stops:RouteStop[]=route.stopDetails?.length?route.stopDetails:route.stops.map(title=>({title}));
+const compact=(value:string,max=200)=>{
+ const text=value.replace(/\s+/g,' ').trim();
+ if(text.length<=max)return text;
+ const cut=text.slice(0,max+1),lastSpace=cut.lastIndexOf(' ');
+ return `${cut.slice(0,lastSpace>120?lastSpace:max).replace(/[.,;:]$/,'')}…`;
+};
+const experienceSummary=compact(route.promise||route.description);
 // Las descripciones de paradas se publican como un conjunto completo.
 const showStopDescriptions=stops.length>0&&stops.every(stop=>Boolean(stop.shortDescription?.trim()));
 const showStopMedia=stops.length>0&&stops.every(stop=>Boolean(stop.media?.length));
 const t=locale==='en'?{
- duration:'Duration',languages:'Languages offered',price:'Price',ask:'Ask about this tour',book:'Book this tour',experience:'The experience',experienceTitle:'A tour with its own guiding question',
+ duration:'Duration',languages:'Languages offered',price:'Price',ask:'Ask about this tour',book:'Book this tour',experience:'The experience',experienceTitle:'A tour with its own guiding question',showExperience:'Show experience',hideExperience:'Hide experience',
  highlights:'Highlights',gallery:'Gallery',materials:'Tour materials',listen:'Listen: ',open:'Open: ',route:'The route',minutes:'min',
  included:'What is included',excluded:'What is not included',accessibility:'Accessibility',practical:'Practical information',area:'Area',format:'Format',start:'Start',finish:'Finish',
  meeting:'Meeting point',address:'Address',reference:'Landmark',transport:'Public transport',schedule:'Schedule',prices:'Prices',individual:'Individual',group:'Private group',payment:'No payment is charged when registering your booking.'
 }:{
- duration:'Duración',languages:'Idiomas ofrecidos',price:'Precio',ask:'Consultar esta ruta',book:'Reservar esta ruta',experience:'La experiencia',experienceTitle:'Una ruta con una pregunta propia',
+ duration:'Duración',languages:'Idiomas ofrecidos',price:'Precio',ask:'Consultar esta ruta',book:'Reservar esta ruta',experience:'La experiencia',experienceTitle:'Una ruta con una pregunta propia',showExperience:'Mostrar experiencia',hideExperience:'Ocultar experiencia',
  highlights:'Aspectos destacados',gallery:'Galería',materials:'Materiales de la ruta',listen:'Escuchar: ',open:'Abrir: ',route:'El recorrido',minutes:'min',
  included:'Qué incluye',excluded:'Qué no incluye',accessibility:'Accesibilidad',practical:'Información práctica',area:'Zona',format:'Formato',start:'Inicio',finish:'Cierre',
  meeting:'Punto de encuentro',address:'Dirección',reference:'Referencia',transport:'Transporte público',schedule:'Horarios',prices:'Precios',individual:'Individual',group:'Grupo privado',payment:'No se cobrará ningún importe al registrar la reserva.'
@@ -30,7 +37,7 @@ const supabaseUrl=import.meta.env.PUBLIC_SUPABASE_URL??'',supabaseKey=import.met
  <header class="route-hero"><img src={image} alt={route.imageAlt} data-route-hero-image /><div class="route-hero-overlay"></div><div class="route-hero-copy"><p class="kicker">{route.eyebrow}</p><h1>{route.title}</h1><p>{route.promise}</p>{pending&&<span class:list={['status-pill',route.status]}>{route.statusLabel}</span>}</div></header>
  <div class="route-booking-bar"><div><span>{t.duration}</span><strong>{route.duration}</strong></div><div><span>{t.languages}</span><strong>{route.languages.join(' · ')}</strong></div>{route.priceIndividual&&<div><span>{t.price}</span><strong>{route.priceIndividual}</strong></div>}<a class="button primary" href={`${root}reservar/?ruta=${route.slug}`}>{pending?t.ask:t.book}</a></div>
  <div class="detail-layout section"><div class="detail-main">
-  {settings.showLongDescription&&route.description&&<section><p class="kicker dark">{t.experience}</p><h2>{t.experienceTitle}</h2><p class="large-copy">{route.description}</p></section>}
+  {settings.showLongDescription&&route.description&&<section class="route-experience"><p class="kicker dark">{t.experience}</p><h2>{t.experienceTitle}</h2><p class="experience-summary">{experienceSummary}</p><details class="experience-disclosure"><summary><span class="experience-show">{t.showExperience}</span><span class="experience-hide">{t.hideExperience}</span></summary><div class="experience-panel"><p class="experience-copy">{route.description}</p></div></details></section>}
   {settings.showHighlights&&Boolean(route.highlights?.length)&&<section class="route-highlights"><h2>{t.highlights}</h2><ul class="check-list">{route.highlights?.map(item=><li>{item}</li>)}</ul></section>}
   {settings.galleryMode!=='hidden'&&gallery.length>0&&<section class:list={['route-gallery',`route-gallery--${settings.galleryMode}`]} data-route-gallery data-route-carousel={settings.galleryMode==='carousel'}><div class="route-section-heading"><h2>{t.gallery}</h2>{settings.galleryMode==='carousel'&&gallery.length>1&&<div class="route-carousel-controls"><button type="button" data-carousel-prev aria-label="Anterior">←</button><button type="button" data-carousel-next aria-label="Siguiente">→</button></div>}</div><div data-route-gallery-list data-carousel-track>{gallery.slice(0,settings.galleryMode==='single'?1:undefined).map(item=><figure>{item.kind==='video'?<video controls playsinline preload="metadata" aria-label={item.altText}><source src={path(item.url)} type={item.mimeType||'video/mp4'} /></video>:<img src={path(item.url)} alt={item.altText} loading="lazy" />}</figure>)}</div></section>}
   {documents.length>0&&<section class="route-documents" data-route-documents><h2>{t.materials}</h2><div data-route-document-list>{documents.map(item=><a href={path(item.url)} target="_blank" rel="noopener">{item.kind==='audio'?t.listen:t.open}{item.title}</a>)}</div></section>}

@@ -178,3 +178,16 @@ body:has(.admin-shell){background:#eef0ec}.admin-shell{width:100%;overflow-x:cli
 .admin-shell[data-sidebar-collapsed] .admin-signout::before{content:'Salir';font-size:.68rem}
 .large-copy{max-width:68ch;font-size:clamp(1.12rem,1.55vw,1.38rem);line-height:1.7;white-space:pre-line}
 @media(max-width:900px){.admin-sidebar-footer{margin-top:12px;padding-top:0}.admin-brand img{width:56px;height:56px}.admin-shell[data-sidebar-collapsed] .admin-sidebar{width:100%;padding:10px 14px}.admin-shell[data-sidebar-collapsed] .admin-main{margin-left:0}.admin-shell[data-sidebar-collapsed] .admin-sidebar nav,.admin-shell[data-sidebar-collapsed] .admin-sidebar-footer{display:none}.admin-shell[data-sidebar-collapsed] .admin-brand{margin:0}.admin-topbar{display:grid;grid-template-columns:auto 1fr auto}.admin-user-name{align-self:center}}
+/* Progressive disclosure keeps route narratives readable without hiding their scope. */
+.route-experience .experience-summary{max-width:58ch;margin:0 0 1.4rem;font-size:clamp(1.02rem,1.25vw,1.15rem);line-height:1.65;color:var(--ink)}
+.experience-disclosure{max-width:68ch}
+.experience-disclosure summary{display:inline-flex;align-items:center;min-height:48px;padding:.72rem 1.05rem;border:1px solid var(--forest);color:var(--forest);font-weight:700;cursor:pointer;list-style:none;transition:background-color .2s,color .2s}
+.experience-disclosure summary::-webkit-details-marker{display:none}
+.experience-disclosure summary:hover,.experience-disclosure summary:focus-visible{background:var(--forest);color:#fff}
+.experience-disclosure summary:focus-visible{outline:3px solid color-mix(in srgb,var(--clay) 55%,transparent);outline-offset:3px}
+.experience-hide{display:none}
+.experience-disclosure[open] .experience-show{display:none}
+.experience-disclosure[open] .experience-hide{display:inline}
+.experience-panel{padding-top:1.5rem}
+.experience-copy{max-width:64ch;margin:0;font-size:clamp(.98rem,1.08vw,1.08rem);line-height:1.72;text-align:justify;white-space:pre-line;hyphens:auto;text-wrap:pretty}
+@media(max-width:640px){.route-experience .experience-summary{font-size:1rem}.experience-disclosure{max-width:none}.experience-disclosure summary{width:100%;justify-content:center}.experience-copy{font-size:.96rem;line-height:1.68}}
