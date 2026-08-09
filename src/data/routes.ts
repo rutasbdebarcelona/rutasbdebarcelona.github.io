@@ -15,7 +15,7 @@ export interface TourRoute {
  slug:string;title:string;eyebrow:string;promise:string;description:string;status:RouteStatus;statusLabel:string;duration:string;format:string;area:string;
  languages:string[];audience:string[];startingPoint:string;endingPoint:string;stops:string[];stopDetails?:RouteStop[];highlights?:string[];includes:string[];notIncluded:string[];
  accessibility:string;priceIndividual:string;priceGroup:string;image:string;imageAlt:string;gallery?:RouteMediaAsset[];documents?:RouteMediaAsset[];
- meetingAddress?:string;meetingReference?:string;meetingInstructions?:string;meetingTransport?:string;scheduleNotes?:string;pageSettings?:RoutePageSettings;
+ meetingAddress?:string;meetingMapUrl?:string;meetingReference?:string;meetingInstructions?:string;meetingTransport?:string;scheduleNotes?:string;pageSettings?:RoutePageSettings;
  featured:boolean;published:boolean;translationEn?:Partial<TourRoute>;
 }
 
