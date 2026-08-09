@@ -55,4 +55,4 @@ const supabaseUrl=import.meta.env.PUBLIC_SUPABASE_URL??'',supabaseKey=import.met
  </aside></div>
  {related.length>0&&<nav class="related-routes section" aria-label={t.moreRoutes}><p class="kicker dark">{t.moreRoutes}</p><div class="related-routes-list">{related.map(item=><a href={`${root}rutas/${item.slug}/`}><img src={path(item.image)} alt={item.imageAlt} loading="lazy" /><span><small>{item.eyebrow}</small><strong>{item.title}</strong>{item.status!=='available'&&<em>{item.statusLabel}</em>}</span></a>)}</div></nav>}
 </article>
-<script>import '../scripts/route-carousel';import '../scripts/route-live-media';</script>
+<script>import '../scripts/route-carousel';import '../scripts/route-live-media';import '../scripts/route-lightbox';</script>
