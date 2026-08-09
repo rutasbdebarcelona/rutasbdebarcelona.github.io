@@ -1,0 +1,21 @@
+---
+import type { PageVisualSettings } from '../lib/site-settings';
+interface Props { visual:PageVisualSettings; class?:string; }
+const {visual,class:className=''}=Astro.props;
+const base=import.meta.env.BASE_URL;
+const hasImage=Boolean(visual?.url)&&visual.presentation!=='none';
+const src=hasImage?(/^https?:/i.test(visual.url)?visual.url:base+visual.url.replace(/^\//,'')):'';
+const style=hasImage?`--section-visual:url("${src}");--section-x:${visual.x}%;--section-y:${visual.y}%;--section-fit:${visual.fit};`:'';
+---
+<section class:list={['section','page-visual-section',className,{'has-section-visual':hasImage}]} style={style}>
+  <div class="page-visual-section-inner"><slot /></div>
+</section>
+<style>
+  .page-visual-section{position:relative;isolation:isolate;overflow:hidden}
+  .page-visual-section.has-section-visual{padding-inline:clamp(18px,3vw,44px)}
+  .has-section-visual:before{content:"";position:absolute;inset:0;z-index:-2;background:var(--paper) var(--section-visual) no-repeat;background-size:var(--section-fit);background-position:var(--section-x) var(--section-y);filter:saturate(.72) contrast(1.02)}
+  .has-section-visual:after{content:"";position:absolute;inset:0;z-index:-1;background:rgba(244,239,230,.78)}
+  .page-visual-section-inner{position:relative;z-index:1}
+  .has-section-visual .page-visual-section-inner{padding:clamp(18px,3vw,38px);background:rgba(251,248,242,.9);box-shadow:0 18px 50px rgba(13,41,34,.1)}
+  @media(max-width:620px){.page-visual-section.has-section-visual{padding-inline:10px}.has-section-visual .page-visual-section-inner{padding:10px}}
+</style>

@@ -8,9 +8,9 @@ export type HomeImageSettings = {
   desktopZoom:number; mobileZoom:number; desktopOpacity:number; mobileOpacity:number; presentation:'panel'|'background';
   desktopRatio:'3/2'|'16/9'|'4/3'; mobileRatio:'3/2'|'4/3'|'1/1';
 };
-export type PageVisualKey='routes'|'compare'|'guide'|'faq'|'contact'|'booking'|'reviews'|'publications'|'privacy'|'terms';
+export type PageVisualKey='routes'|'compare'|'compareContent'|'guide'|'faq'|'contact'|'booking'|'reviews'|'publications'|'privacy'|'terms';
 export type PageVisualSettings={url:string;altEs:string;altEn:string;presentation:'none'|'image'|'background';fit:'cover'|'contain';x:number;y:number;linkUrl:string;linkLabelEs:string;linkLabelEn:string};
-export const pageVisualKeys:PageVisualKey[]=['routes','compare','guide','faq','contact','booking','reviews','publications','privacy','terms'];
+export const pageVisualKeys:PageVisualKey[]=['routes','compare','compareContent','guide','faq','contact','booking','reviews','publications','privacy','terms'];
 export type HomeSectionKey='routes'|'method'|'partner';
 export type HomeLocaleContent = {
   homeKicker:string; homeTitle:string; homeAccent:string; homeLead:string; homeNote:string;
