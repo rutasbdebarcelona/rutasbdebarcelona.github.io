@@ -3,7 +3,9 @@ const imageSelector='[data-route-gallery-list] img,.route-stop-media img';
 
 roots.forEach(root=>{
  const locale=document.documentElement.lang?.startsWith('en')?'en':'es';
- const labels=locale==='en'?{open:'Enlarge image',close:'Close enlarged image',prev:'Previous image',next:'Next image'}:{open:'Ampliar imagen',close:'Cerrar imagen ampliada',prev:'Imagen anterior',next:'Imagen siguiente'};
+ const labels=locale==='en'
+  ?{open:'Enlarge image',close:'Close',prev:'Previous image',next:'Next image'}
+  :{open:'Ampliar imagen',close:'Cerrar',prev:'Imagen anterior',next:'Imagen siguiente'};
  const dialog=document.createElement('dialog');
  dialog.className='route-lightbox';
  dialog.setAttribute('aria-label',labels.open);
@@ -15,20 +17,71 @@ roots.forEach(root=>{
  const next=dialog.querySelector<HTMLButtonElement>('.route-lightbox-next')!;
  const close=dialog.querySelector<HTMLButtonElement>('.route-lightbox-close')!;
  let index=0,lastFocus:HTMLElement|null=null,touchStart=0;
+
  const images=()=>Array.from(root.querySelectorAll<HTMLImageElement>(imageSelector)).filter(image=>Boolean(image.currentSrc||image.src));
- const prepare=()=>images().forEach(image=>{image.tabIndex=0;image.setAttribute('role','button');image.setAttribute('aria-label',`${labels.open}: ${image.alt||''}`.replace(/:\s*$/,''));});
- const render=()=>{const list=images(),item=list[index];if(!item)return;enlarged.src=item.currentSrc||item.src;enlarged.alt=item.alt||'';counter.textContent=list.length>1?`${index+1} / ${list.length}`:'';prev.hidden=next.hidden=list.length<2;};
- const openImage=(image:HTMLImageElement)=>{const list=images();index=Math.max(0,list.indexOf(image));lastFocus=image;render();dialog.showModal();document.documentElement.classList.add('lightbox-open');close.focus();};
- const move=(step:number)=>{const list=images();if(list.length<2)return;index=(index+step+list.length)%list.length;render();};
+ const prepare=()=>{
+  images().forEach(image=>{
+   if(image.closest('.route-zoom-frame'))return;
+   const frame=document.createElement('span');
+   frame.className='route-zoom-frame';
+   const button=document.createElement('button');
+   button.className='route-zoom-trigger';
+   button.type='button';
+   button.setAttribute('aria-label',`${labels.open}: ${image.alt||''}`.replace(/:\s*$/,''));
+   button.innerHTML='<span aria-hidden="true">⌕</span>';
+   image.before(frame);
+   frame.append(image,button);
+  });
+ };
+ const render=()=>{
+  const list=images(),item=list[index];
+  if(!item)return;
+  enlarged.src=item.currentSrc||item.src;
+  enlarged.alt=item.alt||'';
+  counter.textContent=list.length>1?`${index+1} / ${list.length}`:'';
+  prev.hidden=next.hidden=list.length<2;
+ };
+ const openImage=(button:HTMLButtonElement)=>{
+  const image=button.closest('.route-zoom-frame')?.querySelector<HTMLImageElement>('img');
+  if(!image)return;
+  const list=images();
+  index=Math.max(0,list.indexOf(image));
+  lastFocus=button;
+  render();
+  dialog.showModal();
+  document.documentElement.classList.add('lightbox-open');
+  close.focus();
+ };
+ const move=(step:number)=>{
+  const list=images();
+  if(list.length<2)return;
+  index=(index+step+list.length)%list.length;
+  render();
+ };
  const closeDialog=()=>dialog.close();
+
  prepare();
  new MutationObserver(prepare).observe(root,{childList:true,subtree:true});
- root.addEventListener('click',event=>{const target=event.target;if(target instanceof HTMLImageElement&&target.matches(imageSelector))openImage(target);});
- root.addEventListener('keydown',event=>{const target=event.target;if(target instanceof HTMLImageElement&&target.matches(imageSelector)&&(event.key==='Enter'||event.key===' ')){event.preventDefault();openImage(target);}});
- prev.addEventListener('click',()=>move(-1));next.addEventListener('click',()=>move(1));close.addEventListener('click',closeDialog);
+ root.addEventListener('click',event=>{
+  const target=event.target;
+  const button=target instanceof Element?target.closest<HTMLButtonElement>('.route-zoom-trigger'):null;
+  if(button){event.preventDefault();event.stopPropagation();openImage(button);}
+ });
+ prev.addEventListener('click',()=>move(-1));
+ next.addEventListener('click',()=>move(1));
+ close.addEventListener('click',closeDialog);
  dialog.addEventListener('click',event=>{if(event.target===dialog)closeDialog();});
- dialog.addEventListener('keydown',event=>{if(event.key==='ArrowLeft')move(-1);if(event.key==='ArrowRight')move(1);});
+ dialog.addEventListener('keydown',event=>{
+  if(event.key==='ArrowLeft')move(-1);
+  if(event.key==='ArrowRight')move(1);
+ });
  dialog.addEventListener('touchstart',event=>{touchStart=event.changedTouches[0]?.clientX??0;},{passive:true});
- dialog.addEventListener('touchend',event=>{const delta=(event.changedTouches[0]?.clientX??touchStart)-touchStart;if(Math.abs(delta)>45)move(delta<0?1:-1);},{passive:true});
- dialog.addEventListener('close',()=>{document.documentElement.classList.remove('lightbox-open');lastFocus?.focus();});
+ dialog.addEventListener('touchend',event=>{
+  const delta=(event.changedTouches[0]?.clientX??touchStart)-touchStart;
+  if(Math.abs(delta)>45)move(delta<0?1:-1);
+ },{passive:true});
+ dialog.addEventListener('close',()=>{
+  document.documentElement.classList.remove('lightbox-open');
+  lastFocus?.focus();
+ });
 });
