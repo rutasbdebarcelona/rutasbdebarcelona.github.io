@@ -43,8 +43,8 @@ export function setupHomeEditor(app){
     $('[data-editorial-draft-help]').textContent=data.draft?'La web pública todavía no ha cambiado':'Puedes comenzar una edición segura';
     $('[data-editorial-language-state]').textContent=gaps?gaps+' pendientes':'ES + EN';
     $('[data-editorial-language-help]').textContent=gaps?'Revísalos antes de publicar':'Ambos idiomas tienen contenido';
-    $('[data-editorial-next-title]').textContent=data.draft?'Comprobar el borrador':'Editar «Un método propio»';
-    $('[data-editorial-next-copy]').textContent=data.draft?'Abre Publicación y revisa la página real antes de confirmar.':'El cambio comenzará como borrador y no será público.';
+    $('[data-editorial-next-title]').textContent=data.draft?'Comprobar el borrador':'Elige un área de trabajo';
+    $('[data-editorial-next-copy]').textContent=data.draft?'Abre Publicar y revisa la página real antes de confirmar.':'Todos los cambios comienzan como borrador y no alteran la web hasta que publiques.';
     renderChecklist(settings);
   }
   async function loadHistory(){

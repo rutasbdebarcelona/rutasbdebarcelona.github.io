@@ -7,49 +7,69 @@ const base = import.meta.env.BASE_URL;
 ---
 <div class="editorial-center" data-editorial-center>
   <header class="admin-panel editorial-center-header">
-    <div><p class="kicker dark">Centro editorial</p><h2>Publica sin tocar la web hasta que est&eacute; lista</h2><p>Trabaja en borrador, comprueba el resultado real en castellano e ingl&eacute;s y publica &uacute;nicamente cuando t&uacute; lo decidas.</p></div>
-    <div class="editorial-state-card"><span>Estado actual</span><strong data-editorial-state>Cargando&hellip;</strong><small data-editorial-updated></small></div>
+    <div>
+      <p class="kicker dark">Centro editorial</p>
+      <h2>Edita con seguridad y publica cuando esté listo</h2>
+      <p>Todo comienza como borrador. Los controles de cada elemento están dentro de su editor y la web pública solo cambia cuando confirmas la publicación.</p>
+    </div>
+    <div class="editorial-state-card"><span>Estado actual</span><strong data-editorial-state>Cargando…</strong><small data-editorial-updated></small></div>
   </header>
-  <nav class="editorial-tabs" aria-label="&Aacute;reas del centro editorial"><button class="active" type="button" data-editorial-tab="today">Hoy</button><button type="button" data-editorial-tab="content">Contenidos</button><button type="button" data-editorial-tab="pages">P&aacute;ginas</button><button type="button" data-editorial-tab="resources">Recursos</button><button type="button" data-editorial-tab="posts">Publicaciones</button><button type="button" data-editorial-tab="map">Mapa editable</button><button type="button" data-editorial-tab="publication">Publicaci&oacute;n</button></nav>
+
+  <nav class="editorial-tabs" aria-label="Áreas del centro editorial">
+    <button class="active" type="button" data-editorial-tab="today">Inicio</button>
+    <button type="button" data-editorial-tab="pages">Portada</button>
+    <button type="button" data-editorial-tab="sitepages">Otras páginas</button>
+    <button type="button" data-editorial-tab="posts">Publicaciones</button>
+    <button type="button" data-editorial-tab="map">Mapa de edición</button>
+    <button type="button" data-editorial-tab="publication">Publicar</button>
+  </nav>
+
   <section class="editorial-pane" data-editorial-pane="today">
-    <div class="editorial-metrics"><article><span>Web p&uacute;blica</span><strong>Protegida</strong><small>Solo cambia al publicar</small></article><article><span>Borrador</span><strong data-editorial-draft-state>Comprobando</strong><small data-editorial-draft-help></small></article><article><span>Idiomas</span><strong data-editorial-language-state>ES + EN</strong><small data-editorial-language-help></small></article><article><span>Responsive</span><strong>Protegido</strong><small>Variantes seguras, sin CSS libre</small></article></div>
-    <div class="admin-panel editorial-next-step"><div><p class="kicker dark">Siguiente acci&oacute;n</p><h2 data-editorial-next-title>Revisar la portada</h2><p data-editorial-next-copy>Abre el editor y comprueba &laquo;Un m&eacute;todo propio&raquo; antes de publicar.</p></div><button class="button primary" type="button" data-editorial-open="pages" data-editorial-focus="method">Editar &laquo;Un m&eacute;todo propio&raquo;</button></div>
-  </section>
-  <section class="editorial-pane" data-editorial-pane="content" hidden>
-    <div class="editorial-card-grid">
-      <article class="admin-panel"><p class="kicker dark">Portada</p><h2>Textos y secciones</h2><p>Cabecera, rutas, m&eacute;todo, partners y contacto, con ES y EN en la misma ficha.</p><button class="button outline" type="button" data-editorial-open="pages">Editar portada</button></article>
-      <article class="admin-panel"><p class="kicker dark">Cat&aacute;logo</p><h2>Rutas</h2><p>Contenido, traducciones, paradas, precios, im&aacute;genes y documentos.</p><button class="button outline" type="button" data-editorial-admin-view="routes">Abrir editor de rutas</button></article>
-      <article class="admin-panel"><p class="kicker dark">Cuaderno público</p><h2>Publicaciones</h2><p>Artículos bilingües, portada, etiquetas y metadatos SEO.</p><button class="button outline" type="button" data-editorial-open="posts">Abrir publicaciones</button></article>
+    <div class="editorial-metrics">
+      <article><span>Web pública</span><strong>Protegida</strong><small>Solo cambia al publicar</small></article>
+      <article><span>Borrador</span><strong data-editorial-draft-state>Comprobando</strong><small data-editorial-draft-help></small></article>
+      <article><span>Idiomas</span><strong data-editorial-language-state>ES + EN</strong><small data-editorial-language-help></small></article>
+      <article><span>Responsive</span><strong>Protegido</strong><small>Controles seguros para PC y móvil</small></article>
+    </div>
+
+    <div class="admin-panel editorial-next-step">
+      <div><p class="kicker dark">Acceso directo</p><h2 data-editorial-next-title>Elige un área de trabajo</h2><p data-editorial-next-copy>Todos los cambios comienzan como borrador y no alteran la web hasta que publiques.</p></div>
+    </div>
+
+    <div class="editorial-card-grid editorial-launchers">
+      <article class="admin-panel"><p class="kicker dark">Inicio público</p><h2>Portada</h2><p>Marca, colores, cabecera, carrusel, método, partners, contacto e imágenes.</p><button class="button outline" type="button" data-editorial-open="pages">Editar portada</button></article>
+      <article class="admin-panel"><p class="kicker dark">Secciones públicas</p><h2>Otras páginas</h2><p>Catálogo, guía, reserva, contacto, reseñas, preguntas y páginas legales.</p><button class="button outline" type="button" data-editorial-open="sitepages">Editar páginas</button></article>
+      <article class="admin-panel"><p class="kicker dark">Productos</p><h2>Rutas</h2><p>Ficha, traducciones, paradas, precios, imágenes, documentos y publicación.</p><button class="button outline" type="button" data-editorial-admin-view="routes">Abrir rutas</button></article>
+      <article class="admin-panel"><p class="kicker dark">Cuaderno</p><h2>Publicaciones</h2><p>Artículos bilingües, portada, etiquetas y metadatos SEO.</p><button class="button outline" type="button" data-editorial-open="posts">Abrir publicaciones</button></article>
     </div>
   </section>
-  <section class="editorial-pane" data-editorial-pane="pages" hidden><div class="editorial-page-stack"><HomeEditor /><EditorialPagesEditor /></div></section>
-  <section class="editorial-pane" data-editorial-pane="resources" hidden><div class="admin-panel"><div class="admin-panel-head"><div><p class="kicker dark">Biblioteca segura</p><h2>Im&aacute;genes y documentos</h2></div><span>Reemplazar no elimina el original</span></div><div class="editorial-resource-grid">
-    <article><strong>Cabecera de portada</strong><p>Encuadre separado para PC y celular y texto alternativo ES/EN.</p><button class="button outline" type="button" data-editorial-open="pages" data-editorial-focus="hero">Editar imagen</button></article>
-    <article><strong>&laquo;Un m&eacute;todo propio&raquo;</strong><p>Proporci&oacute;n, foco y zoom protegidos para mantener el responsive.</p><button class="button outline" type="button" data-editorial-open="pages" data-editorial-focus="method">Editar imagen</button></article>
-    <article><strong>Materiales de rutas</strong><p>Imagen principal, galer&iacute;a, mapas, folletos y audio.</p><button class="button outline" type="button" data-editorial-admin-view="routes">Abrir recursos de rutas</button></article>
-  </div></div></section>
-  <section class="editorial-pane" data-editorial-pane="posts" hidden><PublicationsEditor /></section><section class="editorial-pane" data-editorial-pane="map" hidden><EditorialCoverageMap /></section><section class="editorial-pane" data-editorial-pane="publication" hidden>
+
+  <section class="editorial-pane" data-editorial-pane="pages" hidden><HomeEditor /></section>
+  <section class="editorial-pane" data-editorial-pane="sitepages" hidden><EditorialPagesEditor /></section>
+  <section class="editorial-pane" data-editorial-pane="posts" hidden><PublicationsEditor /></section>
+  <section class="editorial-pane" data-editorial-pane="map" hidden><EditorialCoverageMap /></section>
+
+  <section class="editorial-pane" data-editorial-pane="publication" hidden>
     <div class="editorial-publication-grid">
-      <article class="admin-panel"><p class="kicker dark">Vista previa privada</p><h2>Comprueba la p&aacute;gina real</h2><p>Usa tu borrador con tu sesi&oacute;n administrativa y no cambia la web p&uacute;blica.</p><div class="route-editor-actions"><a class="button primary" href={`${base}?preview=editorial`} target="_blank" rel="noopener">Vista previa ES &#8599;</a><a class="button outline" href={`${base}en/?preview=editorial`} target="_blank" rel="noopener">Preview EN &#8599;</a></div></article>
-      <article class="admin-panel"><p class="kicker dark">Control previo</p><h2>Antes de publicar</h2><ul class="editorial-checklist" data-editorial-checklist></ul><button class="button outline" type="button" data-editorial-open="pages">Volver al editor</button></article>
+      <article class="admin-panel"><p class="kicker dark">Vista previa privada</p><h2>Comprueba la página real</h2><p>La vista previa usa tu borrador administrativo y no cambia la web pública.</p><div class="route-editor-actions"><a class="button primary" href={`${base}?preview=editorial`} target="_blank" rel="noopener">Vista previa ES ↗</a><a class="button outline" href={`${base}en/?preview=editorial`} target="_blank" rel="noopener">Preview EN ↗</a></div></article>
+      <article class="admin-panel"><p class="kicker dark">Control previo</p><h2>Antes de publicar</h2><ul class="editorial-checklist" data-editorial-checklist></ul><button class="button outline" type="button" data-editorial-open="pages">Volver a la portada</button></article>
     </div>
-    <div class="admin-panel editorial-history-panel"><div class="admin-panel-head"><div><p class="kicker dark">Historial recuperable</p><h2>Versiones anteriores</h2></div><button class="button outline" type="button" data-editorial-refresh-history>Actualizar</button></div><p>Restaurar crea un nuevo registro: no borra la historia.</p><div data-editorial-history></div><p class="admin-empty" data-editorial-history-empty hidden>A&uacute;n no hay versiones anteriores.</p></div>
+    <div class="admin-panel editorial-history-panel"><div class="admin-panel-head"><div><p class="kicker dark">Historial recuperable</p><h2>Versiones anteriores</h2></div><button class="button outline" type="button" data-editorial-refresh-history>Actualizar</button></div><p>Restaurar crea un nuevo registro: no borra la historia.</p><div data-editorial-history></div><p class="admin-empty" data-editorial-history-empty hidden>Aún no hay versiones anteriores.</p></div>
   </section>
 </div>
+
 <style>
-  .editorial-center{display:grid;gap:20px}.editorial-page-stack{display:grid;gap:22px}
-  .editorial-center-header{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:32px;align-items:center}
-  .editorial-center-header h2{font-size:clamp(1.7rem,3vw,2.45rem);margin:.2em 0}.editorial-center-header p{max-width:760px}
+  .editorial-center{display:grid;gap:20px}.editorial-center-header{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:32px;align-items:center}
+  .editorial-center-header h2{font-size:clamp(1.7rem,3vw,2.45rem);margin:.2em 0}.editorial-center-header p{max-width:800px}
   .editorial-state-card{display:grid;gap:5px;padding:20px;background:var(--forest);color:#fff}.editorial-state-card span,.editorial-state-card small{font-size:.7rem;opacity:.75}.editorial-state-card strong{font-size:1.05rem}
   .editorial-tabs{display:flex;gap:6px;padding:7px;background:#fff;border:1px solid var(--line);overflow:auto;position:sticky;top:0;z-index:4}
   .editorial-tabs button{border:0;background:transparent;padding:11px 16px;white-space:nowrap;font:inherit;font-weight:700;color:var(--muted);cursor:pointer}.editorial-tabs button.active{background:var(--forest);color:#fff}
-  .editorial-metrics,.editorial-card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.editorial-metrics article{display:grid;gap:8px;padding:20px;background:#fff;border:1px solid #dde0dc}.editorial-metrics span{font-size:.68rem;text-transform:uppercase;color:var(--muted)}.editorial-metrics strong{font-size:1.25rem}.editorial-metrics small{color:var(--muted);line-height:1.35}
-  .editorial-next-step{display:flex;align-items:center;justify-content:space-between;gap:28px;margin-top:18px}.editorial-next-step h2{font-size:1.65rem;margin:.25em 0}
-  .editorial-card-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.editorial-card-grid article{display:flex;flex-direction:column;align-items:flex-start}.editorial-card-grid article .button{margin-top:auto}.editorial-card-grid .is-prepared{background:#f4f0e7}.editorial-card-grid .is-prepared>span{font-size:.7rem;text-transform:uppercase;color:var(--muted)}
-  .editorial-resource-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}.editorial-resource-grid article{padding:20px;border:1px solid var(--line);display:flex;flex-direction:column;align-items:flex-start}.editorial-resource-grid article p{color:var(--muted)}.editorial-resource-grid .button{margin-top:auto}
-  .editorial-publication-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.editorial-checklist{display:grid;gap:10px;padding:0;list-style:none}.editorial-checklist li{padding-left:26px;position:relative}.editorial-checklist li:before{content:'\\2713';position:absolute;left:0;color:var(--forest);font-weight:800}.editorial-checklist li.warning:before{content:'!';color:var(--clay)}
+  .editorial-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.editorial-metrics article{display:grid;gap:8px;padding:20px;background:#fff;border:1px solid #dde0dc}.editorial-metrics span{font-size:.68rem;text-transform:uppercase;color:var(--muted)}.editorial-metrics strong{font-size:1.25rem}.editorial-metrics small{color:var(--muted);line-height:1.35}
+  .editorial-next-step{margin-top:18px}.editorial-next-step h2{font-size:1.65rem;margin:.25em 0}.editorial-next-step p:last-child{margin-bottom:0}
+  .editorial-card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:14px}.editorial-card-grid article{display:flex;flex-direction:column;align-items:flex-start}.editorial-card-grid article p{color:var(--muted)}.editorial-card-grid article .button{margin-top:auto}
+  .editorial-publication-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.editorial-checklist{display:grid;gap:10px;padding:0;list-style:none}.editorial-checklist li{padding-left:26px;position:relative}.editorial-checklist li:before{content:'\2713';position:absolute;left:0;color:var(--forest);font-weight:800}.editorial-checklist li.warning:before{content:'!';color:var(--clay)}
   .editorial-history-panel{margin-top:18px}.editorial-history-row{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;padding:14px 0;border-top:1px solid var(--line)}.editorial-history-row p{margin:0}.editorial-history-row small{display:block;color:var(--muted)}
-  @media(max-width:1050px){.editorial-metrics{grid-template-columns:1fr 1fr}.editorial-card-grid,.editorial-resource-grid{grid-template-columns:1fr 1fr}}
-  @media(max-width:720px){.editorial-center-header,.editorial-publication-grid{grid-template-columns:1fr}.editorial-state-card{width:100%}.editorial-next-step{align-items:stretch;flex-direction:column}.editorial-next-step .button{width:100%}.editorial-card-grid,.editorial-resource-grid{grid-template-columns:1fr}.editorial-history-row{grid-template-columns:1fr}.editorial-history-row .button{width:100%}}
-  @media(max-width:460px){.editorial-metrics{grid-template-columns:1fr}.editorial-tabs{margin-inline:-14px;border-inline:0}}
+  @media(max-width:1120px){.editorial-metrics,.editorial-card-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:720px){.editorial-center-header,.editorial-publication-grid{grid-template-columns:1fr}.editorial-state-card{width:100%}.editorial-history-row{grid-template-columns:1fr}.editorial-history-row .button{width:100%}}
+  @media(max-width:520px){.editorial-metrics,.editorial-card-grid{grid-template-columns:1fr}.editorial-tabs{margin-inline:-14px;border-inline:0}}
 </style>

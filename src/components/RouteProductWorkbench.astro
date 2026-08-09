@@ -1,35 +1,51 @@
 ---
 ---
-<details class="route-product-workbench route-editor-section">
-  <summary><span>4</span> Contenido público, paradas y encuentro</summary>
-  <p class="admin-help">Una sola ficha por ruta. Si necesitas una versión diurna, nocturna o privada, usa <strong>Duplicar como borrador</strong>: será una ruta independiente y fácil de editar.</p>
-  <details class="route-subsection" open><summary>Descripción pública y venta</summary><div class="form-grid">
-    <label class="field full"><span>Descripción breve (hasta 200 caracteres recomendados)</span><textarea name="productShortDescription" rows="3" maxlength="300"></textarea></label>
-    <label class="field full"><span>Descripción extensa</span><textarea name="productLongDescription" rows="9" maxlength="8000"></textarea></label>
-    <label class="field full"><span>Aspectos destacados (uno por línea)</span><textarea name="productHighlights" rows="5"></textarea></label>
-    <label class="field"><span>Categorías (separadas por coma)</span><input name="productCategories" /></label>
-    <label class="field"><span>Máximo de personas</span><input name="productMaxGroup" type="number" min="1" max="15" placeholder="12" /></label>
-    <label class="field"><span>Límite de reserva (horas antes)</span><input name="productCutoff" type="number" min="0" max="8760" placeholder="0" /></label>
-    <label class="field full"><span>Horarios y programación</span><textarea name="productSchedule" rows="3"></textarea></label>
-    <label class="field full"><span>Resumen del itinerario</span><textarea name="productItinerary" rows="5"></textarea></label>
-    <label class="field full"><span>Qué llevar (un elemento por línea)</span><textarea name="productWhatToBring" rows="4"></textarea></label>
-    <label class="field full"><span>Política de cambios o cancelación</span><textarea name="productCancellation" rows="4"></textarea></label>
-    <label class="field full"><span>Fechas de cierre AAAA-MM-DD (una por línea)</span><textarea name="productClosureDates" rows="3"></textarea></label>
-    <label class="field full"><span>Notas internas (nunca públicas)</span><textarea name="productPrivateNotes" rows="4"></textarea></label>
-  </div></details>
-  <details class="route-subsection"><summary>Punto de encuentro operativo</summary><div class="form-grid">
-    <label class="field full"><span>Dirección exacta <small>(única para ES / EN)</small></span><input name="meetingAddress" /></label><label class="field full"><span>Enlace de ubicación en Maps <small>(opcional y único para ES / EN)</small></span><input name="meetingMapUrl" type="url" placeholder="https://maps.app.goo.gl/..." /><small class="field-help">El botón abrirá exactamente este enlace. No se compara con la dirección ni con la referencia visible.</small></label>
-    <label class="field full"><span>Referencia visible <small>(única para ES / EN)</small></span><input name="meetingReference" placeholder="Ej.: KFC · Avinguda de Gaudí" /></label>
-    <label class="field"><span>Instrucciones para encontrarse · ES</span><textarea name="meetingInstructions" rows="4"></textarea></label>
-    <label class="field"><span>Meeting instructions · EN</span><textarea name="meetingInstructionsEn" rows="4"></textarea></label>
-    <label class="field"><span>Transporte público recomendado · ES</span><textarea name="meetingTransport" rows="3"></textarea></label>
-    <label class="field"><span>Recommended public transport · EN</span><textarea name="meetingTransportEn" rows="3"></textarea></label>
-  </div></details>
+<details class="route-product-workbench route-editor-section" data-route-product-workbench>
+  <summary><span>4</span> Contenido público, paradas y encuentro · ES / EN</summary>
+  <p class="admin-help">Una sola ficha por ruta. Los campos bilingües están enfrentados para que puedas completar y revisar ambos idiomas sin buscarlos en otras secciones.</p>
+
+  <details class="route-subsection" open data-route-commercial>
+    <summary>Contenido comercial bilingüe</summary>
+    <div class="form-grid">
+      <label class="field"><span>Descripción breve · ES <small>(hasta 200 caracteres recomendados)</small></span><textarea name="productShortDescription" rows="3" maxlength="300"></textarea></label>
+      <label class="field"><span>Short description · EN</span><textarea name="productShortDescriptionEn" rows="3" maxlength="300"></textarea></label>
+      <label class="field"><span>Descripción extensa · ES</span><textarea name="productLongDescription" rows="9" maxlength="8000"></textarea></label>
+      <label class="field"><span>Long description · EN</span><textarea name="productLongDescriptionEn" rows="9" maxlength="8000"></textarea></label>
+      <label class="field"><span>Aspectos destacados · ES <small>(uno por línea)</small></span><textarea name="productHighlights" rows="5"></textarea></label>
+      <label class="field"><span>Highlights · EN <small>(one per line)</small></span><textarea name="productHighlightsEn" rows="5"></textarea></label>
+      <label class="field"><span>Horarios y programación · ES</span><textarea name="productSchedule" rows="3"></textarea></label>
+      <label class="field"><span>Schedule · EN</span><textarea name="productScheduleEn" rows="3"></textarea></label>
+      <label class="field"><span>Resumen del itinerario · ES</span><textarea name="productItinerary" rows="5"></textarea></label>
+      <label class="field"><span>Itinerary summary · EN</span><textarea name="productItineraryEn" rows="5"></textarea></label>
+      <label class="field"><span>Categorías <small>(separadas por coma)</small></span><input name="productCategories" /></label>
+      <label class="field"><span>Máximo de personas</span><input name="productMaxGroup" type="number" min="1" max="15" placeholder="12" /></label>
+      <label class="field"><span>Límite de reserva <small>(horas antes)</small></span><input name="productCutoff" type="number" min="0" max="8760" placeholder="0" /></label>
+      <label class="field full"><span>Qué llevar <small>(un elemento por línea)</small></span><textarea name="productWhatToBring" rows="4"></textarea></label>
+      <label class="field full"><span>Política de cambios o cancelación</span><textarea name="productCancellation" rows="4"></textarea></label>
+      <label class="field full"><span>Fechas de cierre AAAA-MM-DD <small>(una por línea)</small></span><textarea name="productClosureDates" rows="3"></textarea></label>
+      <label class="field full"><span>Notas internas <small>(nunca públicas)</small></span><textarea name="productPrivateNotes" rows="4"></textarea></label>
+    </div>
+  </details>
+
+  <details class="route-subsection" data-route-meeting>
+    <summary>Punto de encuentro bilingüe</summary>
+    <div class="form-grid">
+      <label class="field full"><span>Dirección exacta <small>(única para ES / EN)</small></span><input name="meetingAddress" /></label>
+      <label class="field full"><span>Enlace de ubicación en Maps <small>(opcional y único para ES / EN)</small></span><input name="meetingMapUrl" type="url" placeholder="https://maps.app.goo.gl/..." /><small class="field-help">El botón abrirá exactamente este enlace. No se compara con la dirección ni con la referencia visible.</small></label>
+      <label class="field full"><span>Referencia visible <small>(única para ES / EN)</small></span><input name="meetingReference" placeholder="Ej.: KFC · Avinguda de Gaudí" /></label>
+      <label class="field"><span>Instrucciones para encontrarse · ES</span><textarea name="meetingInstructions" rows="4"></textarea></label>
+      <label class="field"><span>Meeting instructions · EN</span><textarea name="meetingInstructionsEn" rows="4"></textarea></label>
+      <label class="field"><span>Transporte público recomendado · ES</span><textarea name="meetingTransport" rows="3"></textarea></label>
+      <label class="field"><span>Recommended public transport · EN</span><textarea name="meetingTransportEn" rows="3"></textarea></label>
+    </div>
+  </details>
+
   <details class="route-subsection"><summary>Paradas del recorrido</summary>
     <p class="admin-help">Cada parada se publica siempre cuando la ruta está disponible. Las descripciones solo aparecen si todas están completas; las fotos y videos, solo si todas las paradas tienen al menos un medio propio. En rutas “En preparación”, las paradas permanecen aquí pero no se muestran al público.</p>
     <div class="structured-editor-list" data-route-stop-list></div>
     <button class="button outline" type="button" data-route-stop-add>+ Agregar parada</button>
   </details>
+
   <details class="route-subsection"><summary>Presentación de fotos y secciones</summary><div class="form-grid">
     <label class="field"><span>Galería pública</span><select name="galleryMode"><option value="carousel">Carrusel</option><option value="single">Una foto</option><option value="grid">Cuadrícula</option><option value="hidden">Oculta</option></select></label>
     <label class="field"><span>Fotos en paradas</span><select name="stopsMediaMode"><option value="carousel">Carrusel por parada</option><option value="single">Una foto por parada</option><option value="hidden">Sin fotos</option></select></label>
@@ -39,12 +55,4 @@
     <label class="consent"><input name="showAccessibility" type="checkbox" /><span>Mostrar accesibilidad</span></label>
     <label class="consent"><input name="showLongDescription" type="checkbox" /><span>Mostrar descripción extensa</span></label>
   </div><p class="admin-help">La imagen principal se cambia en la biblioteca inferior. La regla responsive se mantiene automáticamente en escritorio y móvil.</p></details>
-  <details class="route-translation-editor route-subsection"><summary>Contenido comercial en inglés</summary><div class="form-grid">
-    <label class="field full"><span>Short description</span><textarea name="productShortDescriptionEn" rows="3"></textarea></label>
-    <label class="field full"><span>Long description</span><textarea name="productLongDescriptionEn" rows="8"></textarea></label>
-    <label class="field full"><span>Highlights (one per line)</span><textarea name="productHighlightsEn" rows="5"></textarea></label>
-    <label class="field full"><span>Itinerary summary</span><textarea name="productItineraryEn" rows="4"></textarea></label>
-    <label class="field full"><span>Schedule</span><textarea name="productScheduleEn" rows="3"></textarea></label>
-
-  </div></details>
 </details>
