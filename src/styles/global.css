@@ -126,7 +126,7 @@ body:has(.admin-shell){background:#eef0ec}.admin-shell{width:100%;overflow-x:cli
 .route-media-item video{width:110px;height:78px;object-fit:contain;background:#0b211b}.route-media-video{max-width:100%}@media(max-width:620px){.route-media-item video{width:86px}}
 
 /* Brand presence: genuinely larger optical logo, offset toward the upper-left. */
-.brand:has(.brand-logo-full){flex:0 0 164px;min-width:164px;margin-left:-68px;margin-block:-36px;overflow:visible}
+.brand:has(.brand-logo-full){flex:0 0 164px;min-width:164px;margin-left:-20px;margin-block:-28px;overflow:visible}
 .brand-logo-full{width:218px;height:164px;max-width:none;max-height:none;object-fit:contain;object-position:left center}
 @media(max-width:900px){
   .brand:has(.brand-logo-full){flex-basis:104px;min-width:104px;margin-left:-30px;margin-block:-25px}
@@ -152,8 +152,29 @@ body:has(.admin-shell){background:#eef0ec}.admin-shell{width:100%;overflow-x:cli
 
 /* Home route carousel: edge controls, never detached above the cards. */
 .route-carousel-shell{position:relative}
-.carousel-edge{position:absolute;z-index:4;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:48px;height:48px;border:1px solid rgba(22,56,47,.28);border-radius:50%;background:rgba(251,248,242,.94);color:var(--forest);font-size:1.25rem;box-shadow:0 8px 24px rgba(13,41,34,.16)}
+.carousel-edge{position:absolute;z-index:4;top:50%;transform:translateY(calc(-50% - 5px));display:grid;place-items:center;width:48px;height:48px;border:1px solid rgba(22,56,47,.28);border-radius:50%;background:rgba(251,248,242,.94);color:var(--forest);font-size:1.25rem;box-shadow:0 8px 24px rgba(13,41,34,.16)}
 .carousel-edge:hover{background:var(--forest);color:#fff}
 .carousel-edge--previous{left:-24px}.carousel-edge--next{right:-24px}
 .route-carousel-shell .route-carousel{padding-inline:28px}
 @media(max-width:620px){.carousel-edge{width:40px;height:40px}.carousel-edge--previous{left:2px}.carousel-edge--next{right:2px}.route-carousel-shell .route-carousel{margin-inline:-14px;padding-inline:34px}}
+/* Collapsible backend navigation and stable lower actions. */
+.admin-sidebar{display:flex;flex-direction:column;overflow-y:auto}
+.admin-brand{display:flex;width:max-content;margin:0 0 32px;text-decoration:none}
+.admin-brand img{display:block;width:68px;height:68px;object-fit:contain}
+.admin-sidebar nav{flex:0 0 auto}
+.admin-sidebar-footer{margin-top:auto;display:grid;gap:8px;padding-top:26px}
+.admin-sidebar-footer .admin-public-link{margin:0}
+.admin-sidebar-footer .admin-signout{position:static;width:100%;padding:12px 14px}
+.admin-sidebar-toggle{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;color:var(--forest);padding:10px 12px;font:inherit;font-weight:800;cursor:pointer}
+.admin-user-name{margin-left:auto}
+.admin-shell[data-sidebar-collapsed] .admin-sidebar{width:82px;padding-inline:10px}
+.admin-shell[data-sidebar-collapsed] .admin-main{margin-left:82px}
+.admin-shell[data-sidebar-collapsed] .admin-brand{margin-inline:auto}
+.admin-shell[data-sidebar-collapsed] .admin-brand img{width:52px;height:52px}
+.admin-shell[data-sidebar-collapsed] .admin-sidebar nav button{font-size:0;text-align:center;padding-inline:6px}
+.admin-shell[data-sidebar-collapsed] .admin-sidebar nav button::before{content:attr(data-short);font-size:.72rem;font-weight:800;letter-spacing:.08em}
+.admin-shell[data-sidebar-collapsed] .admin-public-link,.admin-shell[data-sidebar-collapsed] .admin-signout{font-size:0;padding-inline:6px}
+.admin-shell[data-sidebar-collapsed] .admin-public-link::before{content:'↗';font-size:1rem}
+.admin-shell[data-sidebar-collapsed] .admin-signout::before{content:'Salir';font-size:.68rem}
+.large-copy{max-width:68ch;font-size:clamp(1.12rem,1.55vw,1.38rem);line-height:1.7;white-space:pre-line}
+@media(max-width:900px){.admin-sidebar-footer{margin-top:12px;padding-top:0}.admin-brand img{width:56px;height:56px}.admin-shell[data-sidebar-collapsed] .admin-sidebar{width:100%;padding:10px 14px}.admin-shell[data-sidebar-collapsed] .admin-main{margin-left:0}.admin-shell[data-sidebar-collapsed] .admin-sidebar nav,.admin-shell[data-sidebar-collapsed] .admin-sidebar-footer{display:none}.admin-shell[data-sidebar-collapsed] .admin-brand{margin:0}.admin-topbar{display:grid;grid-template-columns:auto 1fr auto}.admin-user-name{align-self:center}}
