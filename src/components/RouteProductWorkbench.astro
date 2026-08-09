@@ -18,10 +18,13 @@
     <label class="field full"><span>Notas internas (nunca públicas)</span><textarea name="productPrivateNotes" rows="4"></textarea></label>
   </div></details>
   <details class="route-subsection"><summary>Punto de encuentro operativo</summary><div class="form-grid">
-    <label class="field full"><span>Dirección exacta</span><input name="meetingAddress" /></label>
-    <label class="field full"><span>Referencia visible</span><input name="meetingReference" /></label>
-    <label class="field full"><span>Instrucciones para encontrarse</span><textarea name="meetingInstructions" rows="4"></textarea></label>
-    <label class="field full"><span>Transporte público recomendado</span><textarea name="meetingTransport" rows="3"></textarea></label>
+    <label class="field full"><span>Dirección exacta <small>(compartida ES / EN)</small></span><input name="meetingAddress" /></label>
+    <label class="field"><span>Referencia visible · ES</span><input name="meetingReference" /></label>
+    <label class="field"><span>Visible reference · EN</span><input name="meetingReferenceEn" /></label>
+    <label class="field"><span>Instrucciones para encontrarse · ES</span><textarea name="meetingInstructions" rows="4"></textarea></label>
+    <label class="field"><span>Meeting instructions · EN</span><textarea name="meetingInstructionsEn" rows="4"></textarea></label>
+    <label class="field"><span>Transporte público recomendado · ES</span><textarea name="meetingTransport" rows="3"></textarea></label>
+    <label class="field"><span>Recommended public transport · EN</span><textarea name="meetingTransportEn" rows="3"></textarea></label>
   </div></details>
   <details class="route-subsection"><summary>Paradas del recorrido</summary>
     <p class="admin-help">Cada parada se publica siempre cuando la ruta está disponible. Las descripciones solo aparecen si todas están completas; las fotos y videos, solo si todas las paradas tienen al menos un medio propio. En rutas “En preparación”, las paradas permanecen aquí pero no se muestran al público.</p>
@@ -43,7 +46,6 @@
     <label class="field full"><span>Highlights (one per line)</span><textarea name="productHighlightsEn" rows="5"></textarea></label>
     <label class="field full"><span>Itinerary summary</span><textarea name="productItineraryEn" rows="4"></textarea></label>
     <label class="field full"><span>Schedule</span><textarea name="productScheduleEn" rows="3"></textarea></label>
-    <label class="field full"><span>Meeting instructions</span><textarea name="meetingInstructionsEn" rows="3"></textarea></label>
-    <label class="field full"><span>Public transport</span><textarea name="meetingTransportEn" rows="3"></textarea></label>
+
   </div></details>
 </details>
