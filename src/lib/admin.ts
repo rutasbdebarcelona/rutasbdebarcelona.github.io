@@ -34,7 +34,7 @@ export async function uploadRouteMedia(routeId:string,file:File,role:'hero'|'gal
   const image=file.type.startsWith('image/'),video=file.type.startsWith('video/'),kind=image?'image':video?'video':file.type.startsWith('audio/')?'audio':'document';
   if(role==='hero'&&!image)throw new Error('La imagen principal solo acepta imágenes.');
   if(role==='gallery'&&!image&&!video)throw new Error('La galería acepta imágenes o videos.');
-  if(image&&!altText.trim())throw new Error('Escribe un texto alternativo para la imagen.');
+  const safeTitle=String(title||'').trim(),providedAlt=String(altText||'').trim(),safeAltText=image?(providedAlt||safeTitle||'Imagen de la ruta'):providedAlt;
   const id=crypto.randomUUID(),extension=(file.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,8)||'bin',storagePath=`${routeId}/${id}.${extension}`;
   let originalPath='';
   if(originalFile&&originalFile!==file){
@@ -45,7 +45,7 @@ export async function uploadRouteMedia(routeId:string,file:File,role:'hero'|'gal
   }
   const {error:uploadError}=await supabase.storage.from('route-media').upload(storagePath,file,{contentType:file.type,upsert:false});
   if(uploadError){if(originalPath)await supabase.storage.from('media-originals').remove([originalPath]);throw uploadError;}
-  const {data,error}=await supabase.rpc('register_route_media',{p_route_id:routeId,p_kind:kind,p_role:role,p_storage_path:storagePath,p_title:title,p_alt_text:altText,p_mime_type:file.type,p_file_size_bytes:file.size});
+  const {data,error}=await supabase.rpc('register_route_media',{p_route_id:routeId,p_kind:kind,p_role:role,p_storage_path:storagePath,p_title:safeTitle||null,p_alt_text:safeAltText,p_mime_type:file.type,p_file_size_bytes:file.size});
   if(error){await supabase.storage.from('route-media').remove([storagePath]);if(originalPath)await supabase.storage.from('media-originals').remove([originalPath]);throw error;}
   return data;
 }
