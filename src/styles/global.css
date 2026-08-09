@@ -181,13 +181,23 @@ body:has(.admin-shell){background:#eef0ec}.admin-shell{width:100%;overflow-x:cli
 /* Progressive disclosure keeps route narratives readable without hiding their scope. */
 .route-experience .experience-summary{max-width:58ch;margin:0 0 1.4rem;font-size:clamp(1.02rem,1.25vw,1.15rem);line-height:1.65;color:var(--ink)}
 .experience-disclosure{max-width:68ch}
-.experience-disclosure summary{display:inline-flex;align-items:center;min-height:48px;padding:.72rem 1.05rem;border:1px solid var(--forest);color:var(--forest);font-weight:700;cursor:pointer;list-style:none;transition:background-color .2s,color .2s}
+.experience-disclosure summary{display:inline-flex;align-items:center;min-height:auto;padding:.28rem 0;border:0;border-bottom:1px solid currentColor;color:var(--forest);font-size:.92rem;font-weight:650;cursor:pointer;list-style:none;transition:color .2s,border-color .2s}
 .experience-disclosure summary::-webkit-details-marker{display:none}
-.experience-disclosure summary:hover,.experience-disclosure summary:focus-visible{background:var(--forest);color:#fff}
+.experience-disclosure summary:hover,.experience-disclosure summary:focus-visible{background:transparent;color:var(--clay)}
 .experience-disclosure summary:focus-visible{outline:3px solid color-mix(in srgb,var(--clay) 55%,transparent);outline-offset:3px}
 .experience-hide{display:none}
 .experience-disclosure[open] .experience-show{display:none}
 .experience-disclosure[open] .experience-hide{display:inline}
 .experience-panel{padding-top:1.5rem}
 .experience-copy{max-width:64ch;margin:0;font-size:clamp(.98rem,1.08vw,1.08rem);line-height:1.72;text-align:justify;white-space:pre-line;hyphens:auto;text-wrap:pretty}
-@media(max-width:640px){.route-experience .experience-summary{font-size:1rem}.experience-disclosure{max-width:none}.experience-disclosure summary{width:100%;justify-content:center}.experience-copy{font-size:.96rem;line-height:1.68}}
+@media(max-width:640px){.route-experience .experience-summary{font-size:1rem}.experience-disclosure{max-width:none}.experience-disclosure summary{width:auto;justify-content:flex-start}.experience-copy{font-size:.96rem;line-height:1.68}}
+.related-routes{border-top:1px solid var(--line);padding-top:clamp(2.5rem,5vw,4.5rem);padding-bottom:clamp(3rem,6vw,5.5rem)}
+.related-routes-heading{display:flex;justify-content:space-between;align-items:end;gap:2rem;margin-bottom:1.5rem}
+.related-routes-heading p:last-child{max-width:42ch;margin:0;color:var(--muted)}
+.related-routes-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.related-routes-list a{min-height:150px;padding:1.35rem;border:1px solid var(--line);background:#fff;color:var(--ink);display:flex;flex-direction:column;text-decoration:none;transition:transform .2s,border-color .2s,background-color .2s}
+.related-routes-list a:hover,.related-routes-list a:focus-visible{transform:translateY(-3px);border-color:var(--clay);background:var(--paper)}
+.related-routes-list span{font-size:.68rem;line-height:1.4;text-transform:uppercase;letter-spacing:.08em;color:var(--clay)}
+.related-routes-list strong{margin-top:.7rem;font-family:var(--serif);font-size:clamp(1.2rem,1.7vw,1.55rem);line-height:1.12}
+.related-routes-list small{margin-top:auto;align-self:flex-end;font-size:1.25rem}
+@media(max-width:760px){.related-routes-heading{display:block}.related-routes-heading p:last-child{margin-top:.45rem}.related-routes-list{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.75rem}.related-routes-list a{flex:0 0 min(78vw,300px);scroll-snap-align:start}}

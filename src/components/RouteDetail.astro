@@ -1,9 +1,10 @@
 ---
 import type {TourRoute,RouteStop} from '../data/routes';
 import {toEnglishRoute} from '../i18n/routes.en';
-interface Props{route:TourRoute;locale?:'es'|'en'}
-const {route:source,locale='es'}=Astro.props;
+interface Props{route:TourRoute;locale?:'es'|'en';relatedRoutes?:TourRoute[]}
+const {route:source,locale='es',relatedRoutes=[]}=Astro.props;
 const route=locale==='en'?toEnglishRoute(source):source;
+const related=relatedRoutes.map(item=>locale==='en'?toEnglishRoute(item):item);
 const base=import.meta.env.BASE_URL,root=locale==='en'?base+'en/':base;
 const path=(value:string)=>/^https?:/i.test(value)?value:`${base}${value.replace(/^\//,'')}`;
 const image=path(route.image),pending=route.status!=='available',gallery=route.gallery??[],documents=route.documents??[];
@@ -20,15 +21,15 @@ const experienceSummary=compact(route.promise||route.description);
 const showStopDescriptions=stops.length>0&&stops.every(stop=>Boolean(stop.shortDescription?.trim()));
 const showStopMedia=stops.length>0&&stops.every(stop=>Boolean(stop.media?.length));
 const t=locale==='en'?{
- duration:'Duration',languages:'Languages offered',price:'Price',ask:'Ask about this tour',book:'Book this tour',experience:'The experience',experienceTitle:'A tour with its own guiding question',showExperience:'Show experience',hideExperience:'Hide experience',
+ duration:'Duration',languages:'Languages offered',price:'Price',ask:'Ask about this tour',book:'Book this tour',experience:'The experience',experienceTitle:'A tour with its own guiding question',showExperience:'Show experience',hideExperience:'Hide',
  highlights:'Highlights',gallery:'Gallery',materials:'Tour materials',listen:'Listen: ',open:'Open: ',route:'The route',minutes:'min',
  included:'What is included',excluded:'What is not included',accessibility:'Accessibility',practical:'Practical information',area:'Area',format:'Format',start:'Start',finish:'Finish',
- meeting:'Meeting point',address:'Address',reference:'Landmark',transport:'Public transport',schedule:'Schedule',prices:'Prices',individual:'Individual',group:'Private group',payment:'No payment is charged when registering your booking.'
+ meeting:'Meeting point',address:'Address',reference:'Landmark',transport:'Public transport',schedule:'Schedule',prices:'Prices',individual:'Individual',group:'Private group',payment:'No payment is charged when registering your booking.',moreRoutes:'Continue exploring',moreRoutesIntro:'Move directly to another tour without returning to the main menu.'
 }:{
- duration:'Duración',languages:'Idiomas ofrecidos',price:'Precio',ask:'Consultar esta ruta',book:'Reservar esta ruta',experience:'La experiencia',experienceTitle:'Una ruta con una pregunta propia',showExperience:'Mostrar experiencia',hideExperience:'Ocultar experiencia',
+ duration:'Duración',languages:'Idiomas ofrecidos',price:'Precio',ask:'Consultar esta ruta',book:'Reservar esta ruta',experience:'La experiencia',experienceTitle:'Una ruta con una pregunta propia',showExperience:'Mostrar experiencia',hideExperience:'Ocultar',
  highlights:'Aspectos destacados',gallery:'Galería',materials:'Materiales de la ruta',listen:'Escuchar: ',open:'Abrir: ',route:'El recorrido',minutes:'min',
  included:'Qué incluye',excluded:'Qué no incluye',accessibility:'Accesibilidad',practical:'Información práctica',area:'Zona',format:'Formato',start:'Inicio',finish:'Cierre',
- meeting:'Punto de encuentro',address:'Dirección',reference:'Referencia',transport:'Transporte público',schedule:'Horarios',prices:'Precios',individual:'Individual',group:'Grupo privado',payment:'No se cobrará ningún importe al registrar la reserva.'
+ meeting:'Punto de encuentro',address:'Dirección',reference:'Referencia',transport:'Transporte público',schedule:'Horarios',prices:'Precios',individual:'Individual',group:'Grupo privado',payment:'No se cobrará ningún importe al registrar la reserva.',moreRoutes:'Sigue explorando',moreRoutesIntro:'Pasa directamente a otra ruta sin volver al menú principal.'
 };
 const supabaseUrl=import.meta.env.PUBLIC_SUPABASE_URL??'',supabaseKey=import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY??'';
 
@@ -49,5 +50,6 @@ const supabaseUrl=import.meta.env.PUBLIC_SUPABASE_URL??'',supabaseKey=import.met
   {settings.showMeetingPoint&&(route.meetingAddress||route.meetingReference||route.meetingInstructions||route.meetingTransport)&&<div class="info-card"><h2>{t.meeting}</h2><dl>{route.meetingAddress&&<div><dt>{t.address}</dt><dd>{route.meetingAddress}</dd></div>}{route.meetingReference&&<div><dt>{t.reference}</dt><dd>{route.meetingReference}</dd></div>}{route.meetingInstructions&&<div><dt>{t.meeting}</dt><dd>{route.meetingInstructions}</dd></div>}{route.meetingTransport&&<div><dt>{t.transport}</dt><dd>{route.meetingTransport}</dd></div>}</dl></div>}
   {(route.priceIndividual||route.priceGroup)&&<div class="info-card"><h2>{t.prices}</h2><dl>{route.priceIndividual&&<div><dt>{t.individual}</dt><dd>{route.priceIndividual}</dd></div>}{route.priceGroup&&<div><dt>{t.group}</dt><dd>{route.priceGroup}</dd></div>}</dl><p class="pending-note">{t.payment}</p></div>}
  </aside></div>
+ {related.length>0&&<nav class="related-routes section" aria-label={t.moreRoutes}><div class="related-routes-heading"><p class="kicker dark">{t.moreRoutes}</p><p>{t.moreRoutesIntro}</p></div><div class="related-routes-list">{related.map(item=><a href={`${root}rutas/${item.slug}/`}><span>{item.eyebrow}</span><strong>{item.title}</strong><small>→</small></a>)}</div></nav>}
 </article>
 <script>import '../scripts/route-carousel';import '../scripts/route-live-media';</script>

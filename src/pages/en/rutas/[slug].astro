@@ -4,9 +4,9 @@ import RouteDetail from '../../../components/RouteDetail.astro';
 import type {TourRoute} from '../../../data/routes';
 import {getPublicRoutes} from '../../../lib/public-routes';
 import {toEnglishRoute} from '../../../i18n/routes.en';
-export async function getStaticPaths(){const routes=await getPublicRoutes();return routes.map(source=>{const route=toEnglishRoute(source);return{params:{slug:route.slug},props:{route:source}}})}
-interface Props{route:TourRoute}
-const {route}=Astro.props;
+export async function getStaticPaths(){const routes=await getPublicRoutes();return routes.map(source=>{const route=toEnglishRoute(source);return{params:{slug:route.slug},props:{route:source,relatedRoutes:routes.filter(item=>item.slug!==source.slug)}}})}
+interface Props{route:TourRoute;relatedRoutes:TourRoute[]}
+const {route,relatedRoutes}=Astro.props;
 const translated=toEnglishRoute(route);
 ---
-<BaseLayout locale="en" title={translated.title} description={translated.promise}><RouteDetail route={route} locale="en" /></BaseLayout>
+<BaseLayout locale="en" title={translated.title} description={translated.promise}><RouteDetail route={route} locale="en" relatedRoutes={relatedRoutes} /></BaseLayout>

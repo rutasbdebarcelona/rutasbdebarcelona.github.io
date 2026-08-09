@@ -3,8 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import RouteDetail from '../../components/RouteDetail.astro';
 import type {TourRoute} from '../../data/routes';
 import {getPublicRoutes} from '../../lib/public-routes';
-export async function getStaticPaths(){const routes=await getPublicRoutes();return routes.map(route=>({params:{slug:route.slug},props:{route}}))}
-interface Props{route:TourRoute}
-const {route}=Astro.props;
+export async function getStaticPaths(){const routes=await getPublicRoutes();return routes.map(route=>({params:{slug:route.slug},props:{route,relatedRoutes:routes.filter(item=>item.slug!==route.slug)}}))}
+interface Props{route:TourRoute;relatedRoutes:TourRoute[]}
+const {route,relatedRoutes}=Astro.props;
 ---
-<BaseLayout title={route.title} description={route.promise}><RouteDetail route={route} locale="es" /></BaseLayout>
+<BaseLayout title={route.title} description={route.promise}><RouteDetail route={route} locale="es" relatedRoutes={relatedRoutes} /></BaseLayout>
