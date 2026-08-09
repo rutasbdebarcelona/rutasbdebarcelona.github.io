@@ -13,7 +13,7 @@ function stopCard(data={},move,remove){
   input('title','Título de la parada'),input('title_en','Title in English'),
   input('short_description','Resumen público','textarea',true),input('short_description_en','Public summary in English','textarea',true),
   input('full_description','Descripción ampliada','textarea',true),input('full_description_en','Extended description in English','textarea',true),
-  input('duration_minutes','Minutos aproximados','number'),input('practical_info','Información práctica','textarea'),
+  input('practical_info','Información práctica interna','textarea'),
   input('accessibility','Accesibilidad de esta parada','textarea'),input('media_paths','Fotos o videos (una ruta o URL por línea)','textarea',true),
   input('image_alt','Texto alternativo de medios','textarea'),input('image_alt_en','Media alt text','textarea')
  );
