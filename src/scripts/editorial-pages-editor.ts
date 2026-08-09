@@ -24,7 +24,7 @@ function setup(root:HTMLElement){
 
   root.querySelectorAll('[data-page-tab]').forEach(button=>button.addEventListener('click',()=>{const id=(button as HTMLElement).dataset.pageTab;root.querySelectorAll('[data-page-tab]').forEach(item=>item.classList.toggle('active',item===button));root.querySelectorAll('[data-page-pane]').forEach(item=>(item as HTMLElement).hidden=(item as HTMLElement).dataset.pagePane!==id);}));
   function previewFile(slot:'full'|'symbol'|'guide',file:File){pending[slot]=file;if(urls[slot])URL.revokeObjectURL(urls[slot]);urls[slot]=URL.createObjectURL(file);const image=$(`[data-brand-preview="${slot}"]`) as HTMLImageElement;if(image)image.src=urls[slot];}
-  function previewVisual(key:string,file:File){pendingVisuals[key]=file;if(visualUrls[key])URL.revokeObjectURL(visualUrls[key]);visualUrls[key]=URL.createObjectURL(file);const image=$(`[data-page-visual-preview="${key}"]`) as HTMLImageElement;if(image){image.src=visualUrls[key];image.hidden=false;}}
+  function previewVisual(key:string,file:File){pendingVisuals[key]=file;if(visualUrls[key])URL.revokeObjectURL(visualUrls[key]);visualUrls[key]=URL.createObjectURL(file);const image=$(`[data-page-visual-preview="${key}"]`) as HTMLImageElement;if(image){image.src=visualUrls[key];image.hidden=false;}const presentation=field(`${key}VisualPresentation`);if(presentation.value==='none')presentation.value='image';}
 
   function fill(settings:any,state=''){
     current=normalizeSiteDesign(settings);
