@@ -58,7 +58,7 @@ export function setupHomeEditor(app){
     current=normalizeSiteDesign(settings);pending={hero:null,method:null};
     field('fontPair').value=current.fontPair;field('layout').value=current.layout;field('logo').value=current.logo;
     Object.entries(current.colors).forEach(([key,value])=>set(key,value));
-    for(const channel of ['instagram','tripadvisor','getyourguide']){set(channel+'Url',current.social[channel].url);field(channel+'Visible').checked=current.social[channel].visible;}
+    for(const channel of ['instagram','tripadvisor','getyourguide','linkedin']){set(channel+'Url',current.social[channel].url);field(channel+'Visible').checked=current.social[channel].visible;}
     for(const locale of ['es','en']){const prefix=locale;for(const [property,suffix] of Object.entries(textFields))set(prefix+suffix,current.content[locale][property]);set(prefix+'TrustItems',current.content[locale].trustItems.join('\n'));}
     for(const slot of ['hero','method'])for(const [property,name] of Object.entries(imageFields[slot]))set(name,current.home[`${slot}Image`][property]);
     for(const key of ['routes','method','partner']){field(`${key}Visible`).checked=current.home.sectionVisibility[key];set(`${key}Order`,current.home.sectionOrder.indexOf(key)+1);}
@@ -67,7 +67,7 @@ export function setupHomeEditor(app){
   function read(){
     const settings=clone(current);settings.fontPair=get('fontPair');settings.layout=get('layout');settings.logo=get('logo');
     for(const key of Object.keys(settings.colors))settings.colors[key]=get(key);
-    for(const channel of ['instagram','tripadvisor','getyourguide'])settings.social[channel]={url:get(channel+'Url'),visible:field(channel+'Visible').checked};
+    for(const channel of ['instagram','tripadvisor','getyourguide','linkedin'])settings.social[channel]={url:get(channel+'Url'),visible:field(channel+'Visible').checked};
     for(const locale of ['es','en']){for(const [property,suffix] of Object.entries(textFields))settings.content[locale][property]=get(locale+suffix);settings.content[locale].trustItems=get(locale+'TrustItems').split(/\r?\n/).map(x=>x.trim()).filter(Boolean).slice(0,5);}
     for(const slot of ['hero','method'])for(const [property,name] of Object.entries(imageFields[slot]))settings.home[`${slot}Image`][property]=['desktopX','desktopY','mobileX','mobileY','desktopZoom','mobileZoom','desktopOpacity','mobileOpacity'].includes(property)?Number(get(name)):get(name);
     settings.home.sectionVisibility={routes:field('routesVisible').checked,method:field('methodVisible').checked,partner:field('partnerVisible').checked};

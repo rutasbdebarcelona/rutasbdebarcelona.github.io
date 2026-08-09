@@ -52,7 +52,7 @@ export const routes:TourRoute[]=[
   accessibility:'Recorrido exterior urbano. Los ajustes necesarios se coordinan antes de la visita.',priceIndividual:'20 € por persona',priceGroup:'',
   image:'/images/routes/sagrada-familia-diurna/plaza-gaudi.webp',imageAlt:'Sagrada Família vista desde la Plaça de Gaudí.',
   gallery:media('sagrada-dia',[['image','/images/routes/sagrada-familia-diurna/contrapicado-marca.webp','Contrapicado y marca Rutas B','Vista en contrapicado de la Sagrada Família con material de Rutas B.'],['image','/images/routes/sagrada-familia-diurna/fachada-nacimiento.webp','Fachada del Nacimiento','Fachada del Nacimiento observada de día.'],['image','/images/routes/sagrada-familia-diurna/plaza-gaudi.webp','Plaça de Gaudí','Sagrada Família enmarcada por los árboles de la Plaça de Gaudí.'],['image','/images/routes/sagrada-familia-diurna/primer-plano-marca.webp','Una mirada propia','Marca Rutas B frente a la Sagrada Família.']]),
-  meetingAddress:'Avinguda de Gaudí, 2, 08025 Barcelona',meetingReference:'Frente al restaurante KFC',meetingInstructions:'Busca al guía de Rutas B en el punto indicado.',meetingTransport:'Metro Sagrada Família (L2 y L5)',
+  meetingAddress:'Avinguda de Gaudí, 2',meetingReference:'KFC · Avinguda de Gaudí',meetingInstructions:'Busca al guía de Rutas B en el punto indicado.',meetingTransport:'Metro Sagrada Família (L2 y L5)',
   scheduleNotes:'Lunes a viernes: 18:00. Sábados y domingos: 10:00, 12:00 y 18:00.',pageSettings:defaults,featured:true,published:true
  },
  {
@@ -68,7 +68,7 @@ export const routes:TourRoute[]=[
   accessibility:'Recorrido exterior urbano nocturno. Los ajustes necesarios se coordinan antes de la visita.',priceIndividual:'20 € por persona',priceGroup:'',
   image:'/images/routes/sagrada-familia-nocturna/fachada-nacimiento.webp',imageAlt:'Fachada del Nacimiento iluminada de noche.',
   gallery:media('sagrada-noche',[['image','/images/routes/sagrada-familia-nocturna/fachada-nacimiento.webp','Fachada del Nacimiento de noche','Fachada del Nacimiento iluminada de noche.'],['image','/images/routes/sagrada-familia-nocturna/zona-abside.webp','Zona del ábside','Ábside y torres de la Sagrada Família de noche.'],['video','/videos/routes/sagrada-familia-nocturna/fachada-pasion.mp4','Fachada de la Pasión en movimiento','Video nocturno de la Fachada de la Pasión.']]),
-  meetingAddress:'Avinguda de Gaudí, 2, 08025 Barcelona',meetingReference:'Frente al restaurante KFC',meetingInstructions:'Busca al guía de Rutas B en el punto indicado.',meetingTransport:'Metro Sagrada Família (L2 y L5)',
+  meetingAddress:'Avinguda de Gaudí, 2',meetingReference:'KFC · Avinguda de Gaudí',meetingInstructions:'Busca al guía de Rutas B en el punto indicado.',meetingTransport:'Metro Sagrada Família (L2 y L5)',
   scheduleNotes:'Todos los días: 22:00.',pageSettings:defaults,featured:true,published:true
  },
  {
