@@ -19,6 +19,8 @@ function stopCard(data={},move,remove){
  );
  card.append(head,grid);
  Object.entries(data).forEach(([key,value])=>{const control=field(card,key);if(control)control.value=Array.isArray(value)?value.join('\n'):value??''});
+ const en=data.translations?.en||{};
+ [['title_en','title'],['short_description_en','short_description'],['full_description_en','full_description'],['image_alt_en','image_alt']].forEach(([controlName,key])=>{const control=field(card,controlName);if(control)control.value=en[key]??''});
  return card;
 }
 
