@@ -1,9 +1,9 @@
 ---
 ---
 <details class="route-product-workbench route-editor-section">
-  <summary><span>4</span> Producto público, paradas y operación</summary>
+  <summary><span>4</span> Contenido público, paradas y encuentro</summary>
   <p class="admin-help">Una sola ficha por ruta. Si necesitas una versión diurna, nocturna o privada, usa <strong>Duplicar como borrador</strong>: será una ruta independiente y fácil de editar.</p>
-  <details class="route-subsection" open><summary>Ficha comercial</summary><div class="form-grid">
+  <details class="route-subsection" open><summary>Descripción pública y venta</summary><div class="form-grid">
     <label class="field full"><span>Descripción breve (hasta 200 caracteres recomendados)</span><textarea name="productShortDescription" rows="3" maxlength="300"></textarea></label>
     <label class="field full"><span>Descripción extensa</span><textarea name="productLongDescription" rows="9" maxlength="8000"></textarea></label>
     <label class="field full"><span>Aspectos destacados (uno por línea)</span><textarea name="productHighlights" rows="5"></textarea></label>
@@ -17,14 +17,14 @@
     <label class="field full"><span>Fechas de cierre AAAA-MM-DD (una por línea)</span><textarea name="productClosureDates" rows="3"></textarea></label>
     <label class="field full"><span>Notas internas (nunca públicas)</span><textarea name="productPrivateNotes" rows="4"></textarea></label>
   </div></details>
-  <details class="route-subsection"><summary>Punto de encuentro</summary><div class="form-grid">
+  <details class="route-subsection"><summary>Punto de encuentro operativo</summary><div class="form-grid">
     <label class="field full"><span>Dirección exacta</span><input name="meetingAddress" /></label>
     <label class="field full"><span>Referencia visible</span><input name="meetingReference" /></label>
     <label class="field full"><span>Instrucciones para encontrarse</span><textarea name="meetingInstructions" rows="4"></textarea></label>
     <label class="field full"><span>Transporte público recomendado</span><textarea name="meetingTransport" rows="3"></textarea></label>
   </div></details>
   <details class="route-subsection"><summary>Paradas del recorrido</summary>
-    <p class="admin-help">Cada parada se publica siempre. Las descripciones breves solo aparecen en la web cuando todas las paradas tienen una. Puedes completarlas, traducirlas, añadir imágenes y reordenarlas sin tocar código.</p>
+    <p class="admin-help">Cada parada se publica siempre cuando la ruta está disponible. Las descripciones solo aparecen si todas están completas; las fotos y videos, solo si todas las paradas tienen al menos un medio propio. En rutas “En preparación”, las paradas permanecen aquí pero no se muestran al público.</p>
     <div class="structured-editor-list" data-route-stop-list></div>
     <button class="button outline" type="button" data-route-stop-add>+ Agregar parada</button>
   </details>
@@ -35,6 +35,7 @@
     <label class="consent"><input name="showHighlights" type="checkbox" /><span>Mostrar aspectos destacados</span></label>
     <label class="consent"><input name="showMeetingPoint" type="checkbox" /><span>Mostrar punto de encuentro</span></label>
     <label class="consent"><input name="showAccessibility" type="checkbox" /><span>Mostrar accesibilidad</span></label>
+    <label class="consent"><input name="showLongDescription" type="checkbox" /><span>Mostrar descripción extensa</span></label>
   </div><p class="admin-help">La imagen principal se cambia en la biblioteca inferior. La regla responsive se mantiene automáticamente en escritorio y móvil.</p></details>
   <details class="route-translation-editor route-subsection"><summary>Contenido comercial en inglés</summary><div class="form-grid">
     <label class="field full"><span>Short description</span><textarea name="productShortDescriptionEn" rows="3"></textarea></label>

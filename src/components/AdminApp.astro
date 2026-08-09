@@ -59,23 +59,23 @@ const base = import.meta.env.BASE_URL;
         </div><aside class="admin-panel booking-detail" data-booking-detail hidden aria-live="polite"></aside>
       </section>
       <section class="admin-view" data-view="routes" hidden>
-        <div class="admin-panel"><div class="admin-panel-head"><div><p class="kicker dark">Centro editorial</p><h2>Rutas</h2></div><button class="button primary" type="button" data-route-new>Nueva ruta</button></div><p class="admin-error" data-route-error role="alert"></p><div class="route-admin-list" data-route-list></div></div>
+        <div class="admin-panel"><div class="admin-panel-head"><div><p class="kicker dark">Centro editorial</p><h2>Rutas</h2></div><div class="route-list-tools"><label class="consent"><input type="checkbox" data-route-show-archived /><span>Ver archivadas</span></label><button class="button primary" type="button" data-route-new>Nueva ruta</button></div></div><p class="admin-error" data-route-error role="alert"></p><div class="route-admin-list" data-route-list></div></div>
         <aside class="admin-panel route-editor" data-route-editor hidden><form data-route-form><h2 data-route-editor-title>Editar ruta</h2><p class="route-editor-intro">Trabaja un bloque a la vez. <strong>Guardar borrador</strong> no cambia la web pública.</p><input type="hidden" name="id" />
-<details class="route-editor-section" open><summary><span>1</span> Lo esencial</summary><fieldset><legend>Identidad y estado</legend><div class="form-grid">
+<details class="route-editor-section" open><summary><span>1</span> Identidad y promesa</summary><fieldset><legend>Nombre y estado público</legend><div class="form-grid">
 <label class="field full"><span>Título público</span><input name="title" required maxlength="160" /></label>
 <label class="field"><span>Antetítulo</span><input name="eyebrow" maxlength="180" /></label>
 <label class="field"><span>Estado visible</span><select name="statusLabel"><option value="Disponible">Disponible</option><option value="En preparación">En preparación</option></select></label>
 <label class="field full"><span>Promesa corta</span><textarea name="promise" rows="3" maxlength="500"></textarea></label>
-<label class="field full"><span>Descripción de la experiencia</span><textarea name="description" rows="7" maxlength="4000"></textarea></label>
+
 </div></fieldset></details>
-<details class="route-editor-section"><summary><span>2</span> Recorrido e información práctica</summary><fieldset><legend>Información práctica</legend><div class="form-grid">
+<details class="route-editor-section"><summary><span>2</span> Información práctica del recorrido</summary><fieldset><legend>Datos operativos visibles</legend><div class="form-grid">
 <label class="field"><span>Duración mostrada</span><input name="duration" maxlength="160" /></label>
 <label class="field"><span>Formato</span><input name="format" maxlength="240" /></label>
 <label class="field"><span>Zona</span><input name="area" maxlength="180" /></label>
 <label class="field"><span>Idiomas (separados por coma)</span><input name="languages" maxlength="180" /></label>
 <label class="field full"><span>Públicos (uno por línea)</span><textarea name="audience" rows="4"></textarea></label>
-<label class="field full"><span>Punto de inicio</span><textarea name="startingPoint" rows="3"></textarea></label>
-<label class="field full"><span>Punto final</span><textarea name="endingPoint" rows="3"></textarea></label>
+<label class="field full"><span>Inicio público del recorrido</span><textarea name="startingPoint" rows="3"></textarea></label>
+<label class="field full"><span>Final público del recorrido</span><textarea name="endingPoint" rows="3"></textarea></label>
 <textarea name="stops" hidden aria-hidden="true"></textarea>
 </div></fieldset></details>
 <details class="route-editor-section"><summary><span>3</span> Precio y condiciones</summary><fieldset><legend>Contenido comercial</legend><div class="form-grid">
@@ -90,7 +90,7 @@ const base = import.meta.env.BASE_URL;
 <RouteProductWorkbench />
 <details class="route-translation-editor route-editor-section"><summary><span>5</span> English version</summary><p>Edit the public English version of this route here. It is published together with the Spanish version.</p><div class="form-grid">
 <label class="field full"><span>Public title</span><input name="enTitle" maxlength="160" /></label><label class="field"><span>Eyebrow</span><input name="enEyebrow" maxlength="180" /></label><label class="field"><span>Visible status</span><select name="enStatusLabel"><option value="Available">Available</option><option value="In preparation">In preparation</option></select></label>
-<label class="field full"><span>Short promise</span><textarea name="enPromise" rows="3"></textarea></label><label class="field full"><span>Experience description</span><textarea name="enDescription" rows="6"></textarea></label>
+<label class="field full"><span>Short promise</span><textarea name="enPromise" rows="3"></textarea></label>
 <label class="field"><span>Displayed duration</span><input name="enDuration" /></label><label class="field"><span>Format</span><input name="enFormat" /></label><label class="field"><span>Area</span><input name="enArea" /></label><label class="field"><span>Languages (comma separated)</span><input name="enLanguages" /></label>
 <label class="field full"><span>Audiences (one per line)</span><textarea name="enAudience" rows="4"></textarea></label><label class="field full"><span>Starting point</span><textarea name="enStartingPoint" rows="3"></textarea></label><label class="field full"><span>Ending point</span><textarea name="enEndingPoint" rows="3"></textarea></label><textarea name="enStops" hidden aria-hidden="true"></textarea>
 <label class="field full"><span>Included (one per line)</span><textarea name="enIncludes" rows="4"></textarea></label><label class="field full"><span>Not included (one per line)</span><textarea name="enExcludes" rows="4"></textarea></label><label class="field full"><span>Accessibility</span><textarea name="enAccessibility" rows="4"></textarea></label>

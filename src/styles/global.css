@@ -125,14 +125,35 @@ body:has(.admin-shell){background:#eef0ec}.admin-shell{width:100%;overflow-x:cli
 
 .route-media-item video{width:110px;height:78px;object-fit:contain;background:#0b211b}.route-media-video{max-width:100%}@media(max-width:620px){.route-media-item video{width:86px}}
 
-/* Brand presence: larger optical logo, safely offset toward the upper-left. */
-.brand:has(.brand-logo-full){min-width:72px;margin-left:-30px;margin-block:-11px}
-.brand-logo-full{width:96px;height:92px;max-width:none;object-fit:contain;object-position:left center}
+/* Brand presence: genuinely larger optical logo, offset toward the upper-left. */
+.brand:has(.brand-logo-full){flex:0 0 164px;min-width:164px;margin-left:-68px;margin-block:-36px;overflow:visible}
+.brand-logo-full{width:218px;height:164px;max-width:none;max-height:none;object-fit:contain;object-position:left center}
 @media(max-width:900px){
-  .brand:has(.brand-logo-full){min-width:55px;margin-left:-10px;margin-block:-5px}
-  .brand-logo-full{width:74px;height:66px;max-height:none}
+  .brand:has(.brand-logo-full){flex-basis:104px;min-width:104px;margin-left:-30px;margin-block:-25px}
+  .brand-logo-full{width:148px;height:116px;max-height:none}
 }
 @media(max-width:420px){
-  .brand:has(.brand-logo-full){min-width:50px;margin-left:-5px;margin-block:-3px}
-  .brand-logo-full{width:68px;height:60px}
-}
+  .brand:has(.brand-logo-full){flex-basis:92px;min-width:92px;margin-left:-24px;margin-block:-22px}
+  .brand-logo-full{width:132px;height:108px}
+}.route-gallery--grid>div[data-route-gallery-list]{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.route-gallery figcaption{display:none}
+/* Open editorial itinerary: no repeated boxed cards. */
+.route-stops-detailed>ol{position:relative;gap:0;margin:0}
+.route-stops-detailed>ol:before{content:'';position:absolute;left:28px;top:22px;bottom:22px;width:1px;background:var(--line)}
+.route-stops-detailed li{position:relative;grid-template-columns:58px minmax(0,1fr);gap:16px;padding:24px 0;border:0;border-bottom:1px solid var(--line);background:transparent}
+.route-stops-detailed li:last-child{border-bottom:0}
+.route-stop-number{position:relative;z-index:1;background:var(--cream);padding-right:10px}
+@media(max-width:700px){.route-stops-detailed>ol:before{left:20px}.route-stops-detailed li{grid-template-columns:42px minmax(0,1fr);padding:20px 0;gap:10px}.route-stop-number{padding-right:8px}}
+.route-list-tools,.route-row-actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.route-row-actions{justify-content:flex-end}@media(max-width:620px){.route-list-tools,.route-row-actions{width:100%}.route-row-actions .button{flex:1}}
+
+/* Actions belong to the form flow: they must never cover sections 6 and 7. */
+.route-editor .route-editor-actions{position:static;bottom:auto;z-index:auto;margin:22px 0 0;padding:14px 0 0;background:transparent;border-top:1px solid var(--line);box-shadow:none}
+@media(max-width:620px){.route-editor .route-editor-actions{margin:18px 0 0;padding:12px 0 0}}
+
+/* Home route carousel: edge controls, never detached above the cards. */
+.route-carousel-shell{position:relative}
+.carousel-edge{position:absolute;z-index:4;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:48px;height:48px;border:1px solid rgba(22,56,47,.28);border-radius:50%;background:rgba(251,248,242,.94);color:var(--forest);font-size:1.25rem;box-shadow:0 8px 24px rgba(13,41,34,.16)}
+.carousel-edge:hover{background:var(--forest);color:#fff}
+.carousel-edge--previous{left:-24px}.carousel-edge--next{right:-24px}
+.route-carousel-shell .route-carousel{padding-inline:28px}
+@media(max-width:620px){.carousel-edge{width:40px;height:40px}.carousel-edge--previous{left:2px}.carousel-edge--next{right:2px}.route-carousel-shell .route-carousel{margin-inline:-14px;padding-inline:34px}}

@@ -42,8 +42,8 @@ export function setupRouteProductEditor(root){
   set('productShortDescriptionEn',en.short_description);set('productLongDescriptionEn',en.long_description);
   set('productHighlightsEn',list(en.highlights).join('\n'));set('productItineraryEn',en.itinerary_summary);
   set('productScheduleEn',en.schedule_notes);set('meetingInstructionsEn',en.meeting_instructions);set('meetingTransportEn',en.meeting_transport);
-  set('galleryMode',settings.gallery_mode||'carousel');set('stopsMediaMode',settings.stops_media_mode||'carousel');set('stopsDisplayMode',settings.stops_display_mode||'cards');
-  check('showHighlights',settings.show_highlights);check('showMeetingPoint',settings.show_meeting_point);check('showAccessibility',settings.show_accessibility);
+  set('galleryMode',settings.gallery_mode||'grid');set('stopsMediaMode',settings.stops_media_mode||'carousel');set('stopsDisplayMode',settings.stops_display_mode||'cards');
+  check('showHighlights',settings.show_highlights);check('showMeetingPoint',settings.show_meeting_point);check('showAccessibility',settings.show_accessibility);check('showLongDescription',settings.show_long_description);
   stopList.innerHTML='';list(data?.stop_details).forEach(addStop);
  };
  const cards=()=>[...stopList.querySelectorAll('[data-structured-card]')].map(card=>Object.fromEntries([...card.querySelectorAll('[data-field]')].map(control=>[control.dataset.field,control.value.trim()])));
@@ -58,7 +58,7 @@ export function setupRouteProductEditor(root){
    cancellation_policy:form.elements.productCancellation.value.trim(),private_notes:form.elements.productPrivateNotes.value.trim(),
    meeting_address:form.elements.meetingAddress.value.trim(),meeting_reference:form.elements.meetingReference.value.trim(),
    meeting_instructions:form.elements.meetingInstructions.value.trim(),meeting_transport:form.elements.meetingTransport.value.trim(),
-   page_settings:{gallery_mode:form.elements.galleryMode.value,stops_media_mode:form.elements.stopsMediaMode.value,stops_display_mode:form.elements.stopsDisplayMode.value,show_highlights:form.elements.showHighlights.checked,show_meeting_point:form.elements.showMeetingPoint.checked,show_accessibility:form.elements.showAccessibility.checked},
+   page_settings:{gallery_mode:form.elements.galleryMode.value,stops_media_mode:form.elements.stopsMediaMode.value,stops_display_mode:form.elements.stopsDisplayMode.value,show_highlights:form.elements.showHighlights.checked,show_meeting_point:form.elements.showMeetingPoint.checked,show_accessibility:form.elements.showAccessibility.checked,show_long_description:form.elements.showLongDescription.checked},
    translations:{en:{short_description:form.elements.productShortDescriptionEn.value.trim(),long_description:form.elements.productLongDescriptionEn.value.trim(),highlights:lines(form.elements.productHighlightsEn.value),itinerary_summary:form.elements.productItineraryEn.value.trim(),schedule_notes:form.elements.productScheduleEn.value.trim(),meeting_instructions:form.elements.meetingInstructionsEn.value.trim(),meeting_transport:form.elements.meetingTransportEn.value.trim()}}
   };
   return{product,stops,variants:[]};

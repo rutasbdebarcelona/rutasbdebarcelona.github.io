@@ -9,7 +9,7 @@ export interface RouteStop {
  title:string;shortDescription?:string;fullDescription?:string;durationMinutes?:number;practicalInfo?:string;accessibility?:string;media?:string[];imageAlt?:string;
 }
 export interface RoutePageSettings {
- galleryMode:RouteMediaMode;stopsMediaMode:'hidden'|'single'|'carousel';stopsDisplayMode:'hidden'|'compact'|'cards';showHighlights:boolean;showMeetingPoint:boolean;showAccessibility:boolean;
+ galleryMode:RouteMediaMode;stopsMediaMode:'hidden'|'single'|'carousel';stopsDisplayMode:'hidden'|'compact'|'cards';showHighlights:boolean;showMeetingPoint:boolean;showAccessibility:boolean;showLongDescription:boolean;
 }
 export interface TourRoute {
  slug:string;title:string;eyebrow:string;promise:string;description:string;status:RouteStatus;statusLabel:string;duration:string;format:string;area:string;
@@ -19,7 +19,7 @@ export interface TourRoute {
  featured:boolean;published:boolean;translationEn?:Partial<TourRoute>;
 }
 
-const defaults:RoutePageSettings={galleryMode:'carousel',stopsMediaMode:'carousel',stopsDisplayMode:'cards',showHighlights:true,showMeetingPoint:true,showAccessibility:true};
+const defaults:RoutePageSettings={galleryMode:'grid',stopsMediaMode:'carousel',stopsDisplayMode:'cards',showHighlights:true,showMeetingPoint:true,showAccessibility:true,showLongDescription:true};
 const media=(slug:string,items:Array<[RouteMediaKind,string,string,string]>):RouteMediaAsset[]=>
  items.map(([kind,file,title,altText],index)=>({id:`${slug}-${index+1}`,kind,role:'gallery',url:file,title,altText,mimeType:kind==='video'?'video/mp4':'image/webp'}));
 

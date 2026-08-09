@@ -1,7 +1,7 @@
 import {createClient} from '@supabase/supabase-js';
 import {publishedRoutes as fallbackRoutes,type TourRoute,type RouteStop} from '../data/routes';
 
-const defaults={galleryMode:'carousel',stopsMediaMode:'carousel',stopsDisplayMode:'cards',showHighlights:true,showMeetingPoint:true,showAccessibility:true};
+const defaults={galleryMode:'grid',stopsMediaMode:'carousel',stopsDisplayMode:'cards',showHighlights:true,showMeetingPoint:true,showAccessibility:true,showLongDescription:true};
 
 export async function getPublicRoutes():Promise<TourRoute[]>{
  const url=import.meta.env.PUBLIC_SUPABASE_URL,key=import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY;
@@ -25,7 +25,7 @@ export async function getPublicRoutes():Promise<TourRoute[]>{
   const settings=profile?.page_settings||{};
   return{
    slug:route.slug,title:route.title,eyebrow:route.eyebrow||'',promise:route.promise||route.short_description||profile?.short_description||'',
-   description:route.full_description||profile?.long_description||'',status:['Ruta inicial','Disponible'].includes(route.status_label)?'available':'in-development',
+   description:profile?.long_description||route.full_description||'',status:['Ruta inicial','Disponible'].includes(route.status_label)?'available':'in-development',
    statusLabel:route.status_label||'En preparación',duration:route.display_duration||'Pendiente de definición',format:route.display_format||'Pendiente de definición',
    area:route.display_area||'',languages:(route.offered_languages||[]).map((code:string)=>code==='es'?'Español':code==='en'?'English':code),audience:route.audience||[],
    startingPoint:route.display_starting_point||route.meeting_point_public||'',endingPoint:route.display_ending_point||'',stops:orderedStops.map((stop:any)=>stop.title),
@@ -33,8 +33,8 @@ export async function getPublicRoutes():Promise<TourRoute[]>{
    accessibility:route.accessibility||'',priceIndividual:route.display_price_individual||'',priceGroup:route.display_price_group||'',
    image:publicUrl(route.primary_image_path||''),imageAlt:route.primary_image_alt||route.title,gallery,documents,
    meetingAddress:profile?.meeting_address||'',meetingReference:profile?.meeting_reference||'',meetingInstructions:profile?.meeting_instructions||'',meetingTransport:profile?.meeting_transport||'',
-   scheduleNotes:profile?.schedule_notes||'',pageSettings:{...defaults,galleryMode:settings.gallery_mode||defaults.galleryMode,stopsMediaMode:settings.stops_media_mode||defaults.stopsMediaMode,stopsDisplayMode:settings.stops_display_mode||defaults.stopsDisplayMode,showHighlights:settings.show_highlights!==false,showMeetingPoint:settings.show_meeting_point!==false,showAccessibility:settings.show_accessibility!==false},
-   translationEn:translation?{title:translation.title,eyebrow:translation.eyebrow||'',promise:translation.promise||profileEn.short_description||'',description:translation.full_description||profileEn.long_description||'',statusLabel:translation.status_label||'',duration:translation.display_duration||'',format:translation.display_format||'',area:translation.display_area||'',languages:translation.offered_languages||[],audience:translation.audience||[],startingPoint:translation.display_starting_point||'',endingPoint:translation.display_ending_point||'',stops:translation.stops?.length?translation.stops:orderedStops.map((stop:any)=>mapStop(stop,'en').title),stopDetails:orderedStops.map((stop:any)=>mapStop(stop,'en')),highlights:profileEn.highlights||profile?.highlights||[],includes:translation.includes||[],notIncluded:translation.excludes||[],accessibility:translation.accessibility||'',priceIndividual:translation.display_price_individual||'',priceGroup:translation.display_price_group||'',meetingInstructions:profileEn.meeting_instructions||profile?.meeting_instructions||'',meetingTransport:profileEn.meeting_transport||profile?.meeting_transport||'',scheduleNotes:profileEn.schedule_notes||profile?.schedule_notes||''}:undefined,
+   scheduleNotes:profile?.schedule_notes||'',pageSettings:{...defaults,galleryMode:settings.gallery_mode||defaults.galleryMode,stopsMediaMode:settings.stops_media_mode||defaults.stopsMediaMode,stopsDisplayMode:settings.stops_display_mode||defaults.stopsDisplayMode,showHighlights:settings.show_highlights!==false,showMeetingPoint:settings.show_meeting_point!==false,showAccessibility:settings.show_accessibility!==false,showLongDescription:settings.show_long_description!==false},
+   translationEn:translation?{title:translation.title,eyebrow:translation.eyebrow||'',promise:translation.promise||profileEn.short_description||'',description:profileEn.long_description||translation.full_description||'',statusLabel:translation.status_label||'',duration:translation.display_duration||'',format:translation.display_format||'',area:translation.display_area||'',languages:translation.offered_languages||[],audience:translation.audience||[],startingPoint:translation.display_starting_point||'',endingPoint:translation.display_ending_point||'',stops:translation.stops?.length?translation.stops:orderedStops.map((stop:any)=>mapStop(stop,'en').title),stopDetails:orderedStops.map((stop:any)=>mapStop(stop,'en')),highlights:profileEn.highlights||profile?.highlights||[],includes:translation.includes||[],notIncluded:translation.excludes||[],accessibility:translation.accessibility||'',priceIndividual:translation.display_price_individual||'',priceGroup:translation.display_price_group||'',meetingInstructions:profileEn.meeting_instructions||profile?.meeting_instructions||'',meetingTransport:profileEn.meeting_transport||profile?.meeting_transport||'',scheduleNotes:profileEn.schedule_notes||profile?.schedule_notes||''}:undefined,
    featured:route.featured,published:true
   } as TourRoute;
  });
