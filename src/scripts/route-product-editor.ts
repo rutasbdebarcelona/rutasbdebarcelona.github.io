@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { routeStopEditorValues } from '../lib/route-stop-editor-values.js';
 const lines=(value='')=>String(value||'').split(/\r?\n/).map(item=>item.trim()).filter(Boolean);
 const list=value=>Array.isArray(value)?value:[];
 const field=(card,name)=>card.querySelector(`[data-field="${name}"]`);
@@ -18,9 +19,7 @@ function stopCard(data={},move,remove){
   input('image_alt','Texto alternativo de medios','textarea'),input('image_alt_en','Media alt text','textarea')
  );
  card.append(head,grid);
- Object.entries(data).forEach(([key,value])=>{const control=field(card,key);if(control)control.value=Array.isArray(value)?value.join('\n'):value??''});
- const en=data.translations?.en||{};
- [['title_en','title'],['short_description_en','short_description'],['full_description_en','full_description'],['image_alt_en','image_alt']].forEach(([controlName,key])=>{const control=field(card,controlName);if(control)control.value=en[key]??''});
+ Object.entries(routeStopEditorValues(data)).forEach(([key,value])=>{const control=field(card,key);if(control)control.value=Array.isArray(value)?value.join('\n'):value??''});
  return card;
 }
 

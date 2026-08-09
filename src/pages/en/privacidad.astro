@@ -1,4 +1,4 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';import { getPublicSiteDesign } from '../../lib/site-settings';const design=await getPublicSiteDesign(),c=design.editorial.en;
+import BaseLayout from '../../layouts/BaseLayout.astro';import PageVisualHero from '../../components/PageVisualHero.astro';import { getPublicSiteDesign } from '../../lib/site-settings';const design=await getPublicSiteDesign(),c=design.editorial.en;
 ---
-<BaseLayout locale="en" title={c.privacyTitle} noindex><article class="legal section"><p class="kicker dark">{c.privacyKicker}</p><h1>{c.privacyTitle}</h1><p class="legal-warning">{c.privacyWarning}</p>{[1,2,3,4].map(i=><><h2>{c[`privacy${i}Title`]}</h2><p>{c[`privacy${i}Body`]}</p></>)}</article></BaseLayout>
+<BaseLayout locale="en" title={c.privacyTitle} noindex><PageVisualHero kicker={c.privacyKicker} title={c.privacyTitle} intro={c.privacyWarning} visual={design.pageVisuals.privacy} locale="en" compact /><article class="legal section">{[1,2,3,4].map(i=><><h2>{c[`privacy${i}Title`]}</h2><p>{c[`privacy${i}Body`]}</p></>)}</article></BaseLayout>
