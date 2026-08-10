@@ -1,4 +1,5 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';import PageVisualHero from '../components/PageVisualHero.astro';import { getPublicSiteDesign } from '../lib/site-settings';const design=await getPublicSiteDesign(),c=design.editorial.es;
+import BaseLayout from '../layouts/BaseLayout.astro';import PageVisualHero from '../components/PageVisualHero.astro';
+import PageVisualSection from '../components/PageVisualSection.astro';import { getPublicSiteDesign } from '../lib/site-settings';const design=await getPublicSiteDesign(),c=design.editorial.es;
 ---
-<BaseLayout title={c.faqTitle} description={c.faqIntro}><PageVisualHero kicker={c.faqKicker} title={c.faqTitle} intro={c.faqIntro} visual={design.pageVisuals.faq} locale="es" compact /><section class="section faq-list">{c.faqs.map(item=><details><summary>{item.question}<span aria-hidden="true">+</span></summary><p>{item.answer}</p></details>)}</section></BaseLayout>
+<BaseLayout title={c.faqTitle} description={c.faqIntro}><PageVisualHero kicker={c.faqKicker} title={c.faqTitle} intro={c.faqIntro} visual={design.pageVisuals.faq} locale="es" compact /><PageVisualSection visual={design.pageVisuals.faqContent} class="faq-list" locale="es">{c.faqs.map(item=><details><summary>{item.question}<span aria-hidden="true">+</span></summary><p>{item.answer}</p></details>)}</PageVisualSection></BaseLayout>
