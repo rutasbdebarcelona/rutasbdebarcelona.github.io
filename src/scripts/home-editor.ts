@@ -6,11 +6,11 @@ import { defaultSiteDesign,normalizeSiteDesign } from '../lib/site-settings';
 
 const clone=value=>JSON.parse(JSON.stringify(value));
 const textFields={homeKicker:'HomeKicker',homeTitle:'HomeTitle',homeAccent:'HomeAccent',homeLead:'HomeLead',heroRoutesLabel:'HeroRoutesLabel',heroGuideLabel:'HeroGuideLabel',heroBookLabel:'HeroBookLabel',routesKicker:'RoutesKicker',routesTitle:'RoutesTitle',routesIntro:'RoutesIntro',methodKicker:'MethodKicker',methodQuote:'MethodQuote',method1Label:'Method1Label',method1Title:'Method1Title',method1Body:'Method1Body',method2Label:'Method2Label',method2Title:'Method2Title',method2Body:'Method2Body',method3Label:'Method3Label',method3Title:'Method3Title',method3Body:'Method3Body',partnerKicker:'PartnerKicker',partnerTitle:'PartnerTitle',partnerBody:'PartnerBody',partnerButton:'PartnerButton',contactTitle:'ContactTitle',contactIntro:'ContactIntro',reviewsHeroKicker:'ReviewsHeroKicker',reviewsHeroTitle:'ReviewsHeroTitle',reviewsHeroIntro:'ReviewsHeroIntro',reviewsListKicker:'ReviewsListKicker',reviewsListTitle:'ReviewsListTitle',reviewsTrustText:'ReviewsTrustText',reviewsEmpty:'ReviewsEmpty',reviewsFormKicker:'ReviewsFormKicker',reviewsFormTitle:'ReviewsFormTitle',reviewsFormIntro:'ReviewsFormIntro'};
-const imageFields={hero:{url:'heroImageUrl',altEs:'heroImageAltEs',altEn:'heroImageAltEn',desktopFit:'heroDesktopFit',mobileFit:'heroMobileFit',desktopX:'heroDesktopX',desktopY:'heroDesktopY',mobileX:'heroMobileX',mobileY:'heroMobileY',desktopZoom:'heroDesktopZoom',mobileZoom:'heroMobileZoom'},method:{url:'methodImageUrl',altEs:'methodImageAltEs',altEn:'methodImageAltEn',desktopFit:'methodDesktopFit',mobileFit:'methodMobileFit',desktopX:'methodDesktopX',desktopY:'methodDesktopY',mobileX:'methodMobileX',mobileY:'methodMobileY',desktopZoom:'methodDesktopZoom',mobileZoom:'methodMobileZoom',desktopOpacity:'methodDesktopOpacity',mobileOpacity:'methodMobileOpacity',presentation:'methodPresentation',desktopRatio:'methodDesktopRatio',mobileRatio:'methodMobileRatio'}};
+const imageFields={hero:{url:'heroImageUrl',altEs:'heroImageAltEs',altEn:'heroImageAltEn',desktopFit:'heroDesktopFit',mobileFit:'heroMobileFit',desktopX:'heroDesktopX',desktopY:'heroDesktopY',mobileX:'heroMobileX',mobileY:'heroMobileY',desktopZoom:'heroDesktopZoom',mobileZoom:'heroMobileZoom'},method:{url:'methodImageUrl',altEs:'methodImageAltEs',altEn:'methodImageAltEn',desktopFit:'methodDesktopFit',mobileFit:'methodMobileFit',desktopX:'methodDesktopX',desktopY:'methodDesktopY',mobileX:'methodMobileX',mobileY:'methodMobileY',desktopZoom:'methodDesktopZoom',mobileZoom:'methodMobileZoom',desktopOpacity:'methodDesktopOpacity',mobileOpacity:'methodMobileOpacity',presentation:'methodPresentation',desktopRatio:'methodDesktopRatio',mobileRatio:'methodMobileRatio'},partner:{url:'partnerImageUrl',altEs:'partnerImageAltEs',altEn:'partnerImageAltEn',desktopFit:'partnerDesktopFit',mobileFit:'partnerMobileFit',desktopX:'partnerDesktopX',desktopY:'partnerDesktopY',mobileX:'partnerMobileX',mobileY:'partnerMobileY',desktopZoom:'partnerDesktopZoom',mobileZoom:'partnerMobileZoom'}};
 
 export function setupHomeEditor(app){
   const $=selector=>app.querySelector(selector),form=$('[data-design-form]');
-  let current=normalizeSiteDesign(defaultSiteDesign),pending={hero:null,method:null},objectUrls={hero:'',method:''};
+  let current=normalizeSiteDesign(defaultSiteDesign),pending={hero:null,method:null,partner:null},objectUrls={hero:'',method:'',partner:''};
   const field=name=>form.elements[name],get=name=>String(field(name)?.value??'').trim(),set=(name,value)=>{if(field(name))field(name).value=value??''};
   const src=slot=>objectUrls[slot]||get(`${slot}ImageUrl`);
   const center=$('[data-editorial-center]');let lastData=null;
@@ -55,12 +55,12 @@ export function setupHomeEditor(app){
   center?.querySelectorAll('[data-editorial-admin-view]').forEach(button=>button.addEventListener('click',()=>app.querySelector('[data-admin-view="'+button.dataset.editorialAdminView+'"]')?.click()));
   $('[data-editorial-refresh-history]')?.addEventListener('click',loadHistory);
   function fill(settings,state='Versión pública vigente'){
-    current=normalizeSiteDesign(settings);pending={hero:null,method:null};
+    current=normalizeSiteDesign(settings);pending={hero:null,method:null,partner:null};
     field('fontPair').value=current.fontPair;field('layout').value=current.layout;field('logo').value=current.logo;
     Object.entries(current.colors).forEach(([key,value])=>set(key,value));
     for(const channel of ['instagram','tripadvisor','getyourguide','linkedin']){set(channel+'Url',current.social[channel].url);field(channel+'Visible').checked=current.social[channel].visible;}
     for(const locale of ['es','en']){const prefix=locale;for(const [property,suffix] of Object.entries(textFields))set(prefix+suffix,current.content[locale][property]);set(prefix+'TrustItems',current.content[locale].trustItems.join('\n'));}
-    for(const slot of ['hero','method'])for(const [property,name] of Object.entries(imageFields[slot]))set(name,current.home[`${slot}Image`][property]);
+    for(const slot of ['hero','method','partner'])for(const [property,name] of Object.entries(imageFields[slot]))set(name,current.home[`${slot}Image`][property]);
     for(const key of ['routes','method','partner']){field(`${key}Visible`).checked=current.home.sectionVisibility[key];set(`${key}Order`,current.home.sectionOrder.indexOf(key)+1);}
     $('[data-design-state]').textContent=state;preview();
   }
@@ -69,7 +69,7 @@ export function setupHomeEditor(app){
     for(const key of Object.keys(settings.colors))settings.colors[key]=get(key);
     for(const channel of ['instagram','tripadvisor','getyourguide','linkedin'])settings.social[channel]={url:get(channel+'Url'),visible:field(channel+'Visible').checked};
     for(const locale of ['es','en']){for(const [property,suffix] of Object.entries(textFields))settings.content[locale][property]=get(locale+suffix);settings.content[locale].trustItems=get(locale+'TrustItems').split(/\r?\n/).map(x=>x.trim()).filter(Boolean).slice(0,5);}
-    for(const slot of ['hero','method'])for(const [property,name] of Object.entries(imageFields[slot]))settings.home[`${slot}Image`][property]=['desktopX','desktopY','mobileX','mobileY','desktopZoom','mobileZoom','desktopOpacity','mobileOpacity'].includes(property)?Number(get(name)):get(name);
+    for(const slot of ['hero','method','partner'])for(const [property,name] of Object.entries(imageFields[slot]))settings.home[`${slot}Image`][property]=['desktopX','desktopY','mobileX','mobileY','desktopZoom','mobileZoom','desktopOpacity','mobileOpacity'].includes(property)?Number(get(name)):get(name);
     settings.home.sectionVisibility={routes:field('routesVisible').checked,method:field('methodVisible').checked,partner:field('partnerVisible').checked};
     const positions=['routes','method','partner'].map(key=>({key,position:Number(get(`${key}Order`))}));if(new Set(positions.map(item=>item.position)).size!==3)throw new Error('Cada sección debe tener una posición diferente.');settings.home.sectionOrder=positions.sort((a,b)=>a.position-b.position).map(item=>item.key);
     return normalizeSiteDesign(settings);
@@ -77,7 +77,7 @@ export function setupHomeEditor(app){
   function readSafe(){try{return read()}catch{return current}}
   function preview(){
     const settings=readSafe(),fontPair=settings.fontPair,displayFont=fontPair==='brand'?"'Archivo',sans-serif":fontPair==='lato'?"'Lato',sans-serif":fontPair==='modern'?"'DM Sans',sans-serif":fontPair==='classic'?"Georgia,serif":"'Newsreader',Georgia,serif",bodyFont=fontPair==='brand'?"'Archivo',sans-serif":fontPair==='lato'?"'Lato',sans-serif":fontPair==='classic'?"Georgia,serif":"'DM Sans',sans-serif";
-    for(const slot of ['hero','method']){
+    for(const slot of ['hero','method','partner']){
       const currentImage=$('[data-current-image="'+slot+'"]'),currentSrc=src(slot);
       if(!currentImage)continue;
       currentImage.hidden=!currentSrc;
@@ -93,8 +93,8 @@ export function setupHomeEditor(app){
     const c=settings.content.es;for(const [selector,value] of [['[data-preview-kicker]',c.homeKicker],['[data-preview-title]',c.homeTitle],['[data-preview-accent]',c.homeAccent],['[data-preview-lead]',c.homeLead],['[data-preview-kicker-mobile]',c.homeKicker],['[data-preview-title-mobile]',c.homeTitle],['[data-preview-accent-mobile]',c.homeAccent],['[data-preview-method-kicker]',c.methodKicker],['[data-preview-method-quote]',c.methodQuote],['[data-preview-method-kicker-mobile]',c.methodKicker],['[data-preview-method-quote-mobile]',c.methodQuote]]){const node=$(selector);if(node)node.textContent=value;}
   }
   function selectImage(slot,file){if(!file)return;if(!file.type.startsWith('image/')||file.size>15728640){$('[data-design-message]').textContent='Selecciona una imagen válida de menos de 15 MB.';field(`${slot}ImageFile`).value='';return}if(objectUrls[slot])URL.revokeObjectURL(objectUrls[slot]);pending[slot]=file;objectUrls[slot]=URL.createObjectURL(file);preview();}
-  const assistants={hero:setupMediaAssistant(field('heroImageFile'),{defaultRatio:'16/9',onPreview:file=>selectImage('hero',file)}),method:setupMediaAssistant(field('methodImageFile'),{defaultRatio:'3/2',onPreview:file=>selectImage('method',file)})};
-  async function withUploads(){const settings=read();for(const slot of ['hero','method'])if(pending[slot]){const prepared=await assistants[slot].getResult(),file=prepared?.file||pending[slot];settings.home[`${slot}Image`].url=await uploadSiteImage(file,prepared?.corrected?prepared.original:undefined);set(`${slot}ImageUrl`,settings.home[`${slot}Image`].url);pending[slot]=null;assistants[slot].reset();if(objectUrls[slot]){URL.revokeObjectURL(objectUrls[slot]);objectUrls[slot]='';}}return settings;}
+  const assistants={hero:setupMediaAssistant(field('heroImageFile'),{defaultRatio:'16/9',onPreview:file=>selectImage('hero',file)}),method:setupMediaAssistant(field('methodImageFile'),{defaultRatio:'3/2',onPreview:file=>selectImage('method',file)}),partner:setupMediaAssistant(field('partnerImageFile'),{defaultRatio:'16/9',onPreview:file=>selectImage('partner',file)})};
+  async function withUploads(){const settings=read();for(const slot of ['hero','method','partner'])if(pending[slot]){const prepared=await assistants[slot].getResult(),file=prepared?.file||pending[slot];settings.home[`${slot}Image`].url=await uploadSiteImage(file,prepared?.corrected?prepared.original:undefined);set(`${slot}ImageUrl`,settings.home[`${slot}Image`].url);pending[slot]=null;assistants[slot].reset();if(objectUrls[slot]){URL.revokeObjectURL(objectUrls[slot]);objectUrls[slot]='';}}return settings;}
   async function load(){const data=await getAdminSiteDesign();fill(data.draft||data.published,data.draft?'Borrador pendiente de publicación':'Versión pública vigente');renderCenter(data);await loadHistory();}
   field('methodPresentation')?.addEventListener('change',()=>{if(get('methodPresentation')==='background'&&Number(get('methodDesktopOpacity'))===100){set('methodDesktopOpacity',35);set('methodMobileOpacity',35)}preview()});
   form?.addEventListener('input',preview);

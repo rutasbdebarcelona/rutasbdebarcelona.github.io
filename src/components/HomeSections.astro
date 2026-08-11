@@ -6,17 +6,19 @@ import type { Locale } from '../i18n/ui';
 import type { SiteDesign,HomeSectionKey } from '../lib/site-settings';
 interface Props{locale:Locale;design:SiteDesign;routes:TourRoute[];base:string;routesEnabled:boolean}
 const {locale,design,routes,base,routesEnabled}=Astro.props;
-const content=design.content[locale],root=locale==='en'?base+'en/':base,image=design.home.methodImage;
+const content=design.content[locale],root=locale==='en'?base+'en/':base,image=design.home.methodImage,partnerImage=design.home.partnerImage;
 const methodSrc=/^https?:/i.test(image.url)?image.url:base+image.url.replace(/^\//,'');
 const methodStyle=`--method-desktop-opacity:${image.desktopOpacity/100};--method-mobile-opacity:${image.mobileOpacity/100};--image-desktop-x:${image.desktopX}%;--image-desktop-y:${image.desktopY}%;--image-mobile-x:${image.mobileX}%;--image-mobile-y:${image.mobileY}%;--image-desktop-zoom:${image.desktopZoom/100};--image-mobile-zoom:${image.mobileZoom/100};--image-desktop-fit:${image.desktopFit};--image-mobile-fit:${image.mobileFit};--method-desktop-ratio:${image.desktopRatio};--method-mobile-ratio:${image.mobileRatio}`;
+const partnerSrc=partnerImage.url?(/^https?:/i.test(partnerImage.url)?partnerImage.url:base+partnerImage.url.replace(/^\//,'')):'';
+const partnerStyle=`--partner-x:${partnerImage.desktopX}%;--partner-y:${partnerImage.desktopY}%;--partner-mobile-x:${partnerImage.mobileX}%;--partner-mobile-y:${partnerImage.mobileY}%;--partner-fit:${partnerImage.desktopFit};--partner-mobile-fit:${partnerImage.mobileFit};--partner-zoom:${partnerImage.desktopZoom/100};--partner-mobile-zoom:${partnerImage.mobileZoom/100}`;
 const order=design.home.sectionOrder as HomeSectionKey[],visible=design.home.sectionVisibility;
 ---
 {order.map(section=>section==='routes'&&visible.routes?(
-  <ModuleShell enabled={routesEnabled}><section class="section routes-preview home-routes-section"><div class="section-heading split-heading"><div><p class="kicker dark">{content.routesKicker}</p><h2>{content.routesTitle}</h2></div><div class="carousel-heading-side"><p>{content.routesIntro}</p></div></div><div class="route-carousel-shell"><button class="carousel-edge carousel-edge--previous" type="button" data-carousel-prev aria-label={locale==='en'?'Previous tours':'Rutas anteriores'}>←</button><div class="route-carousel" data-carousel-track>{routes.map(route=><RouteCard route={route} locale={locale}/>)}</div><button class="carousel-edge carousel-edge--next" type="button" data-carousel-next aria-label={locale==='en'?'Next tours':'Rutas siguientes'}>→</button></div></section></ModuleShell>
+  <ModuleShell enabled={routesEnabled}><section class="section routes-preview home-routes-section"><div class="section-heading split-heading"><div><p class="kicker dark">{content.routesKicker}</p><h2>{content.routesTitle}</h2></div><div class="carousel-heading-side"><p>{content.routesIntro}</p></div></div><div class="route-carousel-shell"><button class="carousel-edge carousel-edge--previous" type="button" data-carousel-prev aria-label={locale==='en'?'Previous tours':'Rutas anteriores'}>ÃƒÂ¢Ã¢â‚¬Â Ã‚Â</button><div class="route-carousel" data-carousel-track>{routes.map(route=><RouteCard route={route} locale={locale}/>)}</div><button class="carousel-edge carousel-edge--next" type="button" data-carousel-next aria-label={locale==='en'?'Next tours':'Rutas siguientes'}>ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢</button></div></section></ModuleShell>
 ):section==='method'&&visible.method?(
   <section class:list={["manifesto authored-manifesto",{"method-image-background":image.presentation==="background"}]}><div class="manifesto-inner"><div class="manifesto-feature"><div><p class="kicker">{content.methodKicker}</p><blockquote>{content.methodQuote}</blockquote></div><figure class="manifesto-collage editable-home-image" style={methodStyle}><img src={methodSrc} alt={locale==='en'?image.altEn:image.altEs} loading="lazy" /></figure></div><div class="principles"><div><span>{content.method1Label}</span><h3>{content.method1Title}</h3><p>{content.method1Body}</p></div><div><span>{content.method2Label}</span><h3>{content.method2Title}</h3><p>{content.method2Body}</p></div><div><span>{content.method3Label}</span><h3>{content.method3Title}</h3><p>{content.method3Body}</p></div></div></div></section>
 ):section==='partner'&&visible.partner?(
-  <section class="section partner-section"><div class="partner-card"><div><p class="kicker dark">{content.partnerKicker}</p><h2>{content.partnerTitle}</h2><p>{content.partnerBody}</p></div><a class="button primary" href={root+'contacto/?tipo=partner'}>{content.partnerButton}</a></div></section>
+  <section class="section partner-section"><div class:list={["partner-card",{"has-partner-image":partnerSrc}]} style={partnerStyle}>{partnerSrc&&<figure class="partner-card-media"><img src={partnerSrc} alt={locale==='en'?partnerImage.altEn:partnerImage.altEs} loading="lazy" /></figure>}<div><p class="kicker dark">{content.partnerKicker}</p><h2>{content.partnerTitle}</h2><p>{content.partnerBody}</p></div><a class="button primary" href={root+'contacto/?tipo=partner'}>{content.partnerButton}</a></div></section>
 ):null)}
 <script>
   document.querySelectorAll('.home-routes-section').forEach(section=>{
@@ -26,3 +28,4 @@ const order=design.home.sectionOrder as HomeSectionKey[],visible=design.home.sec
     section.querySelector('[data-carousel-next]')?.addEventListener('click',()=>move(1));
   });
 </script>
+
