@@ -16,6 +16,12 @@ const sharedHero=featuredRoute?.image||base+'images/sagrada-familia.jpg';
 const pageTitle = title === siteConfig.formalName ? title : title + ' · ' + siteConfig.shortName;
 const current = Astro.url.pathname.startsWith(base) ? Astro.url.pathname.slice(base.length) : Astro.url.pathname.replace(/^\//, '');
 const barePath = current.startsWith('en/') ? current.slice(3) : current;
+const pageSegment=barePath.split('/').filter(Boolean)[0]||'';
+const pageMap={rutas:'routes',comparar:'compare',sobre:'guide',preguntas:'faq',contacto:'contact',reservar:'booking',resenas:'reviews',publicaciones:'publications'} as const;
+const pageKey=pageMap[pageSegment as keyof typeof pageMap];
+const pageHidden=Boolean(pageKey&&!design.pageVisibility[pageKey]);
+const effectiveNoindex=noindex||pageHidden;
+const redirectHome=locale==='en'?base+'en/':base;
 const absolute = (path: string) => new URL(path, Astro.site ?? Astro.url.origin).toString();
 const alternateEs = absolute(base + barePath);
 const alternateEn = absolute(base + 'en/' + barePath);
@@ -25,13 +31,13 @@ const themeStyle=`--page-hero-image:url('${sharedHero}');--forest:${design.color
 <html lang={locale} data-layout={design.layout} data-font-pair={design.fontPair} style={themeStyle}>
   <head>
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width" /><meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    {effectiveNoindex && <meta name="robots" content="noindex,nofollow" />}{pageHidden && <meta http-equiv="refresh" content={`0; url=${redirectHome}`} />}
     <meta name="theme-color" content={design.colors.forest} /><title>{pageTitle}</title>
     <link rel="alternate" hreflang="es" href={alternateEs} /><link rel="alternate" hreflang="en" href={alternateEn} /><link rel="alternate" hreflang="x-default" href={alternateEs} />
     <link rel="icon" href={base + 'images/marca/rutas-b-simbolo.png'} type="image/png" /><link rel="apple-touch-icon" href={base + 'images/marca/rutas-b-simbolo.png'} />
   </head>
   <body>
-    {!bare && <a class="skip-link" href="#contenido">{ui[locale].skip}</a>}{!bare && <Header locale={locale} design={design} />}<main id="contenido"><slot /></main>{!bare && <Footer locale={locale} design={design} />}
+    {pageHidden?<main id="contenido" class="hidden-page-redirect"><p>{locale==='en'?'This page is not currently available.':'Esta página no está disponible actualmente.'}</p><a class="button primary" href={redirectHome}>{locale==='en'?'Go to homepage':'Volver al inicio'}</a></main>:<Fragment>{!bare && <a class="skip-link" href="#contenido">{ui[locale].skip}</a>}{!bare && <Header locale={locale} design={design} />}<main id="contenido"><slot /></main>{!bare && <Footer locale={locale} design={design} />}</Fragment>}
     <script is:inline>document.querySelector('[data-menu-button]')?.addEventListener('click',(event)=>{const button=event.currentTarget;const nav=document.querySelector('[data-menu]');const open=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!open));nav?.toggleAttribute('data-open',!open);});const languageScrollKey='rutasb-language-scroll';try{const saved=JSON.parse(sessionStorage.getItem(languageScrollKey)||'null');if(saved?.path===location.pathname){sessionStorage.removeItem(languageScrollKey);requestAnimationFrame(()=>requestAnimationFrame(()=>{const max=Math.max(document.documentElement.scrollHeight-innerHeight,0);scrollTo(0,max*saved.ratio);}));}}catch{sessionStorage.removeItem(languageScrollKey)}document.querySelectorAll('[data-language-link]').forEach(link=>link.addEventListener('click',()=>{const target=new URL(link.href);if(target.pathname===location.pathname)return;const max=Math.max(document.documentElement.scrollHeight-innerHeight,1);sessionStorage.setItem(languageScrollKey,JSON.stringify({path:target.pathname,ratio:scrollY/max}));}));</script>
   </body>
 </html>

@@ -26,13 +26,13 @@ const logoSrc=/^https?:/i.test(logoValue)?logoValue:base+(logoValue.startsWith('
     <span class="language-switch mobile-language-switch" aria-label="Language"><a class:list={{active: locale === 'es'}} href={esUrl} lang="es" data-language-link>ES</a><span>/</span><a class:list={{active: locale === 'en'}} href={enUrl} lang="en" data-language-link>EN</a></span>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav" data-menu-button><span>{t.menu}</span><span aria-hidden="true">&#9776;</span></button>
     <nav id="main-nav" class="main-nav" aria-label={t.navigation} data-menu>
-      {moduleEnabled('routes') && <a href={root + 'rutas/'}>{copy.navRoutes}</a>}
-      {moduleEnabled('compare') && <a href={root + 'comparar/'}>{copy.navCompare}</a>}
-      {moduleEnabled('guide') && <a href={root + 'sobre/'}>{copy.navGuide}</a>}
-      {moduleEnabled('faq') && <a href={root + 'preguntas/'}>{copy.navFaq}</a>}
-      {moduleEnabled('contact') && <a href={root + 'contacto/'}>{copy.navContact}</a>}
+      {moduleEnabled('routes') && design.pageVisibility.routes && <a href={root + 'rutas/'}>{copy.navRoutes}</a>}
+      {moduleEnabled('compare') && design.pageVisibility.compare && <a href={root + 'comparar/'}>{copy.navCompare}</a>}
+      {moduleEnabled('guide') && design.pageVisibility.guide && <a href={root + 'sobre/'}>{copy.navGuide}</a>}
+      {moduleEnabled('faq') && design.pageVisibility.faq && <a href={root + 'preguntas/'}>{copy.navFaq}</a>}
+      {moduleEnabled('contact') && design.pageVisibility.contact && <a href={root + 'contacto/'}>{copy.navContact}</a>}
       <span class="language-switch" aria-label="Language"><a class:list={{active: locale === 'es'}} href={esUrl} lang="es" data-language-link>ES</a><span>/</span><a class:list={{active: locale === 'en'}} href={enUrl} lang="en" data-language-link>EN</a></span>
-      {moduleEnabled('booking') && <a class="nav-cta" href={root + 'reservar/'}>{copy.navBook}</a>}
+      {moduleEnabled('booking') && design.pageVisibility.booking && <a class="nav-cta" href={root + 'reservar/'}>{copy.navBook}</a>}
     </nav>
   </div>
 </header>
