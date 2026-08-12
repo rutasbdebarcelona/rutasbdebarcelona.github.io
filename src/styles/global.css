@@ -298,3 +298,14 @@ main,.section,.home-routes-section,.route-carousel-shell,.route-carousel,.route-
 .route-carousel-shell .route-carousel{display:flex!important;grid-auto-flow:unset!important;grid-auto-columns:unset!important;width:100%!important;max-width:100%!important;gap:14px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:0}
 .route-carousel-shell .route-carousel>.route-card{flex:0 0 100%!important;width:100%!important;min-width:100%!important;max-width:100%!important;scroll-snap-align:start;scroll-snap-stop:always}
 }
+/* Responsive integrity: every horizontal collection keeps usable item widths on Android. */
+@media(max-width:700px){
+.route-gallery--carousel>div[data-route-gallery-list],
+.route-stop-media--carousel,
+.related-routes-list{display:flex!important;width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory}
+.route-gallery--carousel>div[data-route-gallery-list]>figure{flex:0 0 88%;width:88%;min-width:0;scroll-snap-align:start}
+.route-stop-media--carousel>*{flex:0 0 92%;width:92%;min-width:0;scroll-snap-align:start}
+.related-routes-list>a{flex:0 0 min(84vw,340px);width:min(84vw,340px);min-width:0;scroll-snap-align:start}
+.compare-scroll{width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.compare-table{word-break:normal;writing-mode:horizontal-tb}
+}
