@@ -30,7 +30,7 @@ const themeStyle=`--page-hero-image:url('${sharedHero}');--forest:${design.color
 <!doctype html>
 <html lang={locale} data-layout={design.layout} data-font-pair={design.fontPair} style={themeStyle}>
   <head>
-    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width" /><meta name="description" content={description} />
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="description" content={description} />
     {effectiveNoindex && <meta name="robots" content="noindex,nofollow" />}{pageHidden && <meta http-equiv="refresh" content={`0; url=${redirectHome}`} />}
     <meta name="theme-color" content={design.colors.forest} /><title>{pageTitle}</title>
     <link rel="alternate" hreflang="es" href={alternateEs} /><link rel="alternate" hreflang="en" href={alternateEn} /><link rel="alternate" hreflang="x-default" href={alternateEs} />

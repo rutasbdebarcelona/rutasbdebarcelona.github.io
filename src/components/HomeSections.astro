@@ -14,7 +14,7 @@ const partnerStyle=`--partner-x:${partnerImage.desktopX}%;--partner-y:${partnerI
 const order=design.home.sectionOrder as HomeSectionKey[],visible=design.home.sectionVisibility;
 ---
 {order.map(section=>section==='routes'&&visible.routes?(
-  <ModuleShell enabled={routesEnabled}><section class="section routes-preview home-routes-section"><div class="section-heading split-heading"><div><p class="kicker dark">{content.routesKicker}</p><h2>{content.routesTitle}</h2></div><div class="carousel-heading-side"><p>{content.routesIntro}</p></div></div><div class="route-carousel-shell"><button class="carousel-edge carousel-edge--previous" type="button" data-carousel-prev aria-label={locale==='en'?'Previous tours':'Rutas anteriores'}>ÃƒÂ¢Ã¢â‚¬Â Ã‚Â</button><div class="route-carousel" data-carousel-track>{routes.map(route=><RouteCard route={route} locale={locale}/>)}</div><button class="carousel-edge carousel-edge--next" type="button" data-carousel-next aria-label={locale==='en'?'Next tours':'Rutas siguientes'}>ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢</button></div></section></ModuleShell>
+  <ModuleShell enabled={routesEnabled}><section class="section routes-preview home-routes-section"><div class="section-heading split-heading"><div><p class="kicker dark">{content.routesKicker}</p><h2>{content.routesTitle}</h2></div><div class="carousel-heading-side"><p>{content.routesIntro}</p></div></div><div class="route-carousel-shell"><button class="carousel-edge carousel-edge--previous" type="button" data-carousel-prev aria-label={locale==='en'?'Previous tours':'Rutas anteriores'}>&larr;</button><div class="route-carousel" data-carousel-track>{routes.map(route=><RouteCard route={route} locale={locale}/>)}</div><button class="carousel-edge carousel-edge--next" type="button" data-carousel-next aria-label={locale==='en'?'Next tours':'Rutas siguientes'}>&rarr;</button></div></section></ModuleShell>
 ):section==='method'&&visible.method?(
   <section class:list={["manifesto authored-manifesto",{"method-image-background":image.presentation==="background"}]}><div class="manifesto-inner"><div class="manifesto-feature"><div><p class="kicker">{content.methodKicker}</p><blockquote>{content.methodQuote}</blockquote></div><figure class="manifesto-collage editable-home-image" style={methodStyle}><img src={methodSrc} alt={locale==='en'?image.altEn:image.altEs} loading="lazy" /></figure></div><div class="principles"><div><span>{content.method1Label}</span><h3>{content.method1Title}</h3><p>{content.method1Body}</p></div><div><span>{content.method2Label}</span><h3>{content.method2Title}</h3><p>{content.method2Body}</p></div><div><span>{content.method3Label}</span><h3>{content.method3Title}</h3><p>{content.method3Body}</p></div></div></div></section>
 ):section==='partner'&&visible.partner?(
@@ -23,7 +23,12 @@ const order=design.home.sectionOrder as HomeSectionKey[],visible=design.home.sec
 <script>
   document.querySelectorAll('.home-routes-section').forEach(section=>{
     const track=section.querySelector('[data-carousel-track]');
-    const move=(direction:number)=>track?.scrollBy({left:direction*(track.clientWidth*.82),behavior:'smooth'});
+    const move=(direction:number)=>{
+      const card=track?.querySelector('.route-card');
+      const gap=track?parseFloat(getComputedStyle(track).columnGap||'0'):0;
+      const distance=(card?.getBoundingClientRect().width||track?.clientWidth||0)+gap;
+      track?.scrollBy({left:direction*distance,behavior:'smooth'});
+    };
     section.querySelector('[data-carousel-prev]')?.addEventListener('click',()=>move(-1));
     section.querySelector('[data-carousel-next]')?.addEventListener('click',()=>move(1));
   });

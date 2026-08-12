@@ -2,6 +2,20 @@ import {createClient} from '@supabase/supabase-js';
 import {publishedRoutes as fallbackRoutes,type TourRoute,type RouteStop} from '../data/routes';
 
 const defaults={galleryMode:'grid',stopsMediaMode:'carousel',stopsDisplayMode:'cards',showHighlights:true,showMeetingPoint:true,showAccessibility:true,showLongDescription:true};
+const repairText=(value:any):string=>{
+ let text=String(value??'');
+ const damage=(candidate:string)=>(candidate.match(/[\u00c3\u00c2\u00e2\ufffd]/g)||[]).length;
+ for(let attempt=0;attempt<2&&damage(text)>0;attempt+=1){
+  try{
+   const chars=[...text];
+   if(chars.some(char=>char.charCodeAt(0)>255))break;
+   const repaired=new TextDecoder('utf-8',{fatal:true}).decode(Uint8Array.from(chars.map(char=>char.charCodeAt(0))));
+   if(damage(repaired)>=damage(text))break;
+   text=repaired;
+  }catch{break;}
+ }
+ return text;
+};
 
 export async function getPublicRoutes():Promise<TourRoute[]>{
  const url=import.meta.env.PUBLIC_SUPABASE_URL,key=import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY;
@@ -24,11 +38,11 @@ export async function getPublicRoutes():Promise<TourRoute[]>{
   const translation=(route.route_translations||[]).find((item:any)=>item.locale==='en');
   const settings=profile?.page_settings||{};
   return{
-   slug:route.slug,title:route.title,eyebrow:route.eyebrow||'',promise:route.promise||route.short_description||profile?.short_description||'',
-   description:profile?.long_description||route.full_description||'',status:['Ruta inicial','Disponible'].includes(route.status_label)?'available':'in-development',
-   statusLabel:route.status_label||'En preparación',duration:route.display_duration||'Pendiente de definición',format:route.display_format||'Pendiente de definición',
-   area:route.display_area||'',languages:(route.offered_languages||[]).map((code:string)=>code==='es'?'Español':code==='en'?'English':code),audience:route.audience||[],
-   startingPoint:route.display_starting_point||route.meeting_point_public||'',endingPoint:route.display_ending_point||'',stops:orderedStops.map((stop:any)=>stop.title),
+   slug:route.slug,title:repairText(route.title),eyebrow:repairText(route.eyebrow||''),promise:repairText(route.promise||route.short_description||profile?.short_description||''),
+   description:repairText(profile?.long_description||route.full_description||''),status:['Ruta inicial','Disponible'].includes(repairText(route.status_label))?'available':'in-development',
+   statusLabel:repairText(route.status_label)||'En preparaci\u00f3n',duration:repairText(route.display_duration)||'Pendiente de definici\u00f3n',format:repairText(route.display_format)||'Pendiente de definici\u00f3n',
+   area:repairText(route.display_area||''),languages:(route.offered_languages||[]).map((code:string)=>code==='es'?'Español':code==='en'?'English':code),audience:route.audience||[],
+   startingPoint:repairText(route.display_starting_point||route.meeting_point_public||''),endingPoint:repairText(route.display_ending_point||''),stops:orderedStops.map((stop:any)=>repairText(stop.title)),
    stopDetails:orderedStops.map((stop:any)=>mapStop(stop)),highlights:profile?.highlights||[],includes:route.includes||[],notIncluded:route.excludes||[],
    accessibility:route.accessibility||'',priceIndividual:route.display_price_individual||'',priceGroup:route.display_price_group||'',
    image:publicUrl(route.primary_image_path||''),imageAlt:route.primary_image_alt||route.title,gallery,documents,

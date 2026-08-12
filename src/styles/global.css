@@ -247,3 +247,48 @@ body:has(.admin-shell){background:#eef0ec}.admin-shell{width:100%;overflow-x:cli
 
 /* Context previews shared by every editable public page. */
 .page-context-previews{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:12px;align-items:start;margin-top:10px}.page-context-preview{position:relative;margin:0;overflow:hidden;background:var(--forest);border:1px solid var(--line);aspect-ratio:16/6}.page-context-preview.is-mobile{aspect-ratio:3/4}.page-context-preview>span{position:absolute;z-index:2;top:8px;left:8px;padding:4px 7px;background:rgba(255,255,255,.88);color:var(--ink);font-size:.62rem;text-transform:uppercase}.page-context-preview img{display:block;width:100%;height:100%}.page-context-preview[data-presentation=none]{background:repeating-linear-gradient(45deg,#f4f1e9,#f4f1e9 8px,#ebe7dc 8px,#ebe7dc 16px)}.page-context-preview[data-presentation=none] img{opacity:.28}.page-context-preview.is-contained img{background:var(--cream)}@media(max-width:700px){.page-context-previews{grid-template-columns:1fr}.page-context-preview.is-mobile{width:min(220px,70%)}}
+
+/* Responsive baseline: keep every public shell inside the viewport. */
+html,body{max-width:100%;overflow-x:clip}
+main,.section,.home-routes-section,.route-carousel-shell,.route-carousel,.route-card,.route-card-body{min-width:0;max-width:100%}
+.route-card h2,.route-card p,.route-card dd{overflow-wrap:break-word;word-break:normal}
+@media(max-width:700px){
+.section{width:calc(100% - 28px)}
+.home-routes-section .split-heading{grid-template-columns:1fr;gap:18px}
+.route-carousel-shell{width:100%;overflow:visible}
+.route-carousel-shell .route-carousel{width:100%;max-width:100%;grid-auto-columns:100%;gap:14px;margin-inline:0;padding:4px 0 18px;scroll-padding-inline:0}
+.route-carousel>.route-card{width:100%;max-width:100%;scroll-snap-align:start;scroll-snap-stop:always}
+.carousel-edge{top:50%;width:40px;height:40px;font-size:1rem}
+.carousel-edge--previous{left:-8px}.carousel-edge--next{right:-8px}
+.route-card-body{padding:22px 20px}
+.route-card h2{font-size:clamp(1.85rem,8.5vw,2.25rem);line-height:1.04}
+.route-card-image{height:clamp(220px,62vw,270px)}
+.page-hero,.page-hero.compact{min-height:360px}
+.page-hero>.page-hero-copy{width:calc(100% - 28px);padding:48px 0}
+.page-hero>.page-hero-copy h1,.page-hero.compact h1{font-size:clamp(2.45rem,11vw,3.2rem);line-height:1.01;max-width:100%;overflow-wrap:normal}
+.page-hero>.page-hero-copy>p:last-of-type{font-size:1rem;line-height:1.55;max-width:100%}
+.route-hero-copy h1{font-size:clamp(2.5rem,12vw,3.35rem);overflow-wrap:normal}
+.compare-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch}
+.route-gallery,.route-gallery>div[data-route-gallery-list],.route-stops-detailed,.detail-layout,.detail-main,.detail-sidebar{min-width:0;max-width:100%}
+}
+@media(max-width:380px){
+.header-inner{padding-inline:10px}
+.brand:has(.brand-logo-full){flex-basis:92px;min-width:92px;margin-left:-24px}
+.brand-logo-full{width:132px;height:104px}
+.mobile-language-switch{font-size:.7rem;gap:4px}.menu-button{font-size:.85rem}
+.page-hero>.page-hero-copy h1,.page-hero.compact h1{font-size:clamp(2.25rem,11vw,2.75rem)}
+}
+/* Mobile integrity: one card per viewport and compact, consistent page heroes. */
+.route-card-image,.route-card-image img{min-width:0;max-width:100%}
+.route-card-image .status-pill{max-width:calc(100% - 28px);white-space:normal;overflow-wrap:anywhere;line-height:1.25}
+@media(max-width:700px){
+.home-routes-section{overflow:hidden}
+.route-carousel-shell{overflow:clip}
+.route-carousel-shell .route-carousel{box-sizing:border-box;grid-auto-columns:minmax(0,100%);overflow-x:auto}
+.carousel-edge{top:clamp(110px,31vw,135px)}
+.carousel-edge--previous{left:8px}.carousel-edge--next{right:8px}
+.route-card-image .status-pill{left:12px;bottom:12px;font-size:.62rem;letter-spacing:.08em}
+.page-hero,.page-hero.compact{min-height:390px!important;height:auto!important}
+.page-hero>.page-hero-copy{box-sizing:border-box;padding-block:46px!important}
+.page-hero>.page-hero-copy h1,.page-hero.compact h1{font-size:clamp(2.35rem,10.5vw,3rem)!important;line-height:1.04!important;text-wrap:balance;overflow-wrap:break-word}
+}
