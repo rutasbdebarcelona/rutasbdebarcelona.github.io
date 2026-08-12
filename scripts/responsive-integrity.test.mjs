@@ -32,3 +32,9 @@ test('public mobile page titles stay larger than major section titles', () => {
   assert.match(css, /\.page-hero>\.page-hero-copy h1,\.page-hero\.compact h1,\.route-hero-copy h1\{font-size:var\(--public-page-title\)!important/);
   assert.match(css, /\.editorial-layout h2,\.reviews-page \.split-heading h2,\.detail-main h2,\.partner-card h2\{font-size:var\(--public-section-title\)!important/);
 });
+
+test('mobile home hero stays in normal flow and inside the viewport', () => {
+  assert.match(css, /\.home-route-hero-copy\{[^}]*position:relative[^}]*inset:auto[^}]*bottom:auto[^}]*width:calc\(100% - 32px\)[^}]*box-sizing:border-box/s);
+  assert.match(css, /\.home-route-hero-copy \.hero-actions\{[^}]*grid-template-columns:minmax\(0,1fr\)[^}]*width:100%/s);
+  assert.match(css, /\.home-route-hero-copy \.hero-actions \.button\{[^}]*width:100%[^}]*min-width:0[^}]*box-sizing:border-box/s);
+});

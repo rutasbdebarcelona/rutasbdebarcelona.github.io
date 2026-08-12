@@ -355,3 +355,14 @@ main,.section,.home-routes-section,.route-carousel-shell,.route-carousel,.route-
  .detail-main>section{padding-bottom:48px;margin-bottom:48px}
 }
 @media(max-width:420px){.compare-card dl div{grid-template-columns:1fr;gap:4px}}
+
+/* The home hero is flow-based on mobile. Generic route-hero positioning must not move it. */
+@media(max-width:760px){
+ .home-route-hero{display:block;height:auto;min-height:0;overflow:hidden}
+ .home-route-hero-copy{position:relative;inset:auto;left:auto;right:auto;bottom:auto;width:calc(100% - 32px);max-width:none;min-width:0;margin:0 auto;padding:52px 0 58px;box-sizing:border-box;transform:none}
+ .home-route-hero-copy h1{max-width:100%;margin:12px 0 24px;font-size:clamp(2.75rem,13vw,4rem)!important;line-height:.98!important;overflow-wrap:normal;text-wrap:balance}
+ .home-route-hero-copy>p:not(.kicker){width:100%;max-width:100%;font-size:clamp(1rem,4.8vw,1.2rem);line-height:1.5;overflow-wrap:break-word}
+ .home-route-hero-copy .hero-actions{display:grid;grid-template-columns:minmax(0,1fr);width:100%;max-width:100%;gap:10px;margin-top:30px}
+ .home-route-hero-copy .hero-actions .button{display:flex;width:100%;min-width:0;box-sizing:border-box;justify-content:center;text-align:center;white-space:normal}
+ .home-route-hero-copy .trust-row{width:100%;max-width:100%;margin-top:28px;padding:0;box-sizing:border-box}
+}
