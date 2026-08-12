@@ -19,6 +19,14 @@ test('all other horizontal public collections retain explicit mobile widths', ()
   assert.match(css, /\.compare-scroll\{[^}]*overflow-x:auto/s);
 });
 
+test('comparison becomes readable route cards on mobile', () => {
+  const comparison = readFileSync(new URL('../src/components/RouteComparison.astro', import.meta.url), 'utf8');
+  assert.match(css, /\.compare-desktop\{display:none\}/);
+  assert.match(css, /\.compare-mobile\{display:grid;gap:18px\}/);
+  assert.match(comparison, /class="compare-mobile"/);
+  assert.match(comparison, /class="compare-card"/);
+  assert.doesNotMatch(comparison, />\s*(?:Característica|Feature)\s*</i);
+});
 test('public mobile page titles stay larger than major section titles', () => {
   assert.match(css, /--public-page-title:clamp\(2\.75rem,11vw,3\.35rem\);--public-section-title:clamp\(2rem,8\.5vw,2\.5rem\)/);
   assert.match(css, /\.page-hero>\.page-hero-copy h1,\.page-hero\.compact h1,\.route-hero-copy h1\{font-size:var\(--public-page-title\)!important/);

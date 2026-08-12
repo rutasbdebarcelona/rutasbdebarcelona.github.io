@@ -189,7 +189,7 @@ body:has(.admin-shell){background:#eef0ec}.admin-shell{width:100%;overflow-x:cli
 .experience-disclosure[open] .experience-show{display:none}
 .experience-disclosure[open] .experience-hide{display:inline}
 .experience-panel{padding-top:1.5rem}
-.experience-copy{max-width:64ch;margin:0;font-size:clamp(.98rem,1.08vw,1.08rem);line-height:1.72;text-align:justify;white-space:pre-line;hyphens:auto;text-wrap:pretty}
+.experience-copy{display:grid;gap:1.15rem;max-width:68ch;margin:0;font-size:clamp(.98rem,1.08vw,1.08rem);line-height:1.72;text-align:justify;hyphens:auto;text-wrap:pretty}.experience-copy p{margin:0}
 @media(max-width:640px){.route-experience .experience-summary{font-size:1rem}.experience-disclosure{max-width:none}.experience-disclosure summary{width:auto;justify-content:flex-start}.experience-copy{font-size:.96rem;line-height:1.68}}
 .related-routes{border-top:1px solid var(--line);padding-top:clamp(2.5rem,5vw,4.5rem);padding-bottom:clamp(3rem,6vw,5.5rem)}
 .related-routes>.kicker{margin:0 0 1.2rem}
@@ -321,3 +321,37 @@ main,.section,.home-routes-section,.route-carousel-shell,.route-carousel,.route-
 .editorial-layout h2,.reviews-page .split-heading h2,.detail-main h2,.partner-card h2{font-size:var(--public-section-title)!important;line-height:1.08}
 }
 @media(max-width:380px){:root{--public-page-title:clamp(2.6rem,12vw,3rem);--public-section-title:clamp(1.95rem,9vw,2.35rem)}}
+
+
+/* Comparison and route-detail coherence */
+.compare-mobile{display:none}
+.compare-desktop{width:100%;min-width:0}
+.compare-corner{background:var(--forest)}
+.compare-table thead th:not(.compare-corner){font-family:var(--sans);font-size:clamp(1rem,1.3vw,1.22rem);font-weight:700;vertical-align:bottom;letter-spacing:-.015em}
+.compare-table thead th span{display:block;text-wrap:balance}
+.compare-table tbody td,.compare-table tbody th{height:auto}
+.compare-table tbody td{font-size:.92rem}
+.compare-table tbody th{font-size:.7rem}
+.route-hero-copy{width:min(760px,calc(100% - 40px));max-width:none}
+.route-hero-copy h1{max-width:15ch;text-wrap:balance}
+.route-experience{max-width:72ch}
+.detail-layout{align-items:start}
+.detail-main{min-width:0}
+@media(max-width:760px){
+ .compare-desktop{display:none}
+ .compare-mobile{display:grid;gap:18px}
+ .compare-card{background:#fff;border:1px solid var(--line);box-shadow:0 12px 34px rgba(13,41,34,.07);overflow:hidden}
+ .compare-card header{padding:24px 22px;background:var(--forest);color:#fff}
+ .compare-card header p{margin:0 0 7px;color:#d4ded9;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+ .compare-card h2{margin:0;font-family:var(--sans);font-size:clamp(1.45rem,7vw,2rem);line-height:1.15;letter-spacing:-.02em;text-wrap:balance}
+ .compare-card dl{margin:0;padding:4px 22px}
+ .compare-card dl div{display:grid;grid-template-columns:minmax(92px,.7fr) minmax(0,1.3fr);gap:16px;padding:15px 0;border-bottom:1px solid var(--line)}
+ .compare-card dt{color:var(--muted);font-size:.67rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+ .compare-card dd{margin:0;font-size:.94rem;line-height:1.45;overflow-wrap:anywhere}
+ .compare-card>.button{margin:20px 22px 24px;width:calc(100% - 44px)}
+ .route-hero-copy{left:20px;right:20px;width:auto;bottom:44px}
+ .route-hero-copy h1{max-width:13ch}
+ .detail-layout{gap:38px}
+ .detail-main>section{padding-bottom:48px;margin-bottom:48px}
+}
+@media(max-width:420px){.compare-card dl div{grid-template-columns:1fr;gap:4px}}

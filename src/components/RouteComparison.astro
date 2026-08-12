@@ -1,0 +1,24 @@
+---
+import type {TourRoute} from '../data/routes';
+interface Props{routes:TourRoute[];copy:Record<string,string>;root:string}
+const {routes,copy:c,root}=Astro.props;
+const valueFor=(route:TourRoute,key:string)=>{
+ const value=(route as unknown as Record<string,unknown>)[key];
+ return Array.isArray(value)?value.join(' · '):String(value??'').trim();
+};
+const features=[
+ {label:c.compareArea,key:'area'},{label:c.compareDuration,key:'duration'},
+ {label:c.compareFormat,key:'format'},{label:c.compareLanguages,key:'languages'},
+ {label:c.compareIndividual,key:'priceIndividual'},{label:c.compareGroup,key:'priceGroup'}
+].filter(feature=>routes.some(route=>valueFor(route,feature.key)));
+---
+<div class="compare-desktop"><div class="compare-scroll"><table class="compare-table" style={`--route-count:${Math.max(routes.length,1)}`}>
+ <colgroup><col class="compare-feature-column" />{routes.map(()=><col class="compare-route-column" />)}</colgroup>
+ <thead><tr><th class="compare-corner" aria-hidden="true"></th>{routes.map(route=><th><span>{route.title}</span><small>{route.statusLabel}</small></th>)}</tr></thead>
+ <tbody>{features.map(feature=><tr><th>{feature.label}</th>{routes.map(route=><td>{valueFor(route,feature.key)||'—'}</td>)}</tr>)}<tr><th>{c.compareAction}</th>{routes.map(route=><td><a class="text-link" href={`${root}rutas/${route.slug}/`}>{c.compareView}</a></td>)}</tr></tbody>
+</table></div></div>
+<div class="compare-mobile" aria-label={c.compareTitle}>{routes.map(route=><article class="compare-card">
+ <header><p>{route.statusLabel}</p><h2>{route.title}</h2></header>
+ <dl>{features.map(feature=>valueFor(route,feature.key)&&<div><dt>{feature.label}</dt><dd>{valueFor(route,feature.key)}</dd></div>)}</dl>
+ <a class="button outline" href={`${root}rutas/${route.slug}/`}>{c.compareView}</a>
+</article>)}</div>
