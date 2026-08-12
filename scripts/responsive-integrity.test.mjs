@@ -18,3 +18,9 @@ test('all other horizontal public collections retain explicit mobile widths', ()
   assert.match(css, /\.related-routes-list>a\{[^}]*flex:0 0 min\(84vw,340px\)/s);
   assert.match(css, /\.compare-scroll\{[^}]*overflow-x:auto/s);
 });
+
+test('public mobile page titles stay larger than major section titles', () => {
+  assert.match(css, /--public-page-title:clamp\(2\.75rem,11vw,3\.35rem\);--public-section-title:clamp\(2rem,8\.5vw,2\.5rem\)/);
+  assert.match(css, /\.page-hero>\.page-hero-copy h1,\.page-hero\.compact h1,\.route-hero-copy h1\{font-size:var\(--public-page-title\)!important/);
+  assert.match(css, /\.editorial-layout h2,\.reviews-page \.split-heading h2,\.detail-main h2,\.partner-card h2\{font-size:var\(--public-section-title\)!important/);
+});

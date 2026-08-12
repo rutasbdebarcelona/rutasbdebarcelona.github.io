@@ -309,3 +309,15 @@ main,.section,.home-routes-section,.route-carousel-shell,.route-carousel,.route-
 .compare-scroll{width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden}
 .compare-table{word-break:normal;writing-mode:horizontal-tb}
 }
+
+/* Public type hierarchy: page titles always outrank the sections below them. */
+:root{--public-page-title:clamp(3.75rem,7vw,5.5rem);--public-section-title:clamp(2.35rem,4vw,3.5rem)}
+.page-hero>.page-hero-copy h1,.page-hero.compact h1{font-size:var(--public-page-title)}
+.route-hero-copy h1{font-size:clamp(3.75rem,7vw,6rem)}
+.editorial-layout h2,.reviews-page .split-heading h2,.detail-main h2,.partner-card h2{font-size:var(--public-section-title)}
+@media(max-width:700px){
+:root{--public-page-title:clamp(2.75rem,11vw,3.35rem);--public-section-title:clamp(2rem,8.5vw,2.5rem)}
+.page-hero>.page-hero-copy h1,.page-hero.compact h1,.route-hero-copy h1{font-size:var(--public-page-title)!important;line-height:1.03!important}
+.editorial-layout h2,.reviews-page .split-heading h2,.detail-main h2,.partner-card h2{font-size:var(--public-section-title)!important;line-height:1.08}
+}
+@media(max-width:380px){:root{--public-page-title:clamp(2.6rem,12vw,3rem);--public-section-title:clamp(1.95rem,9vw,2.35rem)}}
